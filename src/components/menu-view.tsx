@@ -59,27 +59,27 @@ export function MenuView({ restaurant: r, menu }: { restaurant: Restaurant; menu
             <ArrowLeft className="size-5" />
           </Link>
           <span className="absolute top-4 right-4 inline-flex items-center gap-1 rounded-full bg-paper px-3 py-1.5 text-sm shadow-card">
-            <Star className="size-4 fill-sun text-sun" aria-hidden />
+            <Star className="size-4 fill-star text-star" aria-hidden />
             <span className="font-bold">{r.rating.toFixed(1)}</span>
             <span className="text-stone">({r.reviewCount})</span>
           </span>
           <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-4 pb-9 sm:p-6 sm:pb-10 lg:pb-7">
             <div className="text-cream">
               <h1 className="flex items-center gap-1.5 text-[1.7rem] leading-tight font-semibold sm:text-4xl">
-                <LogoMark className="size-6 sm:size-7" /> {r.name}
+                <LogoMark light className="size-6 sm:size-7" /> {r.name}
               </h1>
               <p className="mt-1 text-sm text-cream/90">{r.type}</p>
               <p className="mt-0.5 flex items-center gap-1 text-sm text-cream/90">
                 <MapPin className="size-3.5" aria-hidden /> {distanceLabel(r.distanceKm)} · {areaName(r.area)}, Imo State
               </p>
             </div>
-            <p className="hidden max-w-[12rem] text-right font-display text-2xl leading-tight text-sun italic sm:block">{r.tagline}</p>
+            <p className="hidden max-w-[12rem] text-right font-display text-2xl leading-tight text-leaf italic sm:block">{r.tagline}</p>
           </div>
         </div>
       </div>
 
       {/* Panel */}
-      <div className="relative -mt-5 rounded-t-[1.5rem] bg-cream lg:mt-0 lg:rounded-none">
+      <div className="relative -mt-5 rounded-t-[1.5rem] bg-canvas lg:mt-0 lg:rounded-none">
         <div className="container-x pt-4 lg:pt-6">
           <div role="tablist" aria-label={`${r.name} sections`} className="grid grid-cols-4 gap-1 rounded-full border border-line bg-paper p-1 lg:max-w-xl">
             {tabs.map((t) => (
@@ -88,7 +88,7 @@ export function MenuView({ restaurant: r, menu }: { restaurant: Restaurant; menu
                 role="tab"
                 aria-selected={tab === t}
                 onClick={() => setTab(t)}
-                className={cn("h-9 rounded-full text-sm font-semibold transition-colors", tab === t ? "bg-forest text-cream" : "text-ink/75 hover:text-forest")}
+                className={cn("h-9 rounded-full text-sm font-semibold transition-colors", tab === t ? "bg-forest text-on-forest" : "text-ink/75 hover:text-forest")}
               >
                 {t}
               </button>
@@ -97,16 +97,16 @@ export function MenuView({ restaurant: r, menu }: { restaurant: Restaurant; menu
         </div>
 
         {tab === "Menu" && (
-          <div ref={listRef} className="scroll-mt-0 lg:scroll-mt-[72px]">
+          <div ref={listRef} className="scroll-mt-0 lg:scroll-mt-[76px]">
             {/* Section icons */}
-            <div className="sticky top-0 z-30 border-b border-line/70 bg-cream/95 backdrop-blur lg:top-[72px]">
+            <div className="sticky top-0 z-30 border-b border-line/70 bg-canvas/95 backdrop-blur lg:top-[76px]">
               <div className="container-x no-scrollbar flex gap-1 overflow-x-auto py-3 sm:gap-3" role="toolbar" aria-label="Menu categories">
                 {(["All", ...available.map((s) => s.name)] as const).map((s) => {
                   const Icon = sectionIcons[s];
                   const active = section === s;
                   return (
                     <button key={s} onClick={() => choose(s)} aria-pressed={active} className="flex w-[4.6rem] shrink-0 flex-col items-center gap-1.5 sm:w-24">
-                      <span className={cn("grid h-9 w-12 place-items-center rounded-full transition-colors", active ? "bg-sun text-forest-deep" : "bg-mint/70 text-forest")}>
+                      <span className={cn("grid h-9 w-12 place-items-center rounded-full transition-colors", active ? "bg-accent text-on-accent" : "bg-mint/70 text-forest")}>
                         <Icon className="size-[18px]" strokeWidth={1.9} />
                       </span>
                       <span className={cn("text-center text-[0.68rem] leading-tight sm:text-xs", active ? "font-bold text-forest" : "font-medium text-ink/70")}>{s}</span>
@@ -220,7 +220,7 @@ export function MenuView({ restaurant: r, menu }: { restaurant: Restaurant; menu
       {/* Cart bar */}
       {summary.count > 0 && (
         <div className="pb-safe fixed inset-x-0 bottom-0 z-40 px-3 pb-3 sm:px-6">
-          <div className="mx-auto flex h-16 max-w-2xl items-center gap-3 rounded-2xl bg-forest pr-2 pl-3 text-cream shadow-lift">
+          <div className="mx-auto flex h-16 max-w-2xl items-center gap-3 rounded-2xl bg-pine pr-2 pl-3 text-cream shadow-lift ring-1 ring-cream/10">
             <button onClick={() => setDrawerOpen(true)} className="flex min-w-0 items-center gap-2.5 text-left" aria-label="Open cart">
               <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-cream/10">
                 <ShoppingBag className="size-5" />
@@ -236,7 +236,7 @@ export function MenuView({ restaurant: r, menu }: { restaurant: Restaurant; menu
               <p className="text-[11px] text-cream/70">Total</p>
               <p className="font-bold">{naira(summary.subtotal)}</p>
             </div>
-            <button onClick={() => setDrawerOpen(true)} className="inline-flex h-12 items-center gap-1.5 rounded-xl bg-sun px-4 text-sm font-bold text-forest-deep hover:bg-sun-deep sm:px-6">
+            <button onClick={() => setDrawerOpen(true)} className="inline-flex h-12 items-center gap-1.5 rounded-xl bg-leaf px-4 text-sm font-bold text-forest-deep hover:bg-cream sm:px-6">
               View Cart <ArrowRight className="size-4" />
             </button>
           </div>
@@ -275,7 +275,7 @@ function MenuCard({ item, qty, onAdd, onQty, className }: { item: MenuItem; qty:
               type="button"
               onClick={onAdd}
               aria-label={`Add ${item.name} to cart`}
-              className="grid size-7 shrink-0 place-items-center rounded-full bg-sun text-forest-deep transition-colors hover:bg-sun-deep sm:size-9"
+              className="grid size-7 shrink-0 place-items-center rounded-full bg-accent text-on-accent transition-colors hover:bg-accent-hover sm:size-9"
             >
               <Plus className="size-4" strokeWidth={2.5} />
             </button>

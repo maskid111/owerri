@@ -2,60 +2,55 @@
 
 import { ChevronDown, Search, X } from "lucide-react";
 import { useMemo, useState } from "react";
-import { exploreCategories, exploreItems, getExploreItem, type ExploreCategory, type ExploreItem } from "@/lib/data";
+import { getExploreItem } from "@/lib/data";
+import { useDesignVersion } from "@/lib/design";
+import { feedResults, feedScopes, type ExploreFilter, type FeedScope, type FeedSort } from "@/lib/feed";
 import { cn } from "@/lib/utils";
 import { ExploreCard, ExploreDialog } from "./explore-card";
 import { buttonClass, chipClass, SampleNote } from "./ui";
 
-export type ExploreFilter = "All" | "Events" | ExploreCategory;
-export const exploreFilters: ExploreFilter[] = ["All", "Events", ...exploreCategories];
-type Sort = "recommended" | "nearest" | "rating";
+export { exploreFilters, type ExploreFilter, type FeedScope } from "@/lib/feed";
 
-/** Leads the default feed, as in the Explore reference. */
-const FEATURED = "owerri-cultural-festival";
-
-/** Round-robin events, places and restaurants so the default feed mixes like the reference. */
-function mixed(items: ExploreItem[]) {
-  const groups = [
-    items.filter((x) => x.kind === "event").sort((a, b) => Number(b.slug === FEATURED) - Number(a.slug === FEATURED) || (a.date ?? "").localeCompare(b.date ?? "")),
-    items.filter((x) => x.kind === "place"),
-    items.filter((x) => x.kind === "restaurant").sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0)),
-  ];
-  const out: ExploreItem[] = [];
-  for (let i = 0; out.length < items.length; i++) groups.forEach((g) => g[i] && out.push(g[i]));
-  return out;
-}
-
-export function ExploreFeed({ initialFilter = "All", initialSort = "recommended", initialItem }: { initialFilter?: ExploreFilter; initialSort?: Sort; initialItem?: string }) {
+export function ExploreFeed({
+  initialFilter = "All",
+  initialSort = "recommended",
+  initialItem,
+  scope = "all",
+  heading = "Explore Owerri",
+  description = "Restaurants, cafés, market stalls, hotels, nature, hangout spots, events and cultural experiences around Owerri, Imo State.",
+  showHeading = true,
+}: {
+  initialFilter?: ExploreFilter;
+  initialSort?: FeedSort;
+  initialItem?: string;
+  scope?: FeedScope;
+  heading?: string;
+  description?: string;
+  /** False when the page renders its own hero heading. */
+  showHeading?: boolean;
+}) {
+  const { filters } = feedScopes[scope];
+  const design = useDesignVersion(); // only the visible design version may open the deep-linked dialog
   const [filter, setFilter] = useState<ExploreFilter>(initialFilter);
-  const [sort, setSort] = useState<Sort>(initialSort);
+  const [sort, setSort] = useState<FeedSort>(initialSort);
   const [query, setQuery] = useState("");
   const [openSlug, setOpenSlug] = useState<string | undefined>(initialItem);
   const openItem = openSlug ? getExploreItem(openSlug) : undefined;
 
-  const results = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    const list = exploreItems.filter((x) => {
-      if (filter === "Events" && x.kind !== "event") return false;
-      if (filter !== "All" && filter !== "Events" && !x.categories.includes(filter)) return false;
-      if (q && !`${x.title} ${x.location} ${x.description} ${x.label} ${x.categories.join(" ")}`.toLowerCase().includes(q)) return false;
-      return true;
-    });
-    if (sort === "nearest") return [...list].sort((a, b) => (a.distanceKm ?? 99) - (b.distanceKm ?? 99));
-    if (sort === "rating") return [...list].sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
-    return mixed(list);
-  }, [filter, sort, query]);
+  const results = useMemo(() => feedResults({ scope, filter, sort, query }), [scope, filter, sort, query]);
 
   return (
     <div className="container-x pb-6">
-      <div className="pt-2 lg:pt-10">
-        <h1 className="sr-only lg:not-sr-only lg:text-5xl lg:font-semibold lg:text-forest">Explore Owerri</h1>
-        <p className="mt-2 hidden max-w-2xl text-stone lg:block">Restaurants, cafés, hotels, recreation, hangout spots, events and cultural experiences around Owerri, Imo State.</p>
-      </div>
+      {showHeading && (
+        <div className="pt-4 lg:pt-10">
+          <h1 className="text-[1.9rem] font-semibold text-forest sm:text-4xl lg:text-5xl">{heading}</h1>
+          <p className="mt-2 max-w-2xl text-stone">{description}</p>
+        </div>
+      )}
 
-      <div className="sticky top-16 z-30 -mx-4 bg-cream/95 px-4 py-3 backdrop-blur sm:-mx-6 sm:px-6 lg:top-[72px] lg:mx-0 lg:mt-4 lg:px-0">
+      <div className="sticky top-16 z-30 -mx-4 bg-canvas/95 px-4 py-3 backdrop-blur sm:-mx-6 sm:px-6 lg:top-[76px] lg:mx-0 lg:mt-4 lg:px-0">
         <div className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 sm:mx-0 sm:px-0" role="toolbar" aria-label="Explore categories">
-          {exploreFilters.map((f) => (
+          {filters.map((f) => (
             <button key={f} onClick={() => setFilter(f)} aria-pressed={filter === f} className={chipClass(filter === f)}>
               {f}
             </button>
@@ -86,7 +81,7 @@ export function ExploreFeed({ initialFilter = "All", initialSort = "recommended"
           <span className="sr-only">Sort</span>
           <select
             value={sort}
-            onChange={(e) => setSort(e.target.value as Sort)}
+            onChange={(e) => setSort(e.target.value as FeedSort)}
             className="h-9 appearance-none rounded-full border border-line bg-paper pr-9 pl-3.5 text-[0.82rem] font-semibold outline-none focus:border-forest"
           >
             <option value="recommended">Recommended</option>
@@ -126,7 +121,7 @@ export function ExploreFeed({ initialFilter = "All", initialSort = "recommended"
       )}
 
       <SampleNote className="pt-6">Events, venues and dates are sample content. Distances are approximate, from Owerri city centre.</SampleNote>
-      <ExploreDialog item={openItem && !openItem.href ? openItem : null} onClose={() => setOpenSlug(undefined)} />
+      <ExploreDialog item={design === "a" && openItem && !openItem.href ? openItem : null} onClose={() => setOpenSlug(undefined)} />
     </div>
   );
 }

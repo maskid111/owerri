@@ -5,15 +5,15 @@ import { AnimatePresence, motion } from "motion/react";
 import { ArrowLeft, ChevronDown, Search, SlidersHorizontal, X } from "lucide-react";
 import { useMemo, useState } from "react";
 import { ListingCard } from "@/components/restaurant-card";
-import { foodCategories, neighbourhoods, restaurants, type FoodCategory } from "@/lib/data";
+import { foodCategories, neighbourhoods, type FoodCategory } from "@/lib/data";
+import { filterRestaurants, NO_RESTAURANT_FILTERS, type RestaurantFilters, type RestaurantSort } from "@/lib/restaurant-filter";
 import { useLagosMinutes } from "@/lib/use-lagos-time";
 import { cn, isOpenAt } from "@/lib/utils";
 import { buttonClass, chipClass, SampleNote } from "./ui";
 
-type Sort = "recommended" | "nearest" | "rating" | "price-asc" | "price-desc";
-
-type Filters = { area: string; prices: number[]; openOnly: boolean; deliveryOnly: boolean };
-const NO_FILTERS: Filters = { area: "all", prices: [], openOnly: false, deliveryOnly: false };
+type Sort = RestaurantSort;
+type Filters = RestaurantFilters;
+const NO_FILTERS = NO_RESTAURANT_FILTERS;
 
 export function RestaurantExplorer({ initialCategory, initialQuery = "" }: { initialCategory?: FoodCategory; initialQuery?: string }) {
   const [query, setQuery] = useState(initialQuery);
@@ -24,28 +24,7 @@ export function RestaurantExplorer({ initialCategory, initialQuery = "" }: { ini
   const [sheetOpen, setSheetOpen] = useState(false);
   const minutes = useLagosMinutes();
 
-  const results = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    const list = restaurants.filter((r) => {
-      if (category !== "All" && !r.categories.includes(category)) return false;
-      if (filters.area !== "all" && r.area !== filters.area) return false;
-      if (filters.prices.length && !filters.prices.includes(r.price)) return false;
-      if (filters.deliveryOnly && r.service === "Dine-in only") return false;
-      if (filters.openOnly && minutes !== null && !isOpenAt(r.open, r.close, minutes)) return false;
-      if (q) {
-        const hay = [r.name, r.tagline, r.cuisine, r.type, r.area, ...r.categories, ...r.tags].join(" ").toLowerCase();
-        if (!hay.includes(q)) return false;
-      }
-      return true;
-    });
-    const sorted = [...list];
-    if (sort === "nearest") sorted.sort((a, b) => a.distanceKm - b.distanceKm);
-    if (sort === "rating") sorted.sort((a, b) => b.rating - a.rating);
-    if (sort === "price-asc") sorted.sort((a, b) => a.price - b.price);
-    if (sort === "price-desc") sorted.sort((a, b) => b.price - a.price);
-    if (sort === "recommended") sorted.sort((a, b) => Number(Boolean(b.featured)) - Number(Boolean(a.featured)) || b.rating - a.rating);
-    return sorted;
-  }, [query, category, filters, minutes, sort]);
+  const results = useMemo(() => filterRestaurants({ query, category, filters, sort, minutes }), [query, category, filters, minutes, sort]);
 
   const filterCount = (filters.area !== "all" ? 1 : 0) + filters.prices.length + (filters.openOnly ? 1 : 0) + (filters.deliveryOnly ? 1 : 0);
 
@@ -83,7 +62,7 @@ export function RestaurantExplorer({ initialCategory, initialQuery = "" }: { ini
       </AnimatePresence>
 
       {/* Category chips */}
-      <div className="sticky top-16 z-30 -mx-4 mt-3 border-b border-line/70 bg-cream/95 px-4 py-3 backdrop-blur sm:-mx-6 sm:px-6 lg:top-[72px] lg:mx-0 lg:mt-6 lg:px-0">
+      <div className="sticky top-16 z-30 -mx-4 mt-3 border-b border-line/70 bg-canvas/95 px-4 py-3 backdrop-blur sm:-mx-6 sm:px-6 lg:top-[76px] lg:mx-0 lg:mt-6 lg:px-0">
         <div className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 sm:mx-0 sm:px-0" role="toolbar" aria-label="Food categories">
           {(["All", ...foodCategories] as const).map((c) => (
             <button key={c} onClick={() => setCategory(c)} aria-pressed={category === c} className={chipClass(category === c, "h-10 px-5 text-sm")}>
@@ -96,7 +75,7 @@ export function RestaurantExplorer({ initialCategory, initialQuery = "" }: { ini
       <div className="lg:grid lg:grid-cols-[17rem_1fr] lg:gap-10 lg:pt-6">
         {/* Desktop filter sidebar */}
         <aside className="hidden lg:block">
-          <div className="sticky top-[150px] space-y-6 rounded-[1.25rem] border border-line/70 bg-paper p-5 shadow-card">
+          <div className="sticky top-[156px] space-y-6 rounded-[1.25rem] border border-line/70 bg-paper p-5 shadow-card">
             <SearchInput query={query} setQuery={setQuery} />
             <SortSelect sort={sort} setSort={setSort} />
             <FilterFields filters={filters} setFilters={setFilters} />
@@ -118,7 +97,7 @@ export function RestaurantExplorer({ initialCategory, initialQuery = "" }: { ini
               <SortSelect sort={sort} setSort={setSort} compact />
               <button onClick={() => setSheetOpen(true)} className={cn(chipClass(filterCount > 0), "gap-1.5")}>
                 <SlidersHorizontal className="size-4" /> Filters
-                {filterCount > 0 && <span className="grid size-5 place-items-center rounded-full bg-sun text-[11px] text-forest-deep">{filterCount}</span>}
+                {filterCount > 0 && <span className="grid size-5 place-items-center rounded-full bg-accent text-[11px] text-on-accent">{filterCount}</span>}
               </button>
             </div>
           </div>
@@ -155,7 +134,7 @@ export function RestaurantExplorer({ initialCategory, initialQuery = "" }: { ini
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="pb-safe absolute inset-x-0 bottom-0 rounded-t-[1.75rem] bg-cream px-5 pt-3"
+              className="pb-safe absolute inset-x-0 bottom-0 rounded-t-[1.75rem] bg-canvas px-5 pt-3"
             >
               <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-line" />
               <div className="flex items-center justify-between">

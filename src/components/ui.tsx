@@ -5,29 +5,27 @@ import type { ComponentProps, ReactNode } from "react";
 import { img, type ImageName } from "@/lib/images";
 import { cn } from "@/lib/utils";
 
-/** Yellow leaf mark from the references. */
-export function LogoMark({ className }: { className?: string }) {
+/** Native Kitchen leaf mark (green on light surfaces, leaf-green on dark ones). */
+export function LogoMark({ className, light = false }: { className?: string; light?: boolean }) {
   return (
-    <svg viewBox="0 0 32 32" className={cn("shrink-0", className)} aria-hidden>
-      <path d="M16 19.5C12.2 15.4 12.4 8.6 16 3.5c3.6 5.1 3.8 11.9 0 16Z" fill="#f6c414" />
-      <path d="M14.6 20.6C9.3 21 4.6 17.4 3 11.6c5.6-.9 10.4 2.6 11.6 9Z" fill="#f6c414" />
-      <path d="M17.4 20.6c5.3.4 10-3.2 11.6-9-5.6-.9-10.4 2.6-11.6 9Z" fill="#e2ac00" />
-      <path d="M16 19v9.5" stroke="#f6c414" strokeWidth="1.8" strokeLinecap="round" />
+    <svg viewBox="0 0 32 32" className={cn("shrink-0", light ? "text-leaf" : "text-accent", className)} aria-hidden>
+      <path d="M8 25C6.5 15.5 12.5 7 26 5c.8 12.6-6.6 20.4-18 20Z" fill="currentColor" />
+      <path d="M8.5 24.5C12 18.5 16 14 21.5 10" stroke={light ? "#0a2c1e" : "var(--color-canvas)"} strokeWidth="1.6" strokeLinecap="round" fill="none" />
     </svg>
   );
 }
 
-export function Logo({ light = false, tagline = false, className }: { light?: boolean; tagline?: boolean; className?: string }) {
+export const BRAND = { name: "Native Kitchen", tagline: "Native, beyond the plate" };
+
+export function Logo({ light = false, tagline = true, className }: { light?: boolean; tagline?: boolean; className?: string }) {
   return (
-    <span className={cn("inline-flex items-center gap-1.5", className)}>
-      <LogoMark className="size-8 -translate-y-0.5" />
+    <span className={cn("inline-flex items-center gap-2", className)}>
+      <LogoMark light={light} className="size-7 sm:size-8" />
       <span className="flex flex-col leading-none">
-        <span className={cn("font-display text-[1.7rem] font-semibold tracking-tight", light ? "text-cream" : "text-forest")}>Owerri</span>
-        {tagline && (
-          <span className={cn("mt-1 text-[0.55rem] font-bold tracking-[0.18em] uppercase", light ? "text-cream/80" : "text-stone")}>
-            Explore · Dine · Experience
-          </span>
-        )}
+        <span className={cn("font-display text-[1.22rem] font-semibold tracking-tight whitespace-nowrap sm:text-[1.6rem]", light ? "text-cream" : "text-forest")}>
+          Native <span className="font-normal italic">Kitchen</span>
+        </span>
+        {tagline && <span className={cn("mt-1 text-[0.62rem] font-semibold tracking-[0.08em]", light ? "text-cream/80" : "text-stone")}>{BRAND.tagline}</span>}
       </span>
     </span>
   );
@@ -62,7 +60,7 @@ export function SectionHeader({
           href={href}
           className={cn(
             "group inline-flex shrink-0 items-center gap-1 pb-1 text-[0.8rem] font-bold sm:text-sm",
-            light ? "text-cream hover:text-sun" : "text-forest hover:text-forest-light",
+            light ? "text-cream hover:text-leaf" : "text-forest hover:text-forest-light",
           )}
         >
           {linkLabel}
@@ -76,7 +74,7 @@ export function SectionHeader({
 export function Rating({ value, count, className }: { value: number; count?: number; className?: string }) {
   return (
     <span className={cn("inline-flex items-center gap-1 text-sm", className)}>
-      <Star className="size-4 fill-sun text-sun" aria-hidden />
+      <Star className="size-4 fill-star text-star" aria-hidden />
       <span className="font-bold text-ink">{value.toFixed(1)}</span>
       {count !== undefined && <span className="text-stone">({count.toLocaleString("en-US")})</span>}
       <span className="sr-only">out of 5</span>
@@ -84,7 +82,7 @@ export function Rating({ value, count, className }: { value: number; count?: num
   );
 }
 
-type Variant = "primary" | "forest" | "outline" | "light";
+type Variant = "primary" | "forest" | "outline" | "light" | "cream";
 type Size = "sm" | "md" | "lg";
 
 export function buttonClass(variant: Variant = "primary", size: Size = "md", className?: string) {
@@ -93,10 +91,11 @@ export function buttonClass(variant: Variant = "primary", size: Size = "md", cla
     size === "sm" && "h-9 px-4 text-[0.8rem]",
     size === "md" && "h-11 px-5 text-sm",
     size === "lg" && "h-14 px-7 text-base",
-    variant === "primary" && "bg-sun text-forest-deep hover:bg-sun-deep",
-    variant === "forest" && "bg-forest text-cream hover:bg-forest-light",
+    variant === "primary" && "bg-accent text-on-accent hover:bg-accent-hover",
+    variant === "forest" && "bg-forest text-on-forest hover:bg-forest-light",
     variant === "outline" && "border border-line bg-paper text-forest hover:border-forest/40",
     variant === "light" && "border border-cream/30 bg-cream/10 text-cream hover:bg-cream/20",
+    variant === "cream" && "bg-cream text-forest-deep hover:bg-leaf",
     className,
   );
 }
@@ -124,7 +123,7 @@ export function Arrow() {
 export function chipClass(active: boolean, className?: string) {
   return cn(
     "inline-flex h-9 shrink-0 items-center justify-center rounded-full border px-4 text-[0.82rem] font-semibold whitespace-nowrap transition-colors",
-    active ? "border-forest bg-forest text-cream" : "border-line bg-paper text-ink/80 hover:border-forest/40 hover:text-forest",
+    active ? "border-forest bg-forest text-on-forest" : "border-line bg-paper text-ink/80 hover:border-forest/40 hover:text-forest",
     className,
   );
 }

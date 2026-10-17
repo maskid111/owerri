@@ -53,7 +53,7 @@ export function ReserveButton({ name, className }: { name: string; className?: s
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 40, opacity: 0 }}
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              className="relative w-full max-w-md rounded-t-[2rem] bg-cream p-6 shadow-2xl sm:rounded-[2rem] sm:p-8"
+              className="relative w-full max-w-md rounded-t-[2rem] bg-canvas p-6 shadow-2xl sm:rounded-[2rem] sm:p-8"
             >
               <button onClick={close} aria-label="Close" className="absolute top-5 right-5 rounded-full p-2 hover:bg-forest/5">
                 <X className="size-4" />
@@ -83,7 +83,7 @@ export function ReserveButton({ name, className }: { name: string; className?: s
                             key={g}
                             onClick={() => setGuests(g)}
                             aria-pressed={guests === g}
-                            className={cn("h-11 rounded-xl border text-sm font-semibold transition-colors", guests === g ? "border-forest bg-forest text-cream" : "border-line bg-paper hover:border-forest/40")}
+                            className={cn("h-11 rounded-xl border text-sm font-semibold transition-colors", guests === g ? "border-forest bg-forest text-on-forest" : "border-line bg-paper hover:border-forest/40")}
                           >
                             {g === 6 ? "6+" : g}
                           </button>
@@ -113,7 +113,7 @@ export function ReserveButton({ name, className }: { name: string; className?: s
                             key={t}
                             onClick={() => setTime(t)}
                             aria-pressed={time === t}
-                            className={cn("h-10 rounded-full border px-4 text-sm font-semibold transition-colors", time === t ? "border-sun bg-sun text-forest-deep" : "border-line bg-paper hover:border-forest/40")}
+                            className={cn("h-10 rounded-full border px-4 text-sm font-semibold transition-colors", time === t ? "border-accent bg-accent text-on-accent" : "border-line bg-paper hover:border-forest/40")}
                           >
                             {t}
                           </button>
@@ -122,7 +122,7 @@ export function ReserveButton({ name, className }: { name: string; className?: s
                     </div>
                   </div>
 
-                  <button type="submit" className="mt-8 h-12 w-full rounded-full bg-sun text-sm font-semibold text-forest-deep transition-colors hover:bg-sun-deep">
+                  <button type="submit" className="mt-8 h-12 w-full rounded-full bg-accent text-sm font-semibold text-on-accent transition-colors hover:bg-accent-hover">
                     Request booking
                   </button>
                   <p className="mt-3 text-center text-xs text-stone">Demo request — the restaurant would confirm by SMS. No payment needed.</p>
@@ -136,7 +136,7 @@ export function ReserveButton({ name, className }: { name: string; className?: s
                   <p className="mt-3 text-stone">
                     Table for {guests === 6 ? "6+" : guests} at {name} on {date || "your chosen date"}, {time}. We’ll let you know once it’s confirmed.
                   </p>
-                  <button onClick={close} className="mt-8 h-12 w-full rounded-full bg-forest text-sm font-semibold text-cream hover:bg-forest-light">
+                  <button onClick={close} className="mt-8 h-12 w-full rounded-full bg-forest text-sm font-semibold text-on-forest hover:bg-forest-light">
                     Done
                   </button>
                 </motion.div>

@@ -1,6 +1,8 @@
 import { Arrow, ButtonLink, Photo } from "@/components/ui";
+import { Design } from "@/components/design";
+import { SigNotFound } from "@/components/sig/pages";
 
-export default function NotFound() {
+function NotFound() {
   return (
     <section className="container-x flex min-h-[70vh] flex-col items-center justify-center py-14 text-center">
       <div className="relative size-40 overflow-hidden rounded-full sm:size-48">
@@ -19,4 +21,8 @@ export default function NotFound() {
       </div>
     </section>
   );
+}
+
+export default function Page() {
+  return <Design a={<NotFound />} b={<SigNotFound />} />;
 }

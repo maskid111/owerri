@@ -78,25 +78,75 @@
   --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Fraunces", ui-serif, Georgia, serif;
 
-  /* Owerri palette — sampled from the design references */
+  /*
+   * Native Kitchen palette — forest greens and warm neutrals, no yellow.
+   * Theme-dependent tokens below are the "Native Light" values; "Native Forest" overrides them
+   * on :root[data-theme="forest"]. Constant tokens (pine, forest-deep, cream, leaf) are used for
+   * surfaces that are always dark (photo overlays, pattern sections, footer) and their text.
+   */
+  --color-canvas: #fbfaf6;
+  --color-paper: #ffffff;
+  --color-sand: #f2efe7;
+  --color-line: #e6e2d6;
+  --color-ink: #17201b;
+  --color-stone: #59645d;
   --color-forest: #0f3d2a;
+  --color-on-forest: #f7f5ee;
+  --color-forest-light: #1d6a44;
+  --color-mint: #e8f1e7;
+  --color-tint: #d6e8d8;
+  --color-accent: #1d6a44;
+  --color-accent-hover: #15533a;
+  --color-on-accent: #ffffff;
+  --color-star: #1d6a44;
+
+  /* Constant (theme-independent) */
+  --color-pine: #0f3d2a;
   --color-forest-deep: #0a2c1e;
-  --color-forest-light: #1e5a3f;
-  --color-mint: #e3ebdc;
-  --color-sun: #f6c414;
-  --color-sun-deep: #e2ac00;
-  --color-butter: #fbeec2;
-  --color-cream: #f7f2e6;
-  --color-paper: #fdfaf3;
-  --color-sand: #efe7d5;
-  --color-line: #e5dcc8;
-  --color-ink: #1d2320;
-  --color-stone: #5c645e;
+  --color-cream: #f7f5ee;
+  --color-leaf: #9ad6ad;
 
   --radius-4xl: 2rem;
 
-  --shadow-card: 0 1px 2px rgb(15 61 42 / 0.05), 0 6px 20px -8px rgb(15 61 42 / 0.12);
-  --shadow-lift: 0 2px 6px rgb(15 61 42 / 0.06), 0 18px 40px -16px rgb(15 61 42 / 0.25);
+  --shadow-card: 0 1px 2px rgb(10 44 30 / 0.05), 0 8px 24px -10px rgb(10 44 30 / 0.14);
+  --shadow-lift: 0 2px 6px rgb(10 44 30 / 0.06), 0 22px 44px -18px rgb(10 44 30 / 0.28);
+}
+
+/* Native Forest — deep forest-green surfaces with light text */
+:root[data-theme="forest"] {
+  color-scheme: dark;
+  --color-canvas: #0b2a1f;
+  --color-paper: #113629;
+  --color-sand: #164333;
+  --color-line: #265343;
+  --color-ink: #ecf3ed;
+  --color-stone: #a7bdb0;
+  --color-forest: #e4f0e5;
+  --color-on-forest: #0b2a1f;
+  --color-forest-light: #9ad6ad;
+  --color-mint: #1a4a39;
+  --color-tint: #205640;
+  --color-accent: #8fd1a4;
+  --color-accent-hover: #a8ddb9;
+  --color-on-accent: #08231a;
+  --color-star: #9ad6ad;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.25), 0 10px 26px -12px rgb(0 0 0 / 0.5);
+  --shadow-lift: 0 2px 6px rgb(0 0 0 / 0.3), 0 24px 48px -18px rgb(0 0 0 / 0.6);
+}
+
+/* The supplied Native Kitchen pattern (public/brand). The tile is the original image, trimmed of an
+   edge artefact and mirrored 2×2 so it repeats without seams. */
+@utility bg-native-pattern {
+  background-color: #04574a;
+  background-image: url("/brand/native-pattern-tile.png");
+  background-size: 252px 476px;
+  background-repeat: repeat;
+}
+@utility bg-native-pattern-lg {
+  background-color: #04574a;
+  background-image: url("/brand/native-pattern-tile.png");
+  background-size: 378px 714px;
+  background-repeat: repeat;
 }
 
 @utility container-x {
@@ -127,14 +177,15 @@
   }
 
   body {
-    background-color: var(--color-cream);
+    background-color: var(--color-canvas);
     color: var(--color-ink);
+    transition: background-color 0.2s ease, color 0.2s ease;
     font-family: var(--font-sans);
   }
 
   ::selection {
-    background: var(--color-sun);
-    color: var(--color-forest-deep);
+    background: var(--color-accent);
+    color: var(--color-on-accent);
   }
 
   :focus-visible {
@@ -165,4 +216,73 @@
 }
 .no-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+/* Transform-only so slide text is always readable, even if animations are paused. */
+@keyframes heroIn {
+  from {
+    transform: translateY(14px);
+  }
+  to {
+    transform: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Design versions — exactly one of .design-a / .design-b is displayed */
+/* ------------------------------------------------------------------ */
+.design-a,
+.design-b {
+  display: contents;
+}
+:root:not([data-design="b"]) .design-b,
+:root[data-design="b"] .design-a {
+  display: none;
+}
+
+/*
+ * Version B — Native Signature Experience tokens.
+ * Cooler white surfaces, deeper green, bold sans headings. Overrides either Version A palette.
+ */
+:root[data-design="b"] {
+  color-scheme: light;
+  --font-display: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --color-canvas: #f3f6f2;
+  --color-paper: #ffffff;
+  --color-sand: #e8efe7;
+  --color-line: #dbe4da;
+  --color-ink: #0f1a14;
+  --color-stone: #55625a;
+  --color-forest: #0b3b2a;
+  --color-on-forest: #ffffff;
+  --color-forest-light: #1e7a4c;
+  --color-mint: #e0eee3;
+  --color-tint: #cde4d3;
+  --color-accent: #1e7a4c;
+  --color-accent-hover: #155f3a;
+  --color-on-accent: #ffffff;
+  --color-star: #1e7a4c;
+  --color-pine: #0b3b2a;
+  --color-forest-deep: #072a1d;
+  --color-leaf: #8fdba8;
+  --shadow-card: 0 1px 1px rgb(7 42 29 / 0.04), 0 10px 30px -14px rgb(7 42 29 / 0.22);
+  --shadow-lift: 0 2px 4px rgb(7 42 29 / 0.06), 0 28px 50px -22px rgb(7 42 29 / 0.38);
+}
+:root[data-design="b"] :is(h1, h2) {
+  font-weight: 800;
+  letter-spacing: -0.035em;
+}
+:root[data-design="b"] h3 {
+  font-weight: 750;
+  letter-spacing: -0.02em;
+}
+
+/* Version B interaction styling */
+@keyframes sigRise {
+  from {
+    transform: translateY(18px);
+  }
+  to {
+    transform: none;
+  }
 }

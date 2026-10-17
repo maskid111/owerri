@@ -130,8 +130,8 @@ export function SearchDialog() {
           <motion.div
             role="dialog"
             aria-modal="true"
-            aria-label="Search Owerri"
-            className="relative w-full max-w-xl overflow-hidden rounded-3xl bg-cream shadow-2xl shadow-forest-deep/30"
+            aria-label="Search Native Kitchen"
+            className="relative w-full max-w-xl overflow-hidden rounded-3xl bg-canvas shadow-2xl shadow-forest-deep/30"
             initial={{ y: 16, scale: 0.98 }}
             animate={{ y: 0, scale: 1 }}
             exit={{ y: 10, scale: 0.98 }}

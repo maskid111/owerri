@@ -15,8 +15,8 @@ export function FeaturedCard({ restaurant: r, badge = "Top Pick", className, pri
         <Photo name={r.cover} alt={`${r.name} — ${r.type}`} sizes="(min-width: 1024px) 380px, 85vw" priority={priority} className="transition-transform duration-500 group-hover:scale-[1.03]" />
         <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-black/30 to-transparent" />
         {badge && (
-          <span className="absolute top-3 left-3 inline-flex items-center gap-1 rounded-md bg-forest px-2 py-1 text-[11px] font-bold text-cream">
-            <Star className="size-3 fill-sun text-sun" /> {badge}
+          <span className="absolute top-3 left-3 inline-flex items-center gap-1 rounded-md bg-forest px-2 py-1 text-[11px] font-bold text-on-forest">
+            <Star className="size-3 fill-star text-star" /> {badge}
           </span>
         )}
         <SaveButton slug={r.slug} name={r.name} variant="photo" className="absolute top-2 right-2 z-10" />
@@ -30,16 +30,16 @@ export function FeaturedCard({ restaurant: r, badge = "Top Pick", className, pri
           </h3>
           <p className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.8rem] text-stone">
             <span className="inline-flex items-center gap-1">
-              <Star className="size-3.5 fill-sun text-sun" aria-hidden />
+              <Star className="size-3.5 fill-star text-star" aria-hidden />
               <span className="font-bold text-ink">{r.rating.toFixed(1)}</span> ({compact(r.reviewCount)} reviews)
             </span>
             <span className="inline-flex items-center gap-1">
-              <MapPin className="size-3.5 text-sun-deep" aria-hidden /> {distanceLabel(r.distanceKm)}
+              <MapPin className="size-3.5 text-accent" aria-hidden /> {distanceLabel(r.distanceKm)}
             </span>
           </p>
           <p className="mt-1 truncate text-[0.8rem] text-stone">{r.type.replace(/ • /g, " · ")}</p>
         </div>
-        <span className="grid size-10 shrink-0 place-items-center rounded-full bg-sun text-forest-deep transition-colors group-hover:bg-sun-deep" aria-hidden>
+        <span className="grid size-10 shrink-0 place-items-center rounded-full bg-accent text-on-accent transition-colors group-hover:bg-accent-hover" aria-hidden>
           <ArrowRight className="size-5" />
         </span>
       </div>
@@ -72,7 +72,7 @@ export function ListingCard({ restaurant: r, openNow, className, priority }: { r
             <span className={cn("ml-1 text-xs font-semibold", openNow ? "text-forest-light" : "text-stone")}>· {openNow ? "Open now" : "Closed"}</span>
           )}
         </p>
-        <span className="mt-0.5 inline-flex w-fit items-center gap-1.5 rounded-full bg-sun px-3 py-1 text-[0.75rem] font-semibold text-forest-deep">
+        <span className="mt-0.5 inline-flex w-fit items-center gap-1.5 rounded-full bg-accent px-3 py-1 text-[0.75rem] font-semibold text-on-accent">
           <ServiceIcon className="size-3.5" aria-hidden /> {r.service}
         </span>
       </div>

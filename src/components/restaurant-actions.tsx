@@ -28,7 +28,7 @@ export function RestaurantActions({ restaurant: r, className }: { restaurant: Re
   };
 
   const item = "flex flex-col items-center gap-2 text-sm font-medium text-ink";
-  const circle = "grid size-14 place-items-center rounded-full bg-mint text-forest transition-colors group-hover:bg-forest group-hover:text-cream";
+  const circle = "grid size-14 place-items-center rounded-full bg-mint text-forest transition-colors group-hover:bg-forest group-hover:text-on-forest";
 
   return (
     <div className={cn("grid grid-cols-3", className)}>

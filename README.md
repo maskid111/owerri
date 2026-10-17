@@ -1,6 +1,6 @@
-# Owerri
+# Native Kitchen
 
-Food, places, events and culture guide for Owerri, Imo State — with a mock food-ordering flow.
+*Native, beyond the plate* — food, culture, places and experiences in Owerri, Imo State: local market, tours, stays, events and kitchens to order from.
 
 **Stack:** Next.js 16 (App Router, Cache Components) · TypeScript · Tailwind CSS v4 · Lucide React · Motion
 
@@ -20,23 +20,44 @@ Open http://localhost:3000
 | `npm run lint` | ESLint |
 | `npm run typecheck` | Generate route types + `tsc --noEmit` |
 
-## Design
+## Two design versions
 
-The UI follows the five mockups in `design-references/` (homepage, food listing, restaurant detail, restaurant menu, explore feed): forest green + sunshine yellow on warm cream, Fraunces serif headings, Manrope body text, photography-led cards. On mobile the site uses an app-style top bar and bottom navigation (Home · Explore · Orders · Saved · More); from `lg` up it switches to a horizontal header and wider grids.
+The site ships two complete design systems over the same routes, data and business logic.
 
-Design tokens live in `src/app/globals.css` (`@theme`). Shared primitives (logo, buttons, chips, section headers, `Photo`) are in `src/components/ui.tsx`.
+| | Version A — Original UI | Version B — Native Signature Experience |
+| --- | --- | --- |
+| Presentation | existing components in `src/components` | `src/components/sig/*` |
+| Header / nav | serif logo, horizontal links, Tours dropdown, mobile drawer + 5-tab bar | centred uppercase wordmark, search bar, sticky icon rail of every section, full-screen grid menu, scrollable all-sections dock |
+| Hero | full-bleed photo carousel | stacked "Taste / Explore / Experience" headline with an arched photo frame |
+| Cards | photo + white body, horizontal listing cards | caption-bar tiles, portrait restaurant cards, distance rows, ticket-style events |
+| Footer | column footer on the pattern | centred wordmark footer on the full-strength pattern |
+
+**How it works**
+- `src/lib/design.ts` stores the version (`native:design` in localStorage). An inline script in `src/app/layout.tsx` sets `<html data-design="b">` before first paint.
+- Every page and the layout chrome render `<Design a={…} b={…} />` (`src/components/design.tsx`); CSS in `globals.css` displays exactly one. Both are prerendered, so switching never flashes and survives refresh.
+- Version B tokens (`:root[data-design="b"]`) and sans display font are defined in `globals.css`. Version A keeps its Native Light / Native Forest palettes.
+- Shared logic: `src/lib/feed.ts` (discovery filtering), `src/lib/restaurant-filter.ts`, cart/orders/saved/notification stores, `src/lib/data.ts`. Functional widgets (checkout, settings, contact form, cart drawer) are reused inside Version B layouts.
+- Version B anchors use `data-anchor` (ids belong to Version A); `SigHashScroll` handles `#hash` links.
+
+**Switching:** `/admin` → *Website Design Selector* (frontend-only prototype — affects this browser only, not other visitors). Version A's palette (Light / Forest) is chosen there too.
+
+## Design & themes
+
+References live in `design-references/` (`native/` holds the current Native Kitchen set: drawer, pattern, light and forest mock-ups).
+
+- **Palette:** forest greens and warm neutrals only — no yellow. Tokens are in `src/app/globals.css` (`@theme`).
+- **Two themes:** *Native Light* (default) and *Native Forest*. Theme-dependent tokens (`canvas`, `paper`, `ink`, `forest`, `accent`…) are overridden on `:root[data-theme="forest"]`; constant tokens (`pine`, `forest-deep`, `cream`, `leaf`) are for always-dark surfaces such as photo overlays, pattern sections and the footer.
+- **Version A palettes:** set under `/admin` (saved as `native:theme`), applied before first paint.
+- **Brand pattern:** the supplied image is kept as `public/brand/native-pattern.jpg`. `public/brand/native-pattern-tile.png` is the same image with a 9px white edge artefact trimmed and mirrored 2×2 so it repeats seamlessly. Use the `bg-native-pattern` / `bg-native-pattern-lg` utilities (hero edges, `PatternBanner`, footer, drawer, culture feature).
+- **Navigation:** defined once in `src/lib/navigation.ts` (Home, Local Market, Tours › Stays & Getaways / Nature & Places, Nearby, Events & Hangouts, Saved, Notifications, Blog, Settings, Help / Support) and used by the desktop header, mobile drawer and footer.
 
 ## Pages
 
-- `/` – dark-green photo hero, explore-by-interest tiles, popular restaurants, events, order-near-you list, dishes, stays, stories
-- `/explore` – image-led feed of events, restaurants, cafés, hotels, recreation, hangouts and cultural places; `?cat=`, `?sort=nearby`, `?item=<slug>` (opens the details/tickets sheet)
-- `/restaurants` – Food & Restaurants listing with category chips, search, sort and filters; `?category=` and `?q=`
-- `/restaurants/[slug]` – restaurant profile (Call / Directions / Share, hours, reviews, View menu)
-- `/restaurants/[slug]/menu` – ordering interface: Menu / About / Reviews / Photos tabs, menu categories, add-to-cart, quantities, cart bar and drawer
-- `/orders` – checkout (delivery or pickup) and order history, stored in localStorage
-- `/saved` – favourite restaurants, places and events, stored in localStorage
-- `/culture`, `/dishes`, `/neighbourhoods`, `/stories/[slug]`, `/credits`
-- Global ⌘K / Ctrl+K search
+- `/` – photographic hero carousel, discovery shortcuts, Tours, Local Market, pattern cultural feature, Nearby, Events & Hangouts, stories
+- `/market` – traditional food (kitchens you can order from), fresh produce, spices & ingredients, crafts
+- `/tours`, `/tours/stays`, `/tours/nature` · `/nearby` · `/events` – scoped discovery feeds (`?cat=`, `?item=<slug>` opens the details/tickets sheet)
+- `/saved`, `/notifications`, `/blog`, `/settings`, `/help`, `/admin`
+- Existing flows kept: `/explore`, `/restaurants` (+ `[slug]`, `[slug]/menu` ordering), `/orders` checkout, `/culture`, `/dishes`, `/neighbourhoods`, `/stories/[slug]`, `/credits`, ⌘K search
 
 ## Data & images
 

@@ -1,5 +1,5 @@
 /**
- * Sample content for the Owerri platform.
+ * Sample content for the Native Kitchen platform (Owerri, Imo State).
  * Venues, events, menus, phone numbers and people below are illustrative placeholders, not verified listings.
  * Real landmarks (e.g. Oguta Lake, Dan Anyiam Stadium, Mbari) are referenced only as locations.
  * Replace with a CMS or API when the backend is ready — every page reads from this file.
@@ -94,7 +94,7 @@ export type Neighbourhood = {
   image: ImageName;
 };
 
-export type ExploreCategory = "Food & Drink" | "Culture" | "Music" | "Family" | "Stays" | "Recreation" | "Hangouts";
+export type ExploreCategory = "Food & Drink" | "Market" | "Culture" | "Music" | "Family" | "Stays" | "Nature" | "Recreation" | "Hangouts";
 
 export type EventItem = {
   slug: string;
@@ -114,7 +114,9 @@ export type EventItem = {
 export type Place = {
   slug: string;
   name: string;
-  kind: "Stay" | "Recreation" | "Hangout" | "Culture";
+  kind: "Stay" | "Getaway" | "Nature" | "Recreation" | "Hangout" | "Culture" | "Market";
+  /** For market stalls: which Local Market aisle they belong to. */
+  marketGroup?: MarketGroup;
   categories: ExploreCategory[];
   area: string;
   address: string;
@@ -162,7 +164,17 @@ export const menuSections: { name: MenuSection; blurb: string }[] = [
   { name: "Desserts", blurb: "Something sweet to finish." },
 ];
 
-export const exploreCategories: ExploreCategory[] = ["Food & Drink", "Culture", "Music", "Family", "Stays", "Recreation", "Hangouts"];
+export const exploreCategories: ExploreCategory[] = ["Food & Drink", "Market", "Culture", "Music", "Family", "Stays", "Nature", "Recreation", "Hangouts"];
+
+export type MarketGroup = "Fresh Produce" | "Spices & Ingredients" | "Crafts & Handmade";
+
+/** Local Market aisles (Traditional Food links to the restaurant listing and ordering flow). */
+export const marketSections: { name: "Traditional Food" | MarketGroup; blurb: string; image: ImageName; href: string }[] = [
+  { name: "Traditional Food", blurb: "Order soups, grills and street food from local kitchens.", image: "egusi", href: "/restaurants?category=Local" },
+  { name: "Fresh Produce", blurb: "Yams, plantain, leafy greens and fruit from nearby farms.", image: "produce", href: "/market#fresh-produce" },
+  { name: "Spices & Ingredients", blurb: "Ehu, uziza, ogiri, crayfish and peppers for home cooking.", image: "spices", href: "/market#spices-ingredients" },
+  { name: "Crafts & Handmade", blurb: "Pottery, woven baskets and fabric from local makers.", image: "pottery", href: "/market#crafts-handmade" },
+];
 
 /* ------------------------------------------------------------------ */
 /* Menu catalogue (shared across restaurants)                          */
@@ -1035,8 +1047,8 @@ export const places: Place[] = [
   {
     slug: "oguta-lake-boat-rides",
     name: "Oguta Lake Boat Rides",
-    kind: "Recreation",
-    categories: ["Recreation", "Family"],
+    kind: "Nature",
+    categories: ["Nature", "Recreation", "Family"],
     area: "oguta-lake",
     address: "Oguta Lake, Imo State",
     description: "Take a boat out on one of the region’s largest lakes, then stay for grilled fish on the shore.",
@@ -1065,8 +1077,8 @@ export const places: Place[] = [
   {
     slug: "palm-grove-trail",
     name: "Palm Grove Nature Trail",
-    kind: "Recreation",
-    categories: ["Recreation"],
+    kind: "Nature",
+    categories: ["Nature", "Recreation"],
     area: "nekede",
     address: "Outskirts of Owerri West, Imo State",
     description: "Red-earth paths through oil-palm groves — best for an early-morning walk or a cycle before the heat.",
@@ -1152,6 +1164,255 @@ export const places: Place[] = [
     reviewCount: 54,
     image: "drum-ensemble",
   },
+  {
+    slug: "riverside-eco-lodge",
+    name: "Riverside Eco Lodge",
+    kind: "Getaway",
+    categories: ["Stays", "Nature"],
+    area: "nekede",
+    address: "Outskirts of Owerri West, Imo State",
+    description: "Thatched cabins among palms and rainforest, with river walks, home-cooked Igbo breakfasts and no traffic noise.",
+    hours: "Weekend packages, Fri – Sun",
+    price: "From ₦95,000 / 2 nights",
+    distanceKm: 9.5,
+    rating: 4.8,
+    reviewCount: 57,
+    image: "lodge",
+  },
+  {
+    slug: "lakeside-weekend",
+    name: "Oguta Lakeside Weekend",
+    kind: "Getaway",
+    categories: ["Stays", "Nature", "Family"],
+    area: "oguta-lake",
+    address: "Oguta Lake, Imo State",
+    description: "Two nights by the water: a boat ride, grilled-fish lunch on the shore and slow sunsets over the lake.",
+    hours: "Weekends, all year",
+    price: "From ₦120,000 / 2 nights",
+    distanceKm: 38,
+    rating: 4.7,
+    reviewCount: 41,
+    image: "lake-sunset",
+  },
+  {
+    slug: "treetop-retreat",
+    name: "Treetop Garden Retreat",
+    kind: "Getaway",
+    categories: ["Stays"],
+    area: "new-owerri",
+    address: "New Owerri, Owerri, Imo State",
+    description: "A quiet garden suite raised among the trees — ideal for a city break with good food nearby.",
+    hours: "Check-in from 2:00 PM",
+    price: "From ₦70,000 / night",
+    distanceKm: 4.1,
+    rating: 4.6,
+    reviewCount: 33,
+    image: "eco-lodge",
+  },
+  {
+    slug: "imo-river-canoe",
+    name: "Imo River Canoe Trip",
+    kind: "Nature",
+    categories: ["Nature", "Recreation"],
+    area: "nekede",
+    address: "Imo River, Imo State",
+    description: "A guided paddle through forest-lined water, with a riverside picnic of roasted plantain and fish.",
+    hours: "Sat & Sun, 8:00 AM – 1:00 PM",
+    price: "From ₦12,000 per person",
+    distanceKm: 24,
+    rating: 4.6,
+    reviewCount: 29,
+    image: "forest-river",
+  },
+  {
+    slug: "rainforest-walk",
+    name: "Rainforest Stream Walk",
+    kind: "Nature",
+    categories: ["Nature", "Family"],
+    area: "nekede",
+    address: "Owerri West, Imo State",
+    description: "Shaded paths, birdsong and a cool, fast stream — an easy morning walk with a local guide.",
+    hours: "Daily, 7:00 AM – 11:00 AM",
+    price: "₦5,000 with guide",
+    distanceKm: 12,
+    rating: 4.5,
+    reviewCount: 38,
+    image: "rainforest-river",
+  },
+  {
+    slug: "waterfall-day-trip",
+    name: "Waterfall Day Trip",
+    kind: "Nature",
+    categories: ["Nature", "Recreation"],
+    area: "owerri-municipal",
+    address: "Departs from Owerri city centre",
+    description: "A full-day road trip to a forest waterfall in south-east Nigeria, with swimming spots and a packed lunch.",
+    hours: "Saturdays, 6:30 AM – 7:00 PM",
+    price: "From ₦25,000 per person",
+    distanceKm: 0.5,
+    rating: 4.7,
+    reviewCount: 62,
+    image: "waterfall",
+  },
+  {
+    slug: "green-hills-viewpoint",
+    name: "Green Hills Viewpoint",
+    kind: "Nature",
+    categories: ["Nature"],
+    area: "nekede",
+    address: "Owerri West, Imo State",
+    description: "Rolling green hills and wide views — bring a camera for golden hour.",
+    hours: "Daily, sunrise – sunset",
+    price: "Free",
+    distanceKm: 14,
+    rating: 4.4,
+    reviewCount: 26,
+    image: "green-hills",
+  },
+  {
+    slug: "yam-and-produce-stall",
+    name: "Mama Ada’s Yam & Produce",
+    kind: "Market",
+    marketGroup: "Fresh Produce",
+    categories: ["Market"],
+    area: "owerri-municipal",
+    address: "Owerri Municipal market area, Imo State",
+    description: "Seed yams, cocoyam, plantain and seasonal vegetables, sourced from farms around Imo State.",
+    hours: "Mon – Sat, 7:00 AM – 6:00 PM",
+    price: "Yam from ₦3,500 per tuber",
+    distanceKm: 0.6,
+    rating: 4.7,
+    reviewCount: 88,
+    image: "yams",
+  },
+  {
+    slug: "fresh-greens-corner",
+    name: "Fresh Greens Corner",
+    kind: "Market",
+    marketGroup: "Fresh Produce",
+    categories: ["Market"],
+    area: "wetheral-road",
+    address: "Wetheral Road, Owerri, Imo State",
+    description: "Ugu, utazi, okazi and garden eggs, picked fresh every morning.",
+    hours: "Daily, 7:00 AM – 5:00 PM",
+    price: "Bunches from ₦500",
+    distanceKm: 0.9,
+    rating: 4.6,
+    reviewCount: 64,
+    image: "produce",
+  },
+  {
+    slug: "tomato-and-pepper-row",
+    name: "Tomato & Pepper Row",
+    kind: "Market",
+    marketGroup: "Fresh Produce",
+    categories: ["Market"],
+    area: "owerri-municipal",
+    address: "Owerri Municipal, Imo State",
+    description: "Baskets of tomatoes, scotch bonnets and tatashe for stews and pepper soup.",
+    hours: "Mon – Sat, 6:30 AM – 6:00 PM",
+    price: "Baskets from ₦4,000",
+    distanceKm: 0.5,
+    rating: 4.5,
+    reviewCount: 102,
+    image: "tomato-market",
+  },
+  {
+    slug: "heritage-spice-house",
+    name: "Heritage Spice House",
+    kind: "Market",
+    marketGroup: "Spices & Ingredients",
+    categories: ["Market", "Food & Drink"],
+    area: "douglas-road",
+    address: "Douglas Road, Owerri, Imo State",
+    description: "Ehu, uziza seeds, ogiri, crayfish and ready-mixed pepper-soup spice, weighed to order.",
+    hours: "Mon – Sat, 8:00 AM – 7:00 PM",
+    price: "Spice packs from ₦800",
+    distanceKm: 0.7,
+    rating: 4.8,
+    reviewCount: 117,
+    image: "spices",
+  },
+  {
+    slug: "dried-spice-bowls",
+    name: "Pepper Soup Spice Corner",
+    kind: "Market",
+    marketGroup: "Spices & Ingredients",
+    categories: ["Market"],
+    area: "wetheral-road",
+    address: "Wetheral Road, Owerri, Imo State",
+    description: "Ground pepper-soup blends, dried chillies and seasoning mixes measured into bowls while you wait.",
+    hours: "Daily, 8:00 AM – 6:00 PM",
+    price: "Blends from ₦600",
+    distanceKm: 0.9,
+    rating: 4.5,
+    reviewCount: 47,
+    image: "spices-2",
+  },
+  {
+    slug: "palm-fruit-stall",
+    name: "Palm Fruit & Pepper Stall",
+    kind: "Market",
+    marketGroup: "Spices & Ingredients",
+    categories: ["Market"],
+    area: "owerri-municipal",
+    address: "Owerri Municipal, Imo State",
+    description: "Fresh palm fruit for ofe akwu, red palm oil and dried peppers.",
+    hours: "Mon – Sat, 7:00 AM – 5:00 PM",
+    price: "Palm oil from ₦2,500 / litre",
+    distanceKm: 0.6,
+    rating: 4.5,
+    reviewCount: 59,
+    image: "palm-fruit-market",
+  },
+  {
+    slug: "clay-and-kiln-pottery",
+    name: "Clay & Kiln Pottery",
+    kind: "Market",
+    marketGroup: "Crafts & Handmade",
+    categories: ["Market", "Culture"],
+    area: "ikenegbu",
+    address: "Ikenegbu, Owerri, Imo State",
+    description: "Hand-thrown clay pots, water jars and serving bowls, with demonstrations on Saturdays.",
+    hours: "Tue – Sat, 10:00 AM – 6:00 PM",
+    price: "Bowls from ₦6,000",
+    distanceKm: 1.5,
+    rating: 4.8,
+    reviewCount: 45,
+    image: "pottery",
+  },
+  {
+    slug: "woven-basket-collective",
+    name: "Woven Basket Collective",
+    kind: "Market",
+    marketGroup: "Crafts & Handmade",
+    categories: ["Market", "Culture"],
+    area: "new-owerri",
+    address: "New Owerri, Owerri, Imo State",
+    description: "Colourful woven trays, baskets and mats made by a local women’s cooperative.",
+    hours: "Mon – Sat, 9:00 AM – 6:00 PM",
+    price: "Trays from ₦4,500",
+    distanceKm: 2.2,
+    rating: 4.7,
+    reviewCount: 52,
+    image: "baskets",
+  },
+  {
+    slug: "ankara-fabric-house",
+    name: "Ankara Fabric House",
+    kind: "Market",
+    marketGroup: "Crafts & Handmade",
+    categories: ["Market"],
+    area: "douglas-road",
+    address: "Douglas Road, Owerri, Imo State",
+    description: "Bolts of ankara and lace, with tailors on hand for made-to-measure outfits.",
+    hours: "Mon – Sat, 9:00 AM – 7:00 PM",
+    price: "From ₦9,000 per 6 yards",
+    distanceKm: 0.8,
+    rating: 4.6,
+    reviewCount: 73,
+    image: "ankara",
+  },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -1164,7 +1425,7 @@ export const stories: Story[] = [
     title: "Ofe Owerri: the soup of celebration",
     dek: "Why the city’s signature pot is about generosity as much as flavour.",
     category: "Food",
-    author: "Owerri Editorial",
+    author: "Native Kitchen Editorial",
     readTime: "5 min read",
     date: "Oct 2026",
     image: "ofe-owerri",
@@ -1191,7 +1452,7 @@ export const stories: Story[] = [
     title: "A night guide to Douglas Road",
     dek: "Where to go, what to order and how to pace yourself.",
     category: "City Guide",
-    author: "Owerri Editorial",
+    author: "Native Kitchen Editorial",
     readTime: "4 min read",
     date: "Sep 2026",
     image: "suya-grill",
@@ -1206,7 +1467,7 @@ export const stories: Story[] = [
     title: "Mbari: art made for the earth",
     dek: "Owerri’s Mbari tradition and why it still matters to the city’s creative scene.",
     category: "Culture",
-    author: "Owerri Editorial",
+    author: "Native Kitchen Editorial",
     readTime: "6 min read",
     date: "Aug 2026",
     image: "masquerade",
@@ -1221,7 +1482,7 @@ export const stories: Story[] = [
     title: "Abacha, explained",
     dek: "Everything you need to know before your first plate of African salad.",
     category: "Lifestyle",
-    author: "Owerri Editorial",
+    author: "Native Kitchen Editorial",
     readTime: "3 min read",
     date: "Jul 2026",
     image: "abacha",
@@ -1311,3 +1572,14 @@ export const exploreItems: ExploreItem[] = [
 ];
 
 export const getExploreItem = (slug: string) => exploreItems.find((x) => x.slug === slug);
+
+export type Notice = { id: string; title: string; body: string; when: string; href: string; kind: "event" | "offer" | "market" | "tour" | "story" };
+
+/** Sample notifications (order updates are added on the client from the orders store). */
+export const notices: Notice[] = [
+  { id: "n-festival", title: "Tickets now on sale", body: "The Owerri Cultural Festival returns on Sat 28 Nov at Dan Anyiam Stadium.", when: "2h ago", href: "/events?item=owerri-cultural-festival", kind: "event" },
+  { id: "n-market", title: "Fresh at the market", body: "New-season yams have arrived at Mama Ada’s Yam & Produce.", when: "Today", href: "/market#fresh-produce", kind: "market" },
+  { id: "n-lodge", title: "Weekend getaway idea", body: "Riverside Eco Lodge has weekend cabins free — two nights from ₦95,000.", when: "Yesterday", href: "/tours/stays?item=riverside-eco-lodge", kind: "tour" },
+  { id: "n-terrace", title: "Free delivery this week", body: "The Green Terrace is waiving delivery on orders over ₦10,000 (sample offer).", when: "2 days ago", href: "/restaurants/the-green-terrace/menu", kind: "offer" },
+  { id: "n-story", title: "New on the blog", body: "Mbari: art made for the earth — why Owerri’s tradition still matters.", when: "This week", href: "/stories/mbari-houses-for-the-earth", kind: "story" },
+];

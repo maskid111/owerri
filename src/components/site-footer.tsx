@@ -1,45 +1,38 @@
 import Link from "next/link";
+import { navigation } from "@/lib/navigation";
 import { NewsletterForm } from "./newsletter-form";
 import { Logo } from "./ui";
 
+const flat = navigation.flatMap((n) => [n, ...(n.children ?? [])]);
+
 const columns = [
+  { title: "Discover", links: flat.slice(0, 7) }, // Home … Events & Hangouts, in nav order
+  { title: "You", links: flat.slice(7) }, // Saved … Help / Support
   {
-    title: "Discover",
+    title: "More",
     links: [
-      { href: "/explore", label: "Explore Owerri" },
+      { href: "/explore", label: "Explore everything" },
       { href: "/restaurants", label: "Food & restaurants" },
-      { href: "/explore?cat=Stays", label: "Hotels & stays" },
-      { href: "/explore?cat=Events", label: "Events" },
-    ],
-  },
-  {
-    title: "Culture",
-    links: [
-      { href: "/culture", label: "Culture & stories" },
       { href: "/dishes", label: "Signature dishes" },
-      { href: "/neighbourhoods", label: "Neighbourhoods" },
-      { href: "/culture#weekend", label: "A weekend in Owerri" },
-    ],
-  },
-  {
-    title: "Your Owerri",
-    links: [
-      { href: "/saved", label: "Saved places" },
+      { href: "/culture", label: "Culture & heritage" },
       { href: "/orders", label: "Cart & orders" },
       { href: "/credits", label: "Photo credits" },
+      { href: "/admin", label: "Admin (prototype)" },
     ],
   },
 ];
 
 export function SiteFooter() {
   return (
-    <footer className="bg-forest-deep text-cream">
+    <footer className="relative isolate overflow-hidden bg-native-pattern-lg text-cream">
+      {/* The supplied pattern, darkened for legibility */}
+      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-forest-deep/45 via-forest-deep/65 to-forest-deep/85" aria-hidden />
       <div className="container-x py-12 lg:py-16">
         <div className="grid gap-10 lg:grid-cols-[1.2fr_2fr]">
           <div>
-            <Logo light tagline />
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-cream/65">
-              Discover the flavours, people and places that make Owerri, Imo State special — from steel-pot bukas to rooftop dinners.
+            <Logo light />
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-cream/75">
+              Food, culture, places and experiences from Owerri and Imo State — all in one place. Native, beyond the plate.
             </p>
             <div className="mt-6">
               <p className="mb-3 text-sm font-semibold">Weekend picks in your inbox</p>
@@ -49,11 +42,11 @@ export function SiteFooter() {
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-3">
             {columns.map((c) => (
               <div key={c.title}>
-                <p className="text-xs font-bold tracking-[0.16em] text-sun uppercase">{c.title}</p>
+                <p className="text-xs font-bold tracking-[0.16em] text-leaf uppercase">{c.title}</p>
                 <ul className="mt-4 space-y-2.5">
                   {c.links.map((l) => (
                     <li key={l.href}>
-                      <Link href={l.href} className="text-sm text-cream/70 transition-colors hover:text-cream">
+                      <Link href={l.href} className="text-sm text-cream/75 transition-colors hover:text-cream">
                         {l.label}
                       </Link>
                     </li>
@@ -63,8 +56,8 @@ export function SiteFooter() {
             ))}
           </div>
         </div>
-        <div className="mt-10 flex flex-col gap-2 border-t border-cream/10 pt-6 text-xs text-cream/50 sm:flex-row sm:justify-between">
-          <p>© 2026 Owerri · Owerri, Imo State, Nigeria</p>
+        <div className="mt-10 flex flex-col gap-2 border-t border-cream/15 pt-6 text-xs text-cream/60 sm:flex-row sm:justify-between">
+          <p>© 2026 Native Kitchen · Owerri, Imo State, Nigeria</p>
           <p>Listings, menus, prices and events are sample content for this preview.</p>
         </div>
       </div>

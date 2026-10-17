@@ -41,7 +41,7 @@ export function ExploreCard({ item, className, priority, size = "md" }: { item: 
         {item.date ? (
           <DateBadge iso={item.date} className="absolute bottom-3 left-3" />
         ) : (
-          <span className="absolute top-3 left-3 rounded-md bg-forest px-2 py-1 text-[11px] font-bold text-cream">{item.label}</span>
+          <span className="absolute top-3 left-3 rounded-md bg-forest px-2 py-1 text-[11px] font-bold text-on-forest">{item.label}</span>
         )}
       </div>
       <div className="flex flex-1 flex-col p-4">
@@ -108,7 +108,7 @@ function DialogBody({ item, onClose }: { item: ExploreItem; onClose: () => void 
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 40, opacity: 0 }}
         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-        className="relative max-h-[92dvh] w-full max-w-lg overflow-y-auto rounded-t-[1.75rem] bg-cream sm:rounded-[1.75rem]"
+        className="relative max-h-[92dvh] w-full max-w-lg overflow-y-auto rounded-t-[1.75rem] bg-canvas sm:rounded-[1.75rem]"
       >
         <div className="relative aspect-[16/9]">
           <Photo name={item.image} alt={item.title} sizes="512px" />
@@ -144,7 +144,7 @@ function DialogBody({ item, onClose }: { item: ExploreItem; onClose: () => void 
               </li>
               {item.rating !== undefined && (
                 <li className="flex items-center gap-2.5">
-                  <Star className="size-4 fill-sun text-sun" /> <span className="font-bold">{item.rating.toFixed(1)}</span>
+                  <Star className="size-4 fill-star text-star" /> <span className="font-bold">{item.rating.toFixed(1)}</span>
                   <span className="text-stone">({item.reviewCount} reviews)</span>
                 </li>
               )}
@@ -171,7 +171,7 @@ function DialogBody({ item, onClose }: { item: ExploreItem; onClose: () => void 
                     <span className="w-5 text-center font-bold" aria-live="polite">
                       {qty}
                     </span>
-                    <button type="button" onClick={() => setQty((q) => Math.min(10, q + 1))} aria-label="More tickets" className="grid size-9 place-items-center rounded-full bg-sun text-forest-deep">
+                    <button type="button" onClick={() => setQty((q) => Math.min(10, q + 1))} aria-label="More tickets" className="grid size-9 place-items-center rounded-full bg-accent text-on-accent">
                       <Plus className="size-4" />
                     </button>
                   </div>

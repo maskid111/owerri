@@ -1,17 +1,25 @@
 import type { Metadata, Viewport } from "next";
 import { BottomNav } from "@/components/bottom-nav";
 import { SiteFooter } from "@/components/site-footer";
+import { Design } from "@/components/design";
+import { SearchDialog } from "@/components/search-dialog";
+import { SigDock, SigHashScroll } from "@/components/sig/dock";
+import { SigFooter } from "@/components/sig/footer";
+import { SigHeader } from "@/components/sig/header";
 import { SiteHeader } from "@/components/site-header";
+import { DesignSync } from "@/lib/design";
+import { ThemeSync } from "@/lib/theme";
+import { themeScript } from "@/lib/theme-script";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Owerri — Explore · Dine · Experience",
-    template: "%s · Owerri",
+    default: "Native Kitchen — Native, beyond the plate",
+    template: "%s · Native Kitchen",
   },
   description:
-    "Discover restaurants, local dishes, events, hotels and cultural experiences in Owerri, Imo State — and order from local kitchens.",
-  keywords: ["Owerri", "Imo State", "restaurants", "Nigerian food", "Ofe Owerri", "events", "hotels", "culture"],
+    "Native Kitchen — food, culture, places and experiences in Owerri, Imo State: local market, tours, stays, events and kitchens to order from.",
+  keywords: ["Native Kitchen", "Owerri", "Imo State", "Nigerian food", "local market", "tours", "events", "culture"],
 };
 
 export const viewport: Viewport = {
@@ -21,24 +29,30 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className="antialiased">
+    <html lang="en" className="antialiased" suppressHydrationWarning>
       <head>
+        {/* Applies the saved design version and palette before first paint (no flash). */}
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <link rel="preload" href="/fonts/fraunces-latin-full-normal.woff2" as="font" type="font/woff2" crossOrigin="" />
         <link rel="preload" href="/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossOrigin="" />
       </head>
       <body className="flex min-h-dvh flex-col max-lg:pb-[calc(64px+env(safe-area-inset-bottom))]">
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[80] focus:rounded-full focus:bg-forest focus:px-4 focus:py-2 focus:text-cream"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[80] focus:rounded-full focus:bg-forest focus:px-4 focus:py-2 focus:text-on-forest"
         >
           Skip to content
         </a>
-        <SiteHeader />
+        <ThemeSync />
+        <DesignSync />
+        <Design a={<SiteHeader />} b={<SigHeader />} />
         <main id="main" className="flex-1">
           {children}
         </main>
-        <SiteFooter />
-        <BottomNav />
+        <Design a={<SiteFooter />} b={<SigFooter />} />
+        <Design a={<BottomNav />} b={<SigDock />} />
+        <SearchDialog />
+        <SigHashScroll />
       </body>
     </html>
   );

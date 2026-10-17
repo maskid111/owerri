@@ -9,6 +9,8 @@ import { SaveButton } from "@/components/save-button";
 import { Arrow, ButtonLink, Photo, Rating, SampleNote, SectionHeader } from "@/components/ui";
 import { areaName, getMenu, getRestaurant, restaurants } from "@/lib/data";
 import { distanceLabel, naira } from "@/lib/utils";
+import { Design } from "@/components/design";
+import { SigRestaurantDetail } from "@/components/sig/restaurant-detail";
 
 export function generateStaticParams() {
   return restaurants.map((r) => ({ slug: r.slug }));
@@ -21,7 +23,7 @@ export async function generateMetadata({ params }: PageProps<"/restaurants/[slug
   return { title: r.name, description: `${r.type} in ${areaName(r.area)}, Owerri. ${r.description}` };
 }
 
-export default async function RestaurantPage({ params }: PageProps<"/restaurants/[slug]">) {
+async function RestaurantPage({ params }: { params: PageProps<"/restaurants/[slug]">["params"] }) {
   const { slug } = await params;
   const r = getRestaurant(slug);
   if (!r) notFound();
@@ -147,4 +149,8 @@ export default async function RestaurantPage({ params }: PageProps<"/restaurants
       )}
     </>
   );
+}
+
+export default function Page({ params }: PageProps<"/restaurants/[slug]">) {
+  return <Design a={<RestaurantPage params={params} />} b={<SigRestaurantDetail params={params} />} />;
 }

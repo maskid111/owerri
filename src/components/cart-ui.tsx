@@ -11,14 +11,14 @@ import { Arrow, buttonClass, Photo } from "./ui";
 export function QtyStepper({ qty, name, onChange, size = "md", className }: { qty: number; name: string; onChange: (qty: number) => void; size?: "sm" | "md"; className?: string }) {
   const btn = cn("grid place-items-center rounded-full transition-colors", size === "sm" ? "size-7" : "size-9");
   return (
-    <div className={cn("inline-flex items-center rounded-full bg-sun text-forest-deep", className)}>
-      <button type="button" onClick={() => onChange(qty - 1)} aria-label={qty === 1 ? `Remove ${name}` : `One less ${name}`} className={cn(btn, "hover:bg-sun-deep")}>
+    <div className={cn("inline-flex items-center rounded-full bg-accent text-on-accent", className)}>
+      <button type="button" onClick={() => onChange(qty - 1)} aria-label={qty === 1 ? `Remove ${name}` : `One less ${name}`} className={cn(btn, "hover:bg-accent-hover")}>
         {qty === 1 ? <Trash2 className="size-3.5" /> : <Minus className="size-3.5" />}
       </button>
       <span className={cn("min-w-5 text-center font-bold", size === "sm" ? "text-xs" : "text-sm")} aria-live="polite">
         {qty}
       </span>
-      <button type="button" onClick={() => onChange(qty + 1)} aria-label={`One more ${name}`} className={cn(btn, "hover:bg-sun-deep")}>
+      <button type="button" onClick={() => onChange(qty + 1)} aria-label={`One more ${name}`} className={cn(btn, "hover:bg-accent-hover")}>
         <Plus className="size-3.5" />
       </button>
     </div>
@@ -40,7 +40,7 @@ export function FulfilmentToggle({ mode }: { mode: CartSummary["mode"] }) {
           role="radio"
           aria-checked={mode === value}
           onClick={() => cart.setMode(value)}
-          className={cn("inline-flex h-9 items-center justify-center gap-1.5 rounded-full text-sm font-semibold transition-colors", mode === value ? "bg-forest text-cream" : "text-ink/70 hover:text-forest")}
+          className={cn("inline-flex h-9 items-center justify-center gap-1.5 rounded-full text-sm font-semibold transition-colors", mode === value ? "bg-forest text-on-forest" : "text-ink/70 hover:text-forest")}
         >
           <Icon className="size-4" /> {label}
         </button>
@@ -120,7 +120,7 @@ export function CartDrawer({ open, onClose }: { open: boolean; onClose: () => vo
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="pb-safe relative flex max-h-[88dvh] w-full flex-col rounded-t-[1.75rem] bg-cream sm:max-h-none sm:max-w-md sm:rounded-none sm:rounded-l-[1.75rem]"
+            className="pb-safe relative flex max-h-[88dvh] w-full flex-col rounded-t-[1.75rem] bg-canvas sm:max-h-none sm:max-w-md sm:rounded-none sm:rounded-l-[1.75rem]"
           >
             <div className="flex items-start justify-between gap-4 border-b border-line px-5 pt-5 pb-4">
               <div>
@@ -184,7 +184,7 @@ export function CartConflictDialog({
       {pending && (
         <motion.div className="fixed inset-0 z-[80] flex items-end justify-center p-4 sm:items-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
           <button aria-label="Cancel" className="absolute inset-0 bg-forest-deep/55" onClick={onCancel} />
-          <motion.div role="alertdialog" aria-modal="true" aria-labelledby={titleId} initial={{ y: 20 }} animate={{ y: 0 }} className="relative w-full max-w-sm rounded-[1.5rem] bg-cream p-6">
+          <motion.div role="alertdialog" aria-modal="true" aria-labelledby={titleId} initial={{ y: 20 }} animate={{ y: 0 }} className="relative w-full max-w-sm rounded-[1.5rem] bg-canvas p-6">
             <h2 id={titleId} className="text-2xl font-semibold text-forest">
               Start a new order?
             </h2>

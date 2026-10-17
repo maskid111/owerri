@@ -29,17 +29,20 @@ function orderStatus(order: Order, nowMinute: number | null) {
   return order.mode === "delivery" ? "Delivered" : "Collected";
 }
 
-export function OrdersView() {
+/** `chrome={false}` drops the page title so another design version can supply its own header. */
+export function OrdersView({ chrome = true }: { chrome?: boolean }) {
   const orders = useOrders();
   const [tab, setTab] = useState<"cart" | "history">("cart");
   const [placed, setPlaced] = useState<Order | null>(null);
 
   return (
     <div className="container-x pb-12">
-      <div className="pt-5 lg:pt-10">
-        <h1 className="text-[1.9rem] font-semibold text-forest sm:text-4xl lg:text-5xl">Orders</h1>
-        <p className="mt-1 text-stone">Your cart, checkout and past orders from Owerri kitchens.</p>
-      </div>
+      {chrome && (
+        <div className="pt-5 lg:pt-10">
+          <h1 className="text-[1.9rem] font-semibold text-forest sm:text-4xl lg:text-5xl">Orders</h1>
+          <p className="mt-1 text-stone">Your cart, checkout and past orders from Owerri kitchens.</p>
+        </div>
+      )}
 
       <div role="tablist" className="mt-5 grid max-w-sm grid-cols-2 gap-1 rounded-full border border-line bg-paper p-1">
         {(
@@ -53,7 +56,7 @@ export function OrdersView() {
             role="tab"
             aria-selected={tab === key}
             onClick={() => setTab(key)}
-            className={cn("h-9 rounded-full text-sm font-semibold transition-colors", tab === key ? "bg-forest text-cream" : "text-ink/75 hover:text-forest")}
+            className={cn("h-9 rounded-full text-sm font-semibold transition-colors", tab === key ? "bg-forest text-on-forest" : "text-ink/75 hover:text-forest")}
           >
             {label}
           </button>
@@ -138,7 +141,7 @@ function Checkout({ onPlaced }: { onPlaced: (o: Order) => void }) {
           </Link>
         </div>
         <CartLines summary={summary} />
-        {r.service === "Dine-in only" && <p className="mt-2 rounded-xl bg-butter px-3 py-2 text-sm text-forest">This venue is usually dine-in only — this demo still lets you place an order.</p>}
+        {r.service === "Dine-in only" && <p className="mt-2 rounded-xl bg-tint px-3 py-2 text-sm text-forest">This venue is usually dine-in only — this demo still lets you place an order.</p>}
       </div>
 
       <div className="space-y-4 rounded-[1.25rem] border border-line/70 bg-paper p-4 shadow-card sm:p-6 lg:sticky lg:top-24">
@@ -152,7 +155,7 @@ function Checkout({ onPlaced }: { onPlaced: (o: Order) => void }) {
               onChange={(e) => setAddress(e.target.value)}
               placeholder="e.g. 12 Wetheral Road, Owerri"
               aria-invalid={Boolean(error)}
-              className="h-11 w-full rounded-xl border border-line bg-cream px-4 text-sm outline-none focus:border-forest"
+              className="h-11 w-full rounded-xl border border-line bg-canvas px-4 text-sm outline-none focus:border-forest"
             />
             {error && <span className="mt-1.5 block text-xs text-red-700">{error}</span>}
           </label>
@@ -167,7 +170,7 @@ function Checkout({ onPlaced }: { onPlaced: (o: Order) => void }) {
             onChange={(e) => setNote(e.target.value)}
             rows={2}
             placeholder="Extra pepper, no onions…"
-            className="w-full resize-none rounded-xl border border-line bg-cream px-4 py-2.5 text-sm outline-none focus:border-forest"
+            className="w-full resize-none rounded-xl border border-line bg-canvas px-4 py-2.5 text-sm outline-none focus:border-forest"
           />
         </label>
         <CartTotals summary={summary} />
@@ -193,7 +196,7 @@ function Confirmation({ order, onDone }: { order: Order; onDone: () => void }) {
       <ol className="mt-6 flex items-start justify-between gap-2 text-[11px] font-semibold text-stone">
         {steps.map((s, i) => (
           <li key={s} className="flex flex-1 flex-col items-center gap-1.5">
-            <span className={cn("grid size-7 place-items-center rounded-full text-xs", i === 0 ? "bg-forest text-cream" : "bg-sand text-stone")}>{i + 1}</span>
+            <span className={cn("grid size-7 place-items-center rounded-full text-xs", i === 0 ? "bg-forest text-on-forest" : "bg-sand text-stone")}>{i + 1}</span>
             {s}
           </li>
         ))}
@@ -239,7 +242,7 @@ function History({ orders, onReorder }: { orders: Order[]; onReorder: () => void
             <div className="min-w-0 flex-1">
               <div className="flex items-start justify-between gap-2">
                 <p className="truncate font-display text-lg font-semibold text-forest">{o.restaurantName}</p>
-                <span className={cn("shrink-0 rounded-full px-2.5 py-0.5 text-[11px] font-bold", status === "Delivered" || status === "Collected" ? "bg-mint text-forest" : "bg-butter text-forest")}>
+                <span className={cn("shrink-0 rounded-full px-2.5 py-0.5 text-[11px] font-bold", status === "Delivered" || status === "Collected" ? "bg-mint text-forest" : "bg-tint text-forest")}>
                   {status}
                 </span>
               </div>

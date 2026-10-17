@@ -2,35 +2,25 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Heart, Search, ShoppingBag } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ChevronDown, Menu, Search, ShoppingBag } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { useCart } from "@/lib/cart-store";
-import { useSaved } from "@/lib/saved-store";
+import { isActivePath, isImmersive, navigation } from "@/lib/navigation";
+import { useUnreadCount } from "@/lib/notifications-store";
 import { cn } from "@/lib/utils";
-import { openSearch, SearchDialog } from "./search-dialog";
+import { NavDrawer, openNavDrawer } from "./nav-drawer";
+import { openSearch } from "./search-dialog";
 import { Logo } from "./ui";
 
-export const mainNav = [
-  { href: "/", label: "Home" },
-  { href: "/explore", label: "Explore" },
-  { href: "/restaurants", label: "Food & Drink" },
-  { href: "/dishes", label: "Dishes" },
-  { href: "/neighbourhoods", label: "Neighbourhoods" },
-  { href: "/culture", label: "Culture" },
-];
-
-/** Restaurant detail and menu screens are immersive on mobile (own floating controls, no app bar). */
-export const isImmersive = (pathname: string) => /^\/restaurants\/[^/]+(\/menu)?$/.test(pathname);
-
-export function isActivePath(pathname: string, href: string) {
-  return href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
-}
+/** Items 1–6 render as text links; 7–10 as labelled icon buttons (text from 2xl) — order is preserved. */
+const textItems = navigation.slice(0, 6);
+const iconItems = navigation.slice(6);
 
 export function SiteHeader() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
-  const { saved } = useSaved();
   const { count } = useCart();
+  const unread = useUnreadCount();
   const overHero = pathname === "/" && !scrolled;
 
   useEffect(() => {
@@ -41,7 +31,7 @@ export function SiteHeader() {
   }, []);
 
   const iconBtn = cn(
-    "relative grid size-10 place-items-center rounded-full transition-colors",
+    "relative grid size-9 shrink-0 place-items-center rounded-full transition-colors sm:size-10",
     overHero ? "text-cream hover:bg-cream/10" : "text-forest hover:bg-forest/5",
   );
 
@@ -51,70 +41,164 @@ export function SiteHeader() {
         className={cn(
           "inset-x-0 top-0 z-50 transition-colors duration-300",
           pathname === "/" ? "fixed" : "sticky",
-          overHero ? "bg-transparent" : "border-b border-line/70 bg-cream/95 backdrop-blur",
+          overHero ? "bg-transparent" : "border-b border-line/70 bg-canvas/95 backdrop-blur",
           isImmersive(pathname) && "max-lg:hidden",
         )}
       >
-        <div className="container-x flex h-16 items-center justify-between gap-6 lg:h-[72px]">
-          <Link href="/" aria-label="Owerri home" className="shrink-0">
-            <Logo light={overHero} tagline={pathname === "/"} />
+        <div className="mx-auto flex h-16 max-w-[90rem] items-center gap-2 px-3 sm:gap-3 sm:px-4 sm:px-6 lg:h-[76px] lg:gap-3 lg:px-6 xl:gap-6 xl:px-8">
+          <button onClick={openNavDrawer} className={cn(iconBtn, "-ml-2 lg:hidden")} aria-label="Open menu">
+            <Menu className="size-6" />
+          </button>
+          <Link href="/" aria-label="Native Kitchen home" className="shrink-0">
+            <span className="xl:hidden">
+              <Logo light={overHero} tagline={false} />
+            </span>
+            <span className="hidden xl:block">
+              <Logo light={overHero} />
+            </span>
           </Link>
 
-          <nav aria-label="Main" className="hidden items-center gap-1 lg:flex">
-            {mainNav.map((item) => {
-              const active = isActivePath(pathname, item.href);
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  aria-current={active ? "page" : undefined}
-                  className={cn(
-                    "relative rounded-full px-3.5 py-2 text-sm font-semibold transition-colors xl:px-4",
-                    overHero ? (active ? "text-sun" : "text-cream/80 hover:text-cream") : active ? "text-forest" : "text-ink/60 hover:text-forest",
-                  )}
-                >
-                  {item.label}
-                  {active && <span className={cn("absolute inset-x-4 -bottom-0.5 h-0.5 rounded-full", overHero ? "bg-sun" : "bg-forest")} />}
-                </Link>
-              );
-            })}
+          <nav aria-label="Main" className="ml-auto hidden items-center lg:flex">
+            <ul className="flex items-center gap-0.5">
+              {textItems.map((item) => {
+                const active = isActivePath(pathname, item.href);
+                const cls = cn(
+                  "relative inline-flex items-center gap-1 rounded-full px-2 py-2 text-[0.82rem] font-semibold whitespace-nowrap transition-colors xl:px-3 xl:text-[0.86rem]",
+                  overHero ? (active ? "text-cream" : "text-cream/80 hover:text-cream") : active ? "text-forest" : "text-ink/65 hover:text-forest",
+                );
+                const bar = active && <span className={cn("absolute inset-x-3 -bottom-0.5 h-0.5 rounded-full", overHero ? "bg-leaf" : "bg-accent")} />;
+                return (
+                  <li key={item.href}>
+                    {item.children ? (
+                      <ToursMenu item={item} className={cls} pathname={pathname} bar={bar} overHero={overHero} />
+                    ) : (
+                      <Link href={item.href} aria-current={active ? "page" : undefined} className={cls}>
+                        {item.label}
+                        {bar}
+                      </Link>
+                    )}
+                  </li>
+                );
+              })}
+              <li aria-hidden className={cn("mx-2 h-6 w-px", overHero ? "bg-cream/25" : "bg-line")} />
+              {iconItems.map((item) => {
+                const active = isActivePath(pathname, item.href);
+                const Icon = item.icon;
+                return (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      title={item.label}
+                      aria-label={item.href === "/notifications" && unread ? `${item.label} (${unread} unread)` : item.label}
+                      aria-current={active ? "page" : undefined}
+                      className={cn(
+                        "relative inline-flex h-10 items-center gap-1.5 rounded-full px-2.5 text-[0.84rem] font-semibold whitespace-nowrap transition-colors",
+                        overHero ? "text-cream/85 hover:bg-cream/10 hover:text-cream" : active ? "bg-mint text-forest" : "text-ink/65 hover:bg-forest/5 hover:text-forest",
+                      )}
+                    >
+                      <Icon className="size-[18px]" />
+                      <span className="hidden 2xl:inline">{item.label}</span>
+                      {item.href === "/notifications" && unread > 0 && <Dot />}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
           </nav>
 
-          <div className="flex items-center gap-1">
-            <button
-              onClick={openSearch}
-              className={cn(
-                "mr-1 hidden h-10 items-center gap-2.5 rounded-full border pr-2 pl-4 text-sm transition-colors xl:inline-flex",
-                overHero ? "border-cream/25 text-cream/80 hover:border-cream/50" : "border-line bg-paper text-stone hover:border-forest/30",
-              )}
-            >
-              <Search className="size-4" aria-hidden />
-              Search Owerri
-              <kbd className={cn("rounded-md px-1.5 py-0.5 font-sans text-[11px] font-semibold", overHero ? "bg-cream/10" : "bg-sand text-ink/60")}>⌘K</kbd>
+          <div className={cn("ml-auto flex items-center gap-0.5 lg:ml-2 lg:border-l lg:pl-3", overHero ? "lg:border-cream/25" : "lg:border-line")}>
+            <button onClick={openSearch} className={iconBtn} aria-label="Search">
+              <Search className="size-5" />
             </button>
-            <button onClick={openSearch} className={cn(iconBtn, "xl:hidden")} aria-label="Search">
-              <Search className="size-[22px]" />
-            </button>
-            <Link href="/saved" className={cn(iconBtn, "hidden lg:grid")} aria-label={`Saved (${saved.length})`}>
-              <Heart className="size-5" />
-              {saved.length > 0 && <Badge>{saved.length}</Badge>}
+            <Link href="/notifications" className={cn(iconBtn, "lg:hidden")} aria-label={`Notifications${unread ? ` (${unread} unread)` : ""}`}>
+              <BellIcon />
+              {unread > 0 && <Dot />}
             </Link>
             <Link href="/orders" className={iconBtn} aria-label={`Cart and orders (${count} in cart)`}>
               <ShoppingBag className="size-5" />
-              {count > 0 && <Badge>{count}</Badge>}
+              {count > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 grid h-[18px] min-w-[18px] place-items-center rounded-full bg-accent px-1 text-[10px] font-bold text-on-accent">{count}</span>
+              )}
             </Link>
           </div>
         </div>
       </header>
-      <SearchDialog />
+      <NavDrawer />
     </>
   );
 }
 
-function Badge({ children }: { children: React.ReactNode }) {
+function BellIcon() {
+  const Icon = navigation.find((n) => n.href === "/notifications")!.icon;
+  return <Icon className="size-5" />;
+}
+
+function Dot() {
+  return <span className="absolute top-1.5 right-1.5 size-2 rounded-full bg-accent ring-2 ring-canvas" aria-hidden />;
+}
+
+function ToursMenu({
+  item,
+  className,
+  pathname,
+  bar,
+  overHero,
+}: {
+  item: (typeof navigation)[number];
+  className: string;
+  pathname: string;
+  bar: React.ReactNode;
+  overHero: boolean;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onDoc = (e: MouseEvent) => !ref.current?.contains(e.target as Node) && setOpen(false);
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    document.addEventListener("mousedown", onDoc);
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDoc);
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
   return (
-    <span className="absolute -top-0.5 -right-0.5 grid h-[18px] min-w-[18px] place-items-center rounded-full bg-sun px-1 text-[10px] font-bold text-forest-deep">
-      {children}
-    </span>
+    <div ref={ref} className="relative">
+      <button type="button" aria-expanded={open} aria-haspopup="true" onClick={() => setOpen((v) => !v)} className={className}>
+        {item.label}
+        <ChevronDown className={cn("size-3.5 transition-transform", open && "rotate-180", overHero && "opacity-80")} />
+        {bar}
+      </button>
+      {open && (
+        <div className="absolute top-full left-1/2 z-50 w-80 -translate-x-1/2 pt-2">
+          <div className="rounded-2xl border border-line bg-paper p-2 shadow-lift">
+            <Link href={item.href} onClick={() => setOpen(false)} className="block rounded-xl px-3 py-2.5 hover:bg-sand">
+              <span className="block text-sm font-semibold text-forest">All tours</span>
+              <span className="block text-xs text-stone">{item.description}</span>
+            </Link>
+            {item.children!.map((c) => (
+              <Link
+                key={c.href}
+                href={c.href}
+                onClick={() => setOpen(false)}
+                aria-current={isActivePath(pathname, c.href) ? "page" : undefined}
+                className="flex items-center gap-3 rounded-xl px-3 py-2.5 hover:bg-sand"
+              >
+                <span className="grid size-10 shrink-0 place-items-center rounded-full bg-forest text-on-forest">
+                  <c.icon className="size-[18px]" />
+                </span>
+                <span>
+                  <span className="block text-sm font-semibold text-forest">{c.label}</span>
+                  <span className="block text-xs text-stone">{c.description}</span>
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
   );
 }

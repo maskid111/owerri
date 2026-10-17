@@ -6,6 +6,8 @@ import { StoryCard } from "@/components/story-card";
 import { Arrow, ButtonLink, Photo, SectionHeader } from "@/components/ui";
 import { exploreItems, stories } from "@/lib/data";
 import type { ImageName } from "@/lib/images";
+import { Design } from "@/components/design";
+import { SigCulture } from "@/components/sig/pages";
 
 export const metadata: Metadata = {
   title: "Culture & Stories",
@@ -39,7 +41,7 @@ const weekend: { day: string; image: ImageName; items: { icon: typeof Sun; time:
   },
 ];
 
-export default function CulturePage() {
+function CulturePage() {
   const whatsOn = exploreItems.filter((x) => x.kind === "event" && (x.categories.includes("Culture") || x.categories.includes("Music")));
   const culturalPlaces = exploreItems.filter((x) => x.kind === "place" && x.categories.includes("Culture"));
 
@@ -51,7 +53,7 @@ export default function CulturePage() {
           <Photo name="festival" alt="Dancers in red and coral at a cultural festival procession" sizes="(min-width: 1024px) 1200px, 100vw" priority className="-z-10" />
           <div className="absolute inset-0 -z-10 bg-gradient-to-t from-forest-deep/90 via-forest-deep/40 to-forest-deep/10" />
           <div className="p-5 text-cream sm:p-8 lg:p-12">
-            <p className="text-xs font-bold tracking-[0.16em] text-sun uppercase">Culture & Stories</p>
+            <p className="text-xs font-bold tracking-[0.16em] text-leaf uppercase">Culture & Stories</p>
             <h1 className="mt-2 max-w-2xl text-[2.1rem] leading-[1.05] font-semibold sm:text-5xl lg:text-6xl">The city beyond the plate.</h1>
             <p className="mt-3 max-w-xl text-cream/85">Festivals, masquerades, highlife nights, art and the stories that make Owerri what it is.</p>
           </div>
@@ -70,22 +72,23 @@ export default function CulturePage() {
 
       {/* Mbari feature */}
       <section className="container-x pt-10 lg:pt-20">
-        <div className="grid overflow-hidden rounded-[1.5rem] bg-forest text-cream lg:grid-cols-2 lg:rounded-[2rem]">
+        <div className="relative isolate grid overflow-hidden rounded-[1.5rem] bg-native-pattern text-cream lg:grid-cols-2 lg:rounded-[2rem]">
+          <div className="absolute inset-0 -z-10 bg-gradient-to-r from-forest-deep/20 to-forest-deep/70" aria-hidden />
           <div className="relative aspect-[4/3] lg:aspect-auto lg:min-h-[26rem]">
             <Photo name="masquerade" alt="Igbo masquerades in carved masks and beaded costumes" sizes="(min-width: 1024px) 50vw, 100vw" />
           </div>
           <div className="flex flex-col justify-center p-6 sm:p-10 lg:p-14">
-            <p className="text-xs font-bold tracking-[0.16em] text-sun uppercase">Heritage</p>
+            <p className="text-xs font-bold tracking-[0.16em] text-leaf uppercase">Heritage</p>
             <h2 className="mt-2 text-3xl leading-tight font-semibold sm:text-4xl">Mbari: art made as an offering to the earth.</h2>
             <p className="mt-4 leading-relaxed text-cream/80">
               Owerri’s Mbari houses — sacred structures filled with sculpted clay figures — remain one of the most celebrated art traditions in Igboland. Their spirit lives on in the
               city’s galleries, masquerades and workshops.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <ButtonLink href="/stories/mbari-houses-for-the-earth">
+              <ButtonLink href="/stories/mbari-houses-for-the-earth" variant="cream">
                 Read the story <Arrow />
               </ButtonLink>
-              <ButtonLink href="/explore?cat=Culture" variant="light">
+              <ButtonLink href="/events?cat=Culture" variant="light">
                 Cultural places
               </ButtonLink>
             </div>
@@ -117,7 +120,7 @@ export default function CulturePage() {
               <ol className="space-y-5 p-5">
                 {d.items.map((it) => (
                   <li key={it.title} className="flex gap-3">
-                    <span className="grid size-9 shrink-0 place-items-center rounded-full bg-butter text-forest">
+                    <span className="grid size-9 shrink-0 place-items-center rounded-full bg-tint text-forest">
                       <it.icon className="size-4" />
                     </span>
                     <div>
@@ -147,4 +150,8 @@ export default function CulturePage() {
       </section>
     </>
   );
+}
+
+export default function Page() {
+  return <Design a={<CulturePage />} b={<SigCulture />} />;
 }

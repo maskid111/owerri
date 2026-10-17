@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import { PageHeader, Photo } from "@/components/ui";
 import { wikimediaCredits } from "@/lib/images";
+import { Design } from "@/components/design";
+import { SigCredits } from "@/components/sig/pages";
 
 export const metadata: Metadata = {
   title: "Photo credits",
-  description: "Sources and licences for the photography used on Owerri.",
+  description: "Sources and licences for the photography used on Native Kitchen.",
 };
 
-export default function CreditsPage() {
+function CreditsPage() {
   return (
     <>
       <PageHeader
@@ -49,4 +51,8 @@ export default function CreditsPage() {
       </section>
     </>
   );
+}
+
+export default function Page() {
+  return <Design a={<CreditsPage />} b={<SigCredits />} />;
 }

@@ -18,6 +18,9 @@ export const imageNames = [
   "nkwobi", "ofe-nsala", "ofe-owerri", "palm-road", "pancakes", "pasta", "pepper-soup-egg", "pepper-soup-pot",
   "performers", "pineapple-juice", "resort-pool", "rice-stew", "rooftop-lights", "rooftop-lounge", "skewers",
   "soups-spread", "suya-grill", "suya-stall", "suya", "swallow-spread", "zobo",
+  "woman-headwrap", "farm-woman", "market-women", "lake-sunset", "green-hills", "waterfall", "waterfall-2", "yams",
+  "produce", "spices", "spices-2", "pottery", "pottery-market", "baskets", "baskets-2", "tomato-market",
+  "palm-fruit-market", "lodge", "eco-lodge", "forest-river", "rainforest-river", "ankara",
 ] as const;
 
 export type ImageName = (typeof imageNames)[number];

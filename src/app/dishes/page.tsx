@@ -4,6 +4,8 @@ import { ArrowRight, Flame } from "lucide-react";
 import { chipClass, PageHeader, Photo } from "@/components/ui";
 import { dishes, getMenu, restaurants } from "@/lib/data";
 import { cn } from "@/lib/utils";
+import { Design } from "@/components/design";
+import { SigDishes } from "@/components/sig/pages";
 
 export const metadata: Metadata = {
   title: "Signature Dishes",
@@ -24,7 +26,7 @@ const menuIds: Record<string, string[]> = {
 
 const heatLabel = ["Mild", "Gentle warmth", "Spicy", "Fiery"];
 
-export default function DishesPage() {
+function DishesPage() {
   return (
     <>
       <PageHeader title="Signature dishes" description="The soups, small chops and grills that define Owerri — what’s in them, how to eat them, and where to order the best versions.">
@@ -60,7 +62,7 @@ export default function DishesPage() {
                     <dt className="text-xs font-bold tracking-[0.12em] text-stone uppercase">Heat</dt>
                     <dd className="mt-1 flex items-center gap-0.5">
                       {[1, 2, 3].map((n) => (
-                        <Flame key={n} className={cn("size-4", n <= d.heat ? "fill-sun text-sun-deep" : "text-ink/20")} />
+                        <Flame key={n} className={cn("size-4", n <= d.heat ? "fill-star text-star-deep" : "text-ink/20")} />
                       ))}
                       <span className="ml-1.5 font-semibold">{heatLabel[d.heat]}</span>
                     </dd>
@@ -99,4 +101,8 @@ export default function DishesPage() {
       </div>
     </>
   );
+}
+
+export default function Page() {
+  return <Design a={<DishesPage />} b={<SigDishes />} />;
 }

@@ -3,13 +3,15 @@ import Link from "next/link";
 import { ArrowRight, Clock } from "lucide-react";
 import { PageHeader, Photo } from "@/components/ui";
 import { neighbourhoods, places, restaurants } from "@/lib/data";
+import { Design } from "@/components/design";
+import { SigNeighbourhoods } from "@/components/sig/pages";
 
 export const metadata: Metadata = {
   title: "Neighbourhoods",
   description: "Get to know Owerri, Imo State by area — where to eat, drink and spend time in Ikenegbu, New Owerri, Douglas Road and beyond.",
 };
 
-export default function NeighbourhoodsPage() {
+function NeighbourhoodsPage() {
   return (
     <>
       <PageHeader title="Neighbourhoods" description="Leafy lunch spots, late-night streets and a lake worth the drive — here’s Owerri, area by area." />
@@ -20,7 +22,7 @@ export default function NeighbourhoodsPage() {
             <article key={n.slug} id={n.slug} className="scroll-mt-24 overflow-hidden rounded-[1.25rem] border border-line/70 bg-paper shadow-card">
               <div className="relative aspect-[16/9]">
                 <Photo name={n.image} alt={`${n.name}, Owerri`} sizes="(min-width: 768px) 50vw, 100vw" priority={i < 2} />
-                <span className="absolute top-3 left-3 rounded-md bg-forest px-2 py-1 text-[11px] font-bold text-cream">{n.vibe}</span>
+                <span className="absolute top-3 left-3 rounded-md bg-forest px-2 py-1 text-[11px] font-bold text-on-forest">{n.vibe}</span>
               </div>
               <div className="p-5 sm:p-6">
                 <h2 className="text-2xl font-semibold text-forest sm:text-3xl">{n.name}</h2>
@@ -54,4 +56,8 @@ export default function NeighbourhoodsPage() {
       </section>
     </>
   );
+}
+
+export default function Page() {
+  return <Design a={<NeighbourhoodsPage />} b={<SigNeighbourhoods />} />;
 }

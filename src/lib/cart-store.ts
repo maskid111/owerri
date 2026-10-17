@@ -89,6 +89,9 @@ export const cart = {
     commit({ ...c, lines: [] });
     return order;
   },
+  clearHistory() {
+    orderStore.set([]);
+  },
   reorder(order: Order) {
     commit({ restaurant: order.restaurant, mode: order.mode, lines: order.lines.map((l) => ({ id: l.id, qty: l.qty })) });
   },

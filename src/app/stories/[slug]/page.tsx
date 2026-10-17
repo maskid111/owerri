@@ -5,6 +5,8 @@ import { ArrowLeft } from "lucide-react";
 import { StoryCard } from "@/components/story-card";
 import { Photo, SectionHeader } from "@/components/ui";
 import { getStory, stories } from "@/lib/data";
+import { Design } from "@/components/design";
+import { SigStory } from "@/components/sig/pages";
 
 export function generateStaticParams() {
   return stories.map((s) => ({ slug: s.slug }));
@@ -17,7 +19,7 @@ export async function generateMetadata({ params }: PageProps<"/stories/[slug]">)
   return { title: s.title, description: s.dek };
 }
 
-export default async function StoryPage({ params }: PageProps<"/stories/[slug]">) {
+async function StoryPage({ params }: { params: PageProps<"/stories/[slug]">["params"] }) {
   const { slug } = await params;
   const story = getStory(slug);
   if (!story) notFound();
@@ -33,7 +35,7 @@ export default async function StoryPage({ params }: PageProps<"/stories/[slug]">
             <ArrowLeft className="size-5" />
           </Link>
           <div className="max-w-3xl p-5 text-cream sm:p-8 lg:p-12">
-            <span className="rounded-md bg-sun px-2 py-1 text-[11px] font-bold text-forest-deep">{story.category}</span>
+            <span className="rounded-md bg-accent px-2 py-1 text-[11px] font-bold text-on-accent">{story.category}</span>
             <h1 className="mt-3 text-[2.1rem] leading-[1.05] font-semibold sm:text-5xl">{story.title}</h1>
             <p className="mt-3 text-lg text-cream/85">{story.dek}</p>
             <p className="mt-3 text-sm text-cream/70">
@@ -62,4 +64,8 @@ export default async function StoryPage({ params }: PageProps<"/stories/[slug]">
       </section>
     </article>
   );
+}
+
+export default function Page({ params }: PageProps<"/stories/[slug]">) {
+  return <Design a={<StoryPage params={params} />} b={<SigStory params={params} />} />;
 }
