@@ -5,29 +5,23 @@ import { cn } from "@/lib/utils";
 import { openSearch } from "./search-dialog";
 
 /**
- * Homepage cultural-dance footage (supplied by Native), shared by both design versions.
- * Encoded from the 3840×2160 master as a seamless 8.8 s crossfade loop in three renditions,
- * so each screen gets a sharp file without downloading more than it needs:
- *  - portrait 1080×1920 centre-cut for tall phone screens
- *  - 1920×1080 for most laptops and desktops
- *  - 3840×2160 for large / high-density displays (skipped when the visitor asks to save data).
+ * Homepage footage (supplied by Native), shared by both design versions.
+ * Encoded from the 2160×4096 portrait master as a seamless 13.8 s crossfade loop in two renditions:
+ *  - portrait 1080×1920 for tall phone screens
+ *  - landscape 1920×1080 for tablets, laptops and desktops — a crop that follows the camera's push-in
+ *    so the faces stay in frame.
  * Reduced motion: the video stays on its poster frame.
  */
 export const HERO_VIDEO = {
-  portrait: { src: "/videos/native-dance-portrait.mp4", poster: "/videos/native-dance-poster-portrait.jpg" },
-  hd: { src: "/videos/native-dance-1080.mp4", poster: "/videos/native-dance-poster.jpg" },
-  uhd: { src: "/videos/native-dance-2160.mp4", poster: "/videos/native-dance-poster.jpg" },
-  label: "Traditional dancers in white wrappers performing with carved staffs at a cultural celebration",
+  portrait: { src: "/videos/native-hero-portrait.mp4", poster: "/videos/native-hero-poster-portrait.jpg" },
+  landscape: { src: "/videos/native-hero-1080.mp4", poster: "/videos/native-hero-poster.jpg" },
+  label: "Three women in white and black dresses with gold necklaces, holding woven baskets of fruit",
 } as const;
 
-type Rendition = "portrait" | "hd" | "uhd";
+type Rendition = "portrait" | "landscape";
 const PORTRAIT_QUERY = "(max-aspect-ratio: 4/5)";
 
-function pickRendition(): Rendition {
-  if (window.matchMedia(PORTRAIT_QUERY).matches) return "portrait";
-  const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
-  return window.innerWidth * window.devicePixelRatio > 2400 && !saveData ? "uhd" : "hd";
-}
+const pickRendition = (): Rendition => (window.matchMedia(PORTRAIT_QUERY).matches ? "portrait" : "landscape");
 
 /** `children` are overlays painted above the footage. There are no visible player controls. */
 export function HeroVideo({ className, children }: { className?: string; children?: React.ReactNode }) {
@@ -36,8 +30,7 @@ export function HeroVideo({ className, children }: { className?: string; childre
 
   // Screen shape and density are unknown while prerendering, so the rendition is chosen on the client.
   useEffect(() => {
-    // Never step down from 4K mid-session (avoids a needless reload when a window narrows slightly).
-    const update = () => setRendition((cur) => (cur === "uhd" && pickRendition() === "hd" ? cur : pickRendition()));
+    const update = () => setRendition(pickRendition());
     const id = window.setTimeout(update, 0); // not rAF: it never fires in background tabs
     const mq = window.matchMedia(PORTRAIT_QUERY);
     mq.addEventListener("change", update);
@@ -58,7 +51,7 @@ export function HeroVideo({ className, children }: { className?: string; childre
     v.play().catch(() => undefined); // autoplay blocked: the poster frame remains
   }, [rendition]);
 
-  const current = HERO_VIDEO[rendition ?? "hd"];
+  const current = HERO_VIDEO[rendition ?? "landscape"];
 
   return (
     <div className={cn("absolute inset-0 overflow-hidden bg-forest-deep", className)}>

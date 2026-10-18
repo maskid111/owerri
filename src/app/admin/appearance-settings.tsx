@@ -131,7 +131,7 @@ export function AppearanceSettings({ chrome = true }: { chrome?: boolean }) {
 
 /** Hard-coded colours on purpose: each preview must look like its version regardless of the active one. */
 function Preview({ version }: { version: DesignVersion }) {
-  const dance = "bg-[url('/videos/native-dance-poster.jpg')] bg-cover bg-center";
+  const dance = "bg-[url('/videos/native-hero-poster.jpg')] bg-cover bg-center";
   if (version === "a") {
     return (
       <div className="overflow-hidden rounded-xl border border-[#e6e2d6] bg-[#fbfaf6]" aria-hidden>

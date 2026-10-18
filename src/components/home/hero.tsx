@@ -4,13 +4,13 @@ import { HeroSearchField, HeroVideo } from "@/components/hero-video";
 import { LandingStory } from "@/components/landing-story";
 
 /**
- * Version A landing viewport: edge-to-edge cultural-dance footage, a short serif welcome sequence and
+ * Version A landing viewport: edge-to-edge cultural footage, a short serif welcome sequence and
  * two controls — Explore and search — anchored bottom-left, like the rest of Version A.
  */
 export function Hero() {
   return (
     <section
-      aria-label="Igbo cultural celebration"
+      aria-label="Welcome to Native"
       className="relative isolate flex h-[calc(100svh-64px-env(safe-area-inset-bottom))] min-h-[30rem] items-end overflow-hidden text-white lg:h-[100svh] lg:min-h-[36rem]"
     >
       <HeroVideo>

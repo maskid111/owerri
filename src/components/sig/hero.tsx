@@ -4,13 +4,13 @@ import { HeroSearchField, HeroVideo } from "../hero-video";
 import { LandingStory } from "../landing-story";
 
 /**
- * Version B landing viewport: edge-to-edge cultural-dance footage, a centred bold welcome sequence
+ * Version B landing viewport: edge-to-edge cultural footage, a centred bold welcome sequence
  * and one floating pill that combines the search field with the Explore action.
  */
 export function SigHero() {
   return (
     <section
-      aria-label="Igbo cultural celebration"
+      aria-label="Welcome to Native"
       className="relative isolate flex h-[calc(100svh-64px-env(safe-area-inset-bottom))] min-h-[30rem] items-end justify-center overflow-hidden text-white lg:h-[100svh] lg:min-h-[36rem]"
     >
       <HeroVideo>

@@ -68,8 +68,8 @@ export const wikimediaCredits: { image: ImageName; title: string; author: string
 /** Homepage footage (public/videos), encoded from the master file supplied by the Native team. */
 export const videoCredits = [
   {
-    file: "/videos/native-dance-1080.mp4",
-    title: "Traditional dance with carved staffs (homepage background)",
+    file: "/videos/native-hero-1080.mp4",
+    title: "Women with woven baskets of fruit (homepage background)",
     author: "Supplied by the Native team",
     license: "Used with permission of the supplier",
     url: "",
