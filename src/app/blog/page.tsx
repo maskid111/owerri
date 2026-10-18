@@ -8,7 +8,7 @@ import { Design } from "@/components/design";
 import { SigBlog } from "@/components/sig/pages";
 
 export const metadata: Metadata = {
-  title: "Blog",
+  title: "Discover",
   description: "Stories about food, heritage, places and city life from Owerri, Imo State.",
 };
 
@@ -17,7 +17,7 @@ function BlogPage() {
   return (
     <>
       <PhotoHero
-        eyebrow="The Native Blog"
+        eyebrow="Discover"
         title="Stories beyond the plate."
         description="Food, heritage and the people who keep Owerri’s traditions alive."
         image="masquerade"

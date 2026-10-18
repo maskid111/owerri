@@ -20,16 +20,16 @@ export const navigation: NavItem[] = [
   },
   { label: "Nearby", href: "/nearby", icon: MapPin, description: "Places and experiences close to you" },
   { label: "Events & Hangouts", short: "Events", href: "/events", icon: CalendarDays, description: "Festivals, live music and nights out" },
+  { label: "Discover", href: "/blog", icon: Newspaper, description: "Stories about food, heritage and city life" },
   { label: "Saved", href: "/saved", icon: Bookmark },
   { label: "Notifications", href: "/notifications", icon: Bell },
-  { label: "Blog", href: "/blog", icon: Newspaper },
   { label: "Settings", href: "/settings", icon: Settings },
   { label: "Help / Support", href: "/help", icon: CircleHelp },
 ];
 
-/** Items 1–6 are the discovery sections; the rest are personal and support pages. */
-export const mainNav = navigation.slice(0, 6);
-export const accountNav = navigation.slice(6);
+/** Items 1–7 are the discovery sections; the rest are personal and support pages. */
+export const mainNav = navigation.slice(0, 7);
+export const accountNav = navigation.slice(7);
 
 export function isActivePath(pathname: string, href: string) {
   return href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);

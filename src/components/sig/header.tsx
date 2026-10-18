@@ -23,6 +23,7 @@ const primary = [
   { href: "/tours", label: "Tours" },
   { href: "/nearby", label: "Nearby" },
   { href: "/events", label: "Events" },
+  { href: "/blog", label: "Discover" },
 ];
 
 /**

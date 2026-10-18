@@ -73,7 +73,7 @@ References live in `design-references/` (`native/` holds the current Native set:
 - **Two themes:** *Native Light* (default) and *Native Forest*. Theme-dependent tokens (`canvas`, `paper`, `ink`, `forest`, `accent`…) are overridden on `:root[data-theme="forest"]`; constant tokens (`pine`, `forest-deep`, `cream`, `leaf`) are for always-dark surfaces such as photo overlays, pattern sections and the footer.
 - **Version A palettes:** set under `/admin` (saved as `native:theme`), applied before first paint.
 - **Brand pattern:** the supplied image is kept as `public/brand/native-pattern.jpg`. `public/brand/native-pattern-tile.png` is the same image with a 9px white edge artefact trimmed and mirrored 2×2 so it repeats seamlessly. Use the `bg-native-pattern` / `bg-native-pattern-lg` utilities (hero edges, `PatternBanner`, footer, drawer, culture feature).
-- **Navigation:** defined once in `src/lib/navigation.ts` (Home, Food & Restaurants, Local Market, Tours › Stays & Getaways / Nature & Places, Nearby, Events & Hangouts, Saved, Notifications, Blog, Settings, Help / Support) and used by the desktop header, mobile drawer and footer.
+- **Navigation:** defined once in `src/lib/navigation.ts` (Home, Food & Restaurants, Local Market, Tours › Stays & Getaways / Nature & Places, Nearby, Events & Hangouts, Discover (`/blog`), Saved, Notifications, Settings, Help / Support) and used by the desktop header, mobile drawer and footer.
 
 ## Pages
 
