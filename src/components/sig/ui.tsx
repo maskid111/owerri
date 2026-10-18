@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight, Leaf, MapPin, Star, type LucideIcon } from "lucide-react";
+import { ArrowRight, ArrowUpRight, MapPin, Star, type LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import type { Restaurant, Story } from "@/lib/data";
 import type { ImageName } from "@/lib/images";
 import { cn, distanceLabel, priceLabel } from "@/lib/utils";
 import { SaveButton } from "../save-button";
+import { Wordmark } from "../brand";
 import { Photo } from "../ui";
 
 /**
@@ -13,30 +14,14 @@ import { Photo } from "../ui";
  * caption-bar photo tiles, portrait cards, pill buttons and pattern-backed dark-green bands.
  */
 
-export function SigLeaf({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 32 32" className={cn("shrink-0", className)} aria-hidden>
-      <path d="M8 25C6.5 15.5 12.5 7 26 5c.8 12.6-6.6 20.4-18 20Z" fill="currentColor" />
-      <path d="M8.5 24.5C12 18.5 16 14 21.5 10" stroke="#072a1d" strokeOpacity=".55" strokeWidth="1.6" strokeLinecap="round" fill="none" />
-    </svg>
-  );
+/** Version B logo — the shared Native wordmark, centred. */
+export function SigWordmark({ light = false, size = "md", className }: { light?: boolean; size?: "sm" | "md" | "lg"; className?: string }) {
+  return <Wordmark tone={light ? "light" : "dark"} size={size} align="center" className={className} />;
 }
 
-/** Centred uppercase wordmark from the Signature references. */
-export function SigWordmark({ light = false, size = "md", className }: { light?: boolean; size?: "sm" | "md" | "lg"; className?: string }) {
-  return (
-    <span className={cn("inline-flex flex-col items-center leading-none", light ? "text-white" : "text-forest", className)}>
-      <span className="flex items-center gap-1.5">
-        <SigLeaf className={cn(light ? "text-leaf" : "text-accent", size === "lg" ? "size-10" : size === "sm" ? "size-5" : "size-7")} />
-        <span className={cn("tracking-[0.16em] uppercase", size === "lg" ? "text-4xl sm:text-6xl" : size === "sm" ? "text-lg" : "text-[1.35rem] sm:text-2xl")}>
-          <span className="font-extrabold">Native</span> <span className="font-light">Kitchen</span>
-        </span>
-      </span>
-      <span className={cn("mt-1.5 font-semibold tracking-[0.32em] uppercase", light ? "text-leaf" : "text-forest-light", size === "lg" ? "text-xs sm:text-sm" : "text-[0.58rem]")}>
-        Native, beyond the plate
-      </span>
-    </span>
-  );
+/** Tiny orange separator — the only decorative accent in Version B labels. */
+export function SigDash({ className }: { className?: string }) {
+  return <span className={cn("inline-block h-[2px] w-5 rounded-full bg-spark", className)} aria-hidden />;
 }
 
 type BtnVariant = "solid" | "white" | "outline" | "ghost";
@@ -58,7 +43,7 @@ export function SigArrow() {
 export function SigEyebrow({ children, light = false, className }: { children: ReactNode; light?: boolean; className?: string }) {
   return (
     <p className={cn("flex items-center gap-2 text-[0.68rem] font-bold tracking-[0.26em] uppercase", light ? "text-leaf" : "text-forest-light", className)}>
-      <Leaf className="size-3.5" aria-hidden />
+      <SigDash />
       {children}
     </p>
   );
@@ -85,7 +70,7 @@ export function SigSection({
 }) {
   return (
     <section className={cn("container-x scroll-mt-28", className)} data-anchor={anchor}>
-      <div className="flex items-end justify-between gap-4 border-b border-line pb-4">
+      <div className="flex items-end justify-between gap-4">
         <div className="min-w-0">
           {eyebrow && <SigEyebrow>{eyebrow}</SigEyebrow>}
           <h2 className="mt-1.5 text-[1.65rem] leading-[1.05] text-forest sm:text-4xl">{title}</h2>
@@ -224,13 +209,12 @@ export function SigPageHeader({
   return (
     <section className="relative isolate overflow-hidden rounded-b-[2.5rem] bg-forest-deep text-white lg:rounded-b-[3.5rem]">
       {image && <Photo name={image} alt="" sizes="100vw" priority className="-z-20 opacity-45" />}
-      <div className="absolute inset-0 -z-10 bg-native-pattern opacity-25 mix-blend-luminosity" aria-hidden />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-forest-deep/70 via-forest-deep/60 to-forest-deep" aria-hidden />
-      <div className="container-x py-12 text-center sm:py-16 lg:py-20">
-        <span className="inline-flex items-center gap-2 rounded-full border border-white/25 px-3.5 py-1.5 text-[0.65rem] font-bold tracking-[0.24em] text-leaf uppercase">
-          <SigLeaf className="size-3.5 text-leaf" /> {eyebrow}
+      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-forest-deep/70 via-forest-deep/65 to-forest-deep" aria-hidden />
+      <div className="container-x py-14 text-center sm:py-20 lg:py-24">
+        <span className="inline-flex items-center gap-2.5 text-[0.65rem] font-bold tracking-[0.24em] text-white/75 uppercase">
+          <SigDash /> {eyebrow}
         </span>
-        <h1 className="mx-auto mt-5 max-w-4xl text-[2.4rem] leading-[0.98] text-balance text-white sm:text-6xl lg:text-7xl">{title}</h1>
+        <h1 className="mx-auto mt-4 max-w-4xl text-[2.4rem] leading-[0.98] text-balance text-white sm:text-6xl lg:text-7xl">{title}</h1>
         {description && <p className="mx-auto mt-4 max-w-2xl text-white/80 sm:text-lg">{description}</p>}
         {children && <div className="mt-7">{children}</div>}
       </div>

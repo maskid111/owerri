@@ -9,7 +9,7 @@ import { dishes, exploreItems, getMenu, getRestaurant, getStory, marketSections,
 import type { FeedScope, FeedSort } from "@/lib/feed";
 import { faqs } from "@/lib/help";
 import type { ImageName } from "@/lib/images";
-import { wikimediaCredits } from "@/lib/images";
+import { videoCredits, wikimediaCredits } from "@/lib/images";
 import { cn } from "@/lib/utils";
 import { OrdersView } from "../orders-view";
 import { Photo } from "../ui";
@@ -187,7 +187,7 @@ export function SigBlog() {
   const [lead, ...rest] = stories;
   return (
     <>
-      <SigPageHeader eyebrow="The Native Kitchen Blog" title="Stories beyond the plate" description="Food, heritage and the people who keep Owerri’s traditions alive." image="masquerade" />
+      <SigPageHeader eyebrow="The Native Blog" title="Stories beyond the plate" description="Food, heritage and the people who keep Owerri’s traditions alive." image="masquerade" />
       <SigSection eyebrow="Featured" title="Read this first" className="pt-14">
         <div className="grid-cols-1 grid gap-6 lg:grid-cols-[1.2fr_1fr]">
           <SigStoryFeature story={lead} />
@@ -200,7 +200,7 @@ export function SigBlog() {
       </SigSection>
       <section className="container-x pt-14">
         <SigPatternBand eyebrow="Our story" title="Native, beyond the plate." href="/culture" cta="Culture & heritage" image="farm-woman">
-          Native Kitchen started with food and grew into a guide to everything around the table: markets, makers, festivals and places.
+          Native started with food and grew into a guide to everything around the table: markets, makers, festivals and places.
         </SigPatternBand>
       </section>
     </>
@@ -388,6 +388,14 @@ export function SigCredits() {
       <SigPageHeader eyebrow="Photography" title="Photo credits" description="Photos illustrate dishes, venues and moods — not the specific sample businesses or events listed." />
       <div className="container-x grid grid-cols-1 max-w-4xl gap-5 py-12">
         <div className="rounded-[1.6rem] bg-paper p-6 shadow-card">
+          <h2 className="text-xl text-forest">Homepage video</h2>
+          {videoCredits.map((v) => (
+            <p key={v.file} className="mt-2 text-sm text-ink/85">
+              <span className="font-bold">{v.title}</span> — {v.author}.
+            </p>
+          ))}
+        </div>
+        <div className="rounded-[1.6rem] bg-paper p-6 shadow-card">
           <h2 className="text-xl text-forest">Unsplash</h2>
           <p className="mt-2 text-sm text-ink/85">
             Most photographs are from Unsplash and used under the{" "}
@@ -445,7 +453,7 @@ export function SigOrders() {
 export function SigHelp() {
   return (
     <>
-      <SigPageHeader eyebrow="We’re here to help" title="Help / Support" description="Quick answers, and a way to reach the Native Kitchen team." />
+      <SigPageHeader eyebrow="We’re here to help" title="Help / Support" description="Quick answers, and a way to reach the Native team." />
       <div className="container-x py-12">
         <div className="grid-cols-1 grid gap-4 md:grid-cols-2">
           {faqs.map((f, i) => (

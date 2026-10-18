@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
-import { Bell, Bookmark, ChevronDown, LayoutGrid, MapPin, Search, ShoppingBag, X } from "lucide-react";
+import { Bell, Bookmark, ChevronDown, LayoutGrid, Search, ShoppingBag, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useCart } from "@/lib/cart-store";
 import { isActivePath, isImmersive, navigation, type NavItem } from "@/lib/navigation";
@@ -21,24 +21,36 @@ export function SigHeader() {
   const unread = useUnreadCount();
   const [menu, setMenu] = useState(false);
   const immersive = isImmersive(pathname);
+  const home = pathname === "/";
+  const [pastHero, setPastHero] = useState(false);
+
+  // On the homepage the header floats discreetly over the video; the icon rail slides in after the hero.
+  useEffect(() => {
+    if (!home) return;
+    const onScroll = () => setPastHero(window.scrollY > window.innerHeight * 0.7);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [home]);
 
   const icon = "relative grid size-10 place-items-center rounded-full text-white transition-colors hover:bg-white/10";
   const badge = "absolute -top-0.5 -right-0.5 grid h-[18px] min-w-[18px] place-items-center rounded-full bg-leaf px-1 text-[10px] font-bold text-forest-deep";
 
   return (
     <>
-      <header className={cn("relative z-40 bg-forest-deep text-white", immersive && "max-lg:hidden")}>
-        <div className="absolute inset-0 -z-10 bg-native-pattern opacity-[0.12] mix-blend-luminosity" aria-hidden />
+      <header className={cn("z-40 text-white", home ? "absolute inset-x-0 top-0 bg-transparent" : "relative bg-forest-deep", immersive && "max-lg:hidden")}>
         <div className="container-x grid h-[72px] grid-cols-[1fr_auto_1fr] items-center lg:h-[88px]">
           <div className="flex items-center gap-1">
             <button onClick={() => setMenu(true)} className={cn(icon, "lg:hidden")} aria-label="Open menu">
               <LayoutGrid className="size-[22px]" />
             </button>
-            <span className="hidden items-center gap-2 rounded-full border border-white/20 px-3.5 py-2 text-[0.68rem] font-bold tracking-[0.18em] uppercase lg:inline-flex">
-              <MapPin className="size-3.5 text-leaf" /> Owerri, Imo State
-            </span>
+            {home && (
+              <button onClick={() => openSearch()} className={cn(icon, "hidden lg:grid")} aria-label="Search">
+                <Search className="size-5" />
+              </button>
+            )}
           </div>
-          <Link href="/" aria-label="Native Kitchen home" className="justify-self-center">
+          <Link href="/" aria-label="Native home" className="justify-self-center">
             <SigWordmark light />
           </Link>
           <div className="flex items-center justify-end gap-0.5">
@@ -56,13 +68,13 @@ export function SigHeader() {
             </Link>
           </div>
         </div>
-        <div className="container-x pb-5">
+        <div className={cn("container-x pb-5", home && "hidden")}>
           <button
             type="button"
             onClick={openSearch}
-            className="mx-auto flex h-12 w-full max-w-2xl items-center gap-3 rounded-full bg-white pr-1.5 pl-2 text-left text-stone shadow-lift transition-shadow hover:ring-4 hover:ring-white/20"
+            className="mx-auto flex h-11 w-full max-w-xl items-center gap-3 rounded-full bg-white pr-1.5 pl-2 text-left text-stone transition-shadow hover:ring-4 hover:ring-white/20"
           >
-            <span className="grid-cols-1 grid size-9 place-items-center rounded-full bg-forest text-on-forest">
+            <span className="grid size-8 place-items-center rounded-full bg-forest text-on-forest">
               <Search className="size-4" />
             </span>
             <span className="flex-1 truncate text-sm">Search for food, places, events…</span>
@@ -72,7 +84,13 @@ export function SigHeader() {
       </header>
 
       {/* Desktop icon rail — every section in order */}
-      <nav aria-label="Main" className="sticky top-0 z-40 hidden border-b border-line bg-paper/95 backdrop-blur lg:block">
+      <nav
+        aria-label="Main"
+        className={cn(
+          "top-0 z-40 hidden border-b border-line bg-paper/95 backdrop-blur transition-transform duration-300 lg:block",
+          home ? cn("fixed inset-x-0", !pastHero && "-translate-y-full") : "sticky",
+        )}
+      >
         <ul className="container-x flex items-stretch justify-center">
           {navigation.map((item) => (
             <li key={item.href} className="relative">
@@ -104,7 +122,7 @@ function RailLink({ item, pathname, unread }: { item: NavItem; pathname: string;
         {item.href === "/notifications" && unread > 0 && <span className="absolute -top-0.5 -right-0.5 size-2.5 rounded-full bg-accent ring-2 ring-paper" />}
       </span>
       {item.label}
-      <span className={cn("absolute inset-x-4 top-0 h-[3px] rounded-b-full bg-forest transition-transform", active ? "scale-x-100" : "scale-x-0")} />
+      <span className={cn("absolute inset-x-6 top-0 h-[3px] rounded-b-full bg-spark transition-transform", active ? "scale-x-100" : "scale-x-0")} />
     </Link>
   );
 }
@@ -136,7 +154,7 @@ function RailDropdown({ item, pathname }: { item: NavItem; pathname: string; unr
         <span className="flex items-center gap-0.5">
           {item.label} <ChevronDown className={cn("size-3 transition-transform", open && "rotate-180")} />
         </span>
-        <span className={cn("absolute inset-x-4 top-0 h-[3px] rounded-b-full bg-forest transition-transform", active ? "scale-x-100" : "scale-x-0")} />
+        <span className={cn("absolute inset-x-6 top-0 h-[3px] rounded-b-full bg-spark transition-transform", active ? "scale-x-100" : "scale-x-0")} />
       </button>
       {open && (
         <div className="absolute top-full left-1/2 z-50 w-[22rem] -translate-x-1/2 pt-2">

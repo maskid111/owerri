@@ -33,7 +33,7 @@ export function BottomNav() {
               >
                 <Icon className={cn("size-[22px]", active && "fill-forest/15")} strokeWidth={active ? 2.2 : 1.8} />
                 {label}
-                {active && <span className="absolute bottom-1.5 h-[3px] w-7 rounded-full bg-accent" />}
+                {active && <span className="absolute bottom-1.5 h-[3px] w-5 rounded-full bg-spark" />}
               </Link>
             </li>
           );

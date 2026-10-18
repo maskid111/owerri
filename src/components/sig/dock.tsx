@@ -36,6 +36,7 @@ export function SigDock() {
                   {href === "/notifications" && unread > 0 && <span className="absolute -top-0.5 right-1 size-2 rounded-full bg-accent" />}
                 </span>
                 <span className="line-clamp-1 px-0.5">{label}</span>
+                {active && <span className="absolute bottom-1 size-1 rounded-full bg-spark" aria-hidden />}
               </Link>
             </li>
           );

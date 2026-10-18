@@ -8,7 +8,7 @@ import { areaName, getRestaurant, menuSections, type MenuItem, type MenuSection,
 import { cn, distanceLabel, naira } from "@/lib/utils";
 import { CartConflictDialog, CartDrawer, QtyStepper } from "./cart-ui";
 import { HoursRow, RestaurantActions } from "./restaurant-actions";
-import { LogoMark, Photo, Rating } from "./ui";
+import { Photo, Rating } from "./ui";
 
 type Tab = "Menu" | "About" | "Reviews" | "Photos";
 const tabs: Tab[] = ["Menu", "About", "Reviews", "Photos"];
@@ -66,7 +66,7 @@ export function MenuView({ restaurant: r, menu }: { restaurant: Restaurant; menu
           <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-4 pb-9 sm:p-6 sm:pb-10 lg:pb-7">
             <div className="text-cream">
               <h1 className="flex items-center gap-1.5 text-[1.7rem] leading-tight font-semibold sm:text-4xl">
-                <LogoMark light className="size-6 sm:size-7" /> {r.name}
+                {r.name}
               </h1>
               <p className="mt-1 text-sm text-cream/90">{r.type}</p>
               <p className="mt-0.5 flex items-center gap-1 text-sm text-cream/90">

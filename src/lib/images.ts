@@ -64,3 +64,14 @@ export const wikimediaCredits: { image: ImageName; title: string; author: string
     url: "https://commons.wikimedia.org/wiki/File:Igbo_Masquerade.jpg",
   },
 ];
+
+/** Homepage footage (public/videos), encoded from the master file supplied by the Native team. */
+export const videoCredits = [
+  {
+    file: "/videos/native-dance-1080.mp4",
+    title: "Traditional dance with carved staffs (homepage background)",
+    author: "Supplied by the Native team",
+    license: "Used with permission of the supplier",
+    url: "",
+  },
+];

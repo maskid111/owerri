@@ -1,5 +1,5 @@
 /**
- * Sample content for the Native Kitchen platform (Owerri, Imo State).
+ * Sample content for the Native platform (Owerri, Imo State).
  * Venues, events, menus, phone numbers and people below are illustrative placeholders, not verified listings.
  * Real landmarks (e.g. Oguta Lake, Dan Anyiam Stadium, Mbari) are referenced only as locations.
  * Replace with a CMS or API when the backend is ready — every page reads from this file.
@@ -1425,7 +1425,7 @@ export const stories: Story[] = [
     title: "Ofe Owerri: the soup of celebration",
     dek: "Why the city’s signature pot is about generosity as much as flavour.",
     category: "Food",
-    author: "Native Kitchen Editorial",
+    author: "Native Editorial",
     readTime: "5 min read",
     date: "Oct 2026",
     image: "ofe-owerri",
@@ -1452,7 +1452,7 @@ export const stories: Story[] = [
     title: "A night guide to Douglas Road",
     dek: "Where to go, what to order and how to pace yourself.",
     category: "City Guide",
-    author: "Native Kitchen Editorial",
+    author: "Native Editorial",
     readTime: "4 min read",
     date: "Sep 2026",
     image: "suya-grill",
@@ -1467,7 +1467,7 @@ export const stories: Story[] = [
     title: "Mbari: art made for the earth",
     dek: "Owerri’s Mbari tradition and why it still matters to the city’s creative scene.",
     category: "Culture",
-    author: "Native Kitchen Editorial",
+    author: "Native Editorial",
     readTime: "6 min read",
     date: "Aug 2026",
     image: "masquerade",
@@ -1482,7 +1482,7 @@ export const stories: Story[] = [
     title: "Abacha, explained",
     dek: "Everything you need to know before your first plate of African salad.",
     category: "Lifestyle",
-    author: "Native Kitchen Editorial",
+    author: "Native Editorial",
     readTime: "3 min read",
     date: "Jul 2026",
     image: "abacha",

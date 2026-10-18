@@ -9,8 +9,9 @@ import { cn } from "@/lib/utils";
 
 export const OPEN_SEARCH_EVENT = "owerri:open-search";
 
-export function openSearch() {
-  window.dispatchEvent(new Event(OPEN_SEARCH_EVENT));
+/** Opens the global search, optionally pre-filled (e.g. from the homepage search field). */
+export function openSearch(query?: unknown) {
+  window.dispatchEvent(new CustomEvent(OPEN_SEARCH_EVENT, { detail: typeof query === "string" ? query : "" }));
 }
 
 type Result = { href: string; title: string; meta: string; group: string; icon: ReactNode };
@@ -77,7 +78,14 @@ export function SearchDialog() {
       }
       if (e.key === "Escape") setOpen(false);
     };
-    const onOpen = () => setOpen(true);
+    const onOpen = (e: Event) => {
+      const q = (e as CustomEvent<string>).detail;
+      if (q) {
+        setQuery(q);
+        setActive(0);
+      }
+      setOpen(true);
+    };
     window.addEventListener("keydown", onKey);
     window.addEventListener(OPEN_SEARCH_EVENT, onOpen);
     return () => {
@@ -130,7 +138,7 @@ export function SearchDialog() {
           <motion.div
             role="dialog"
             aria-modal="true"
-            aria-label="Search Native Kitchen"
+            aria-label="Search Native"
             className="relative w-full max-w-xl overflow-hidden rounded-3xl bg-canvas shadow-2xl shadow-forest-deep/30"
             initial={{ y: 16, scale: 0.98 }}
             animate={{ y: 0, scale: 1 }}

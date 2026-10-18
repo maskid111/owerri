@@ -9,7 +9,7 @@ import { isActivePath, navigation, type NavItem } from "@/lib/navigation";
 import { useUnreadCount } from "@/lib/notifications-store";
 import { useLagosMinutes } from "@/lib/use-lagos-time";
 import { cn } from "@/lib/utils";
-import { Logo, LogoMark } from "./ui";
+import { Logo } from "./ui";
 
 const OPEN_EVENT = "native:open-nav";
 export const openNavDrawer = () => window.dispatchEvent(new Event(OPEN_EVENT));
@@ -85,14 +85,10 @@ export function NavDrawer() {
               </button>
             </div>
 
-            <Link href="/settings" onClick={close} className="mt-5 flex items-center gap-3 rounded-2xl px-1 py-2">
-              <span className="grid size-14 shrink-0 place-items-center rounded-full bg-native-pattern ring-2 ring-mint">
-                <LogoMark light className="size-7" />
-              </span>
+            <Link href="/settings" onClick={close} className="mt-6 flex items-center gap-3 px-1 py-2">
               <span className="min-w-0 flex-1">
                 <span className="block text-sm text-stone">{greeting}</span>
                 <span className="block font-display text-xl font-semibold text-forest">Explorer</span>
-                <span className="block text-xs text-stone">Discover. Explore. Experience.</span>
               </span>
               <ChevronRight className="size-5 text-stone" />
             </Link>
@@ -135,9 +131,7 @@ export function NavDrawer() {
               ))}
             </ul>
 
-            <Link href="/explore" onClick={close} className="relative isolate mt-5 mb-5 flex items-center gap-3 overflow-hidden rounded-2xl bg-pine p-4 text-cream">
-              <span className="absolute inset-0 -z-10 bg-native-pattern opacity-40" aria-hidden />
-              <LogoMark light className="size-8" />
+            <Link href="/explore" onClick={close} className="mt-5 mb-5 flex items-center gap-3 rounded-2xl bg-native-pattern p-4 text-cream">
               <span className="flex-1">
                 <span className="block font-semibold">Explore More</span>
                 <span className="block text-xs text-cream/80">Food · Culture · Places · Experiences</span>

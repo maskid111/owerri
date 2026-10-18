@@ -5,7 +5,7 @@ import { SigAdmin } from "@/components/sig/pages";
 
 export const metadata: Metadata = {
   title: "Admin · Website Design",
-  description: "Prototype admin settings for Native Kitchen.",
+  description: "Prototype admin settings for Native.",
   robots: { index: false },
 };
 

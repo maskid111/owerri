@@ -6,7 +6,7 @@ import { SigSaved } from "@/components/sig/client-pages";
 
 export const metadata: Metadata = {
   title: "Saved",
-  description: "Restaurants, places and events you’ve saved on Native Kitchen.",
+  description: "Restaurants, places and events you’ve saved on Native.",
 };
 
 function SavedPage() {

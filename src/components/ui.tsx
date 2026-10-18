@@ -4,31 +4,13 @@ import { ArrowRight, Star } from "lucide-react";
 import type { ComponentProps, ReactNode } from "react";
 import { img, type ImageName } from "@/lib/images";
 import { cn } from "@/lib/utils";
+import { Wordmark } from "./brand";
 
-/** Native Kitchen leaf mark (green on light surfaces, leaf-green on dark ones). */
-export function LogoMark({ className, light = false }: { className?: string; light?: boolean }) {
-  return (
-    <svg viewBox="0 0 32 32" className={cn("shrink-0", light ? "text-leaf" : "text-accent", className)} aria-hidden>
-      <path d="M8 25C6.5 15.5 12.5 7 26 5c.8 12.6-6.6 20.4-18 20Z" fill="currentColor" />
-      <path d="M8.5 24.5C12 18.5 16 14 21.5 10" stroke={light ? "#0a2c1e" : "var(--color-canvas)"} strokeWidth="1.6" strokeLinecap="round" fill="none" />
-    </svg>
-  );
-}
+export { BRAND } from "./brand";
 
-export const BRAND = { name: "Native Kitchen", tagline: "Native, beyond the plate" };
-
+/** Version A logo — delegates to the shared Native wordmark (components/brand.tsx). */
 export function Logo({ light = false, tagline = true, className }: { light?: boolean; tagline?: boolean; className?: string }) {
-  return (
-    <span className={cn("inline-flex items-center gap-2", className)}>
-      <LogoMark light={light} className="size-7 sm:size-8" />
-      <span className="flex flex-col leading-none">
-        <span className={cn("font-display text-[1.22rem] font-semibold tracking-tight whitespace-nowrap sm:text-[1.6rem]", light ? "text-cream" : "text-forest")}>
-          Native <span className="font-normal italic">Kitchen</span>
-        </span>
-        {tagline && <span className={cn("mt-1 text-[0.62rem] font-semibold tracking-[0.08em]", light ? "text-cream/80" : "text-stone")}>{BRAND.tagline}</span>}
-      </span>
-    </span>
-  );
+  return <Wordmark tone={light ? "light" : "dark"} size="md" tagline={tagline} className={className} />;
 }
 
 /** "Explore by interest ··· See all →" style section header from the references. */
@@ -53,7 +35,8 @@ export function SectionHeader({
     <div className={cn("flex items-end justify-between gap-4", className)}>
       <div className="min-w-0">
         <Tag className={cn("text-[1.45rem] leading-tight font-semibold sm:text-3xl", light ? "text-cream" : "text-forest")}>{title}</Tag>
-        {subtitle && <p className={cn("mt-1 text-sm", light ? "text-cream/70" : "text-stone")}>{subtitle}</p>}
+        <span className="mt-2.5 block h-[3px] w-8 rounded-full bg-spark" aria-hidden />
+        {subtitle && <p className={cn("mt-2.5 text-sm", light ? "text-cream/70" : "text-stone")}>{subtitle}</p>}
       </div>
       {href && (
         <Link

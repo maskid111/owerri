@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { Photo } from "./ui";
 
 /**
- * Brand banner built on the supplied Native Kitchen pattern image.
+ * Brand banner built on the supplied Native pattern image.
  * A dark-green gradient keeps text legible; an optional photo fills the right side on wider screens.
  */
 export function PatternBanner({
@@ -30,7 +30,7 @@ export function PatternBanner({
 }) {
   return (
     <div className={cn("relative isolate overflow-hidden rounded-[1.5rem] bg-native-pattern text-cream lg:rounded-[2rem]", className)}>
-      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-forest-deep/70 via-forest-deep/30 to-transparent" aria-hidden />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-forest-deep/40 to-transparent" aria-hidden />
       <div className={cn("grid items-stretch", photo && "md:grid-cols-[1.15fr_1fr]")}>
         <div className={cn("flex flex-col justify-center p-6 sm:p-10", size === "lg" ? "lg:p-16" : "lg:p-12")}>
           {eyebrow && (
@@ -78,7 +78,7 @@ export function PhotoHero({
         <Photo name={image} alt={imageAlt} sizes="(min-width: 1024px) 1200px, 100vw" priority className="-z-20" />
         {pattern && (
           <div
-            className="absolute inset-y-0 left-0 -z-10 w-full bg-native-pattern opacity-90 [mask-image:linear-gradient(to_right,black_25%,transparent_70%)] sm:w-3/4"
+            className="absolute inset-y-0 left-0 -z-10 w-full bg-native-pattern opacity-70 [mask-image:linear-gradient(to_right,black_15%,transparent_55%)] sm:w-3/4"
             aria-hidden
           />
         )}
@@ -99,9 +99,9 @@ export function Shortcut({ href, label, icon: Icon, badge }: { href: string; lab
   return (
     <Link
       href={href}
-      className="group flex h-full flex-col items-center gap-2.5 rounded-2xl border border-line/70 bg-paper px-2 py-4 text-center shadow-card transition-transform hover:-translate-y-0.5"
+      className="group flex h-full flex-col items-center gap-2.5 rounded-2xl px-1 py-3 text-center transition-colors hover:bg-sand/60"
     >
-      <span className="relative grid size-12 place-items-center rounded-full bg-forest text-on-forest transition-colors group-hover:bg-accent group-hover:text-on-accent sm:size-14">
+      <span className="relative grid size-12 place-items-center rounded-full bg-mint text-forest transition-colors group-hover:bg-forest group-hover:text-on-forest sm:size-14">
         <Icon className="size-[22px] sm:size-6" strokeWidth={1.8} />
         {badge ? <span className="absolute -top-0.5 -right-0.5 size-3 rounded-full bg-accent ring-2 ring-paper" aria-label={`${badge} new`} /> : null}
       </span>

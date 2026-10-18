@@ -130,83 +130,63 @@ export function AppearanceSettings({ chrome = true }: { chrome?: boolean }) {
 
 /** Hard-coded colours on purpose: each preview must look like its version regardless of the active one. */
 function Preview({ version }: { version: DesignVersion }) {
+  const dance = "bg-[url('/videos/native-dance-poster.jpg')] bg-cover bg-center";
   if (version === "a") {
     return (
       <div className="overflow-hidden rounded-xl border border-[#e6e2d6] bg-[#fbfaf6]" aria-hidden>
-        <div className="relative h-36 bg-[url('/images/woman-headwrap.jpg')] bg-cover bg-[70%_center]">
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0a2c1e]/90 to-transparent" />
+        <div className={cn("relative h-40", dance)}>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-black/35" />
           <div className="absolute top-2.5 right-3 left-3 flex items-center justify-between">
-            <span className="font-[Fraunces,serif] text-[11px] font-semibold text-[#f7f5ee]">Native <i>Kitchen</i></span>
-            <span className="flex gap-1.5">
-              {[0, 1, 2, 3, 4].map((i) => (
-                <span key={i} className="h-1 w-5 rounded bg-[#f7f5ee]/60" />
+            <span className="flex flex-col leading-none text-white">
+              <span className="font-[Fraunces,serif] text-[13px] font-medium">Native</span>
+              <span className="mt-0.5 text-[5px] tracking-[0.12em] opacity-80">Native, beyond the plate</span>
+            </span>
+            <span className="flex gap-1">
+              {[0, 1, 2].map((i) => (
+                <span key={i} className="size-2 rounded-full bg-white/70" />
               ))}
             </span>
           </div>
-          <p className="absolute top-12 left-3 font-[Fraunces,serif] text-[19px] leading-[1] font-semibold text-[#f7f5ee]">
-            Discover
-            <br />
-            local gems.
-          </p>
-          <span className="absolute bottom-3 left-3 h-4 w-16 rounded-full bg-[#f7f5ee]" />
+          <div className="absolute bottom-3 left-3 flex gap-1.5">
+            <span className="h-5 w-14 rounded-full bg-white" />
+            <span className="h-5 w-24 rounded-full border border-white/70 bg-white/15" />
+          </div>
         </div>
-        <div className="-mt-3 grid grid-cols-6 gap-1 px-2">
-          {[0, 1, 2, 3, 4, 5].map((i) => (
-            <span key={i} className="flex flex-col items-center gap-1 rounded-md bg-white py-1.5 shadow-sm">
-              <span className="size-3 rounded-full bg-[#0f3d2a]" />
-              <span className="h-0.5 w-4 rounded bg-[#59645d]/40" />
-            </span>
-          ))}
+        <div className="px-3 pt-3">
+          <span className="block h-1.5 w-10 rounded bg-[#0f3d2a]" />
+          <span className="mt-1 block h-[2px] w-4 rounded bg-[#f1a10c]" />
         </div>
-        <div className="grid grid-cols-3 gap-1.5 p-2">
+        <div className="grid grid-cols-3 gap-1.5 p-3 pt-2">
           {["lodge", "lake-sunset", "waterfall"].map((img) => (
-            <span key={img} className="relative h-10 overflow-hidden rounded-md bg-cover bg-center" style={{ backgroundImage: `url(/images/${img}.jpg)` }}>
-              <span className="absolute inset-x-1 bottom-1 h-1 rounded bg-white/80" />
-            </span>
+            <span key={img} className="relative h-10 overflow-hidden rounded-md bg-cover bg-center" style={{ backgroundImage: `url(/images/${img}.jpg)` }} />
           ))}
         </div>
-        <div className="h-4 bg-native-pattern" />
       </div>
     );
   }
   return (
     <div className="overflow-hidden rounded-xl border border-[#dbe4da] bg-[#f3f6f2]" aria-hidden>
-      <div className="relative bg-[#072a1d] px-3 pt-2.5 pb-7">
-        <div className="absolute inset-0 bg-native-pattern opacity-20" />
-        <p className="relative text-center text-[10px] tracking-[0.16em] text-white uppercase">
-          <b>Native</b> Kitchen
-        </p>
-        <div className="relative mx-auto mt-1.5 h-3 w-3/4 rounded-full bg-white" />
-        <div className="relative mt-2.5 flex items-end justify-between gap-2">
-          <p className="text-[17px] leading-[0.9] font-extrabold text-white">
-            Taste
-            <br />
-            Explore
-            <br />
-            <span className="text-[#8fdba8]">Experience</span>
-          </p>
-          <span className="h-[68px] w-14 shrink-0 rounded-t-full bg-[url('/images/woman-headwrap.jpg')] bg-cover bg-center ring-2 ring-white/20" />
+      <div className={cn("relative h-40", dance)}>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/40" />
+        <span className="absolute inset-x-0 top-2.5 flex flex-col items-center leading-none text-white">
+          <span className="font-[Fraunces,serif] text-[13px] font-medium">Native</span>
+          <span className="mt-0.5 text-[5px] tracking-[0.12em] opacity-80">Native, beyond the plate</span>
+        </span>
+        <div className="absolute inset-x-6 bottom-3 flex h-6 items-center justify-end gap-1 rounded-full bg-white p-1">
+          <span className="h-4 w-12 rounded-full bg-[#0b3b2a]" />
         </div>
       </div>
-      <div className="relative -mt-4 mx-2 grid grid-cols-3 gap-1 rounded-lg bg-white p-1.5 shadow-sm">
+      <div className="grid grid-cols-6 gap-1 px-3 pt-3">
         {[0, 1, 2, 3, 4, 5].map((i) => (
-          <span key={i} className="flex flex-col items-center gap-1 py-1">
-            <span className="size-3.5 rounded-full bg-[#0b3b2a] ring-2 ring-[#e0eee3]" />
-            <span className="h-0.5 w-5 rounded bg-[#0b3b2a]/40" />
-          </span>
+          <span key={i} className="mx-auto size-4 rounded-full bg-[#0b3b2a] ring-2 ring-[#e0eee3]" />
         ))}
       </div>
-      <div className="grid grid-cols-3 gap-1.5 p-2">
-        {["douglas-road-night-walk", "waterfall", "festival"].map((img, i) => (
+      <div className="grid grid-cols-3 gap-1.5 p-3">
+        {["suya-grill", "waterfall", "festival"].map((img) => (
           <span key={img} className="overflow-hidden rounded-md">
-            <span className="block h-8 bg-cover bg-center" style={{ backgroundImage: `url(/images/${["suya-grill", "waterfall", "festival"][i]}.jpg)` }} />
+            <span className="block h-7 bg-cover bg-center" style={{ backgroundImage: `url(/images/${img}.jpg)` }} />
             <span className="block h-2.5 bg-[#0b3b2a]" />
           </span>
-        ))}
-      </div>
-      <div className="flex justify-between border-t border-[#dbe4da] bg-white px-2 py-1">
-        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
-          <span key={i} className={cn("size-2 rounded-full", i === 0 ? "bg-[#0b3b2a]" : "bg-[#0b3b2a]/25")} />
         ))}
       </div>
     </div>

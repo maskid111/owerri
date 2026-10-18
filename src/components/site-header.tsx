@@ -46,10 +46,10 @@ export function SiteHeader() {
         )}
       >
         <div className="mx-auto flex h-16 max-w-[90rem] items-center gap-2 px-3 sm:gap-3 sm:px-4 sm:px-6 lg:h-[76px] lg:gap-3 lg:px-6 xl:gap-6 xl:px-8">
-          <button onClick={openNavDrawer} className={cn(iconBtn, "-ml-2 lg:hidden")} aria-label="Open menu">
+          <button onClick={openNavDrawer} className={cn(iconBtn, "-ml-2", !overHero && "lg:hidden")} aria-label="Open menu">
             <Menu className="size-6" />
           </button>
-          <Link href="/" aria-label="Native Kitchen home" className="shrink-0">
+          <Link href="/" aria-label="Native home" className="shrink-0">
             <span className="xl:hidden">
               <Logo light={overHero} tagline={false} />
             </span>
@@ -58,7 +58,7 @@ export function SiteHeader() {
             </span>
           </Link>
 
-          <nav aria-label="Main" className="ml-auto hidden items-center lg:flex">
+          <nav aria-label="Main" className={cn("ml-auto hidden items-center", !overHero && "lg:flex")}>
             <ul className="flex items-center gap-0.5">
               {textItems.map((item) => {
                 const active = isActivePath(pathname, item.href);
@@ -66,7 +66,7 @@ export function SiteHeader() {
                   "relative inline-flex items-center gap-1 rounded-full px-2 py-2 text-[0.82rem] font-semibold whitespace-nowrap transition-colors xl:px-3 xl:text-[0.86rem]",
                   overHero ? (active ? "text-cream" : "text-cream/80 hover:text-cream") : active ? "text-forest" : "text-ink/65 hover:text-forest",
                 );
-                const bar = active && <span className={cn("absolute inset-x-3 -bottom-0.5 h-0.5 rounded-full", overHero ? "bg-leaf" : "bg-accent")} />;
+                const bar = active && <span className={cn("absolute inset-x-3 -bottom-0.5 h-0.5 rounded-full", "bg-spark")} />;
                 return (
                   <li key={item.href}>
                     {item.children ? (
@@ -106,7 +106,7 @@ export function SiteHeader() {
             </ul>
           </nav>
 
-          <div className={cn("ml-auto flex items-center gap-0.5 lg:ml-2 lg:border-l lg:pl-3", overHero ? "lg:border-cream/25" : "lg:border-line")}>
+          <div className={cn("ml-auto flex items-center gap-0.5", !overHero && "lg:ml-2 lg:border-l lg:border-line lg:pl-3")}>
             <button onClick={openSearch} className={iconBtn} aria-label="Search">
               <Search className="size-5" />
             </button>

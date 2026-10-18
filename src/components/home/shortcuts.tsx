@@ -11,7 +11,7 @@ export function HomeShortcuts() {
   const unread = useUnreadCount();
   const items = hrefs.map((h) => navigation.find((n) => n.href === h)!);
   return (
-    <ul className="grid grid-cols-3 gap-2.5 rounded-[1.5rem] bg-canvas p-2.5 shadow-lift sm:gap-3 sm:p-3 lg:grid-cols-6">
+    <ul className="grid grid-cols-3 gap-1 sm:gap-3 lg:grid-cols-6">
       {items.map((n) => (
         <li key={n.href}>
           <Shortcut href={n.href} label={n.label} icon={n.icon} badge={n.href === "/notifications" ? unread : undefined} />

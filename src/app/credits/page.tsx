@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { PageHeader, Photo } from "@/components/ui";
-import { wikimediaCredits } from "@/lib/images";
+import { videoCredits, wikimediaCredits } from "@/lib/images";
 import { Design } from "@/components/design";
 import { SigCredits } from "@/components/sig/pages";
 
 export const metadata: Metadata = {
   title: "Photo credits",
-  description: "Sources and licences for the photography used on Native Kitchen.",
+  description: "Sources and licences for the photography used on Native.",
 };
 
 function CreditsPage() {
@@ -17,6 +17,14 @@ function CreditsPage() {
         description="Photography on this site illustrates dishes, venues and moods. Photos are not of the specific sample businesses or events listed."
       />
       <section className="container-x max-w-3xl space-y-6 py-6 lg:mx-0 lg:py-10">
+        <div className="rounded-[1.25rem] border border-line/70 bg-paper p-5 shadow-card">
+          <h2 className="text-xl font-semibold text-forest">Homepage video</h2>
+          {videoCredits.map((v) => (
+            <p key={v.file} className="mt-2 text-sm text-ink/85">
+              <span className="font-semibold text-forest">{v.title}</span> — {v.author}.
+            </p>
+          ))}
+        </div>
         <div className="rounded-[1.25rem] border border-line/70 bg-paper p-5 shadow-card">
           <h2 className="text-xl font-semibold text-forest">Unsplash</h2>
           <p className="mt-2 text-sm leading-relaxed text-ink/85">

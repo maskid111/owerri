@@ -17,7 +17,7 @@ function BlogPage() {
   return (
     <>
       <PhotoHero
-        eyebrow="The Native Kitchen Blog"
+        eyebrow="The Native Blog"
         title="Stories beyond the plate."
         description="Food, heritage and the people who keep Owerri’s traditions alive."
         image="masquerade"
@@ -60,7 +60,7 @@ function BlogPage() {
             </ButtonLink>
           }
         >
-          Native Kitchen started with food — Ofe Owerri, abacha, pepper soup — and grew into a guide to everything around the table: the markets, the makers, the festivals and the
+          Native started with food — Ofe Owerri, abacha, pepper soup — and grew into a guide to everything around the table: the markets, the makers, the festivals and the
           places that make Imo State home.
         </PatternBanner>
       </section>

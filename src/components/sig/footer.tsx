@@ -19,7 +19,7 @@ const more = [
 export function SigFooter() {
   return (
     <footer className="relative isolate mt-10 overflow-hidden rounded-t-[2.5rem] bg-native-pattern-lg text-white lg:rounded-t-[3.5rem]">
-      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-forest-deep/30 via-forest-deep/75 to-forest-deep" aria-hidden />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-transparent to-forest-deep/50" aria-hidden />
       <div className="container-x py-14 text-center lg:py-20">
         <SigWordmark light size="lg" />
         <p className="mx-auto mt-5 max-w-md text-white/80">Food, culture, places and experiences from Owerri and Imo State — all in one place.</p>
@@ -44,8 +44,8 @@ export function SigFooter() {
             </li>
           ))}
         </ul>
-        <div className="mx-auto mt-10 h-px max-w-4xl bg-white/15" />
-        <p className="mt-6 text-xs text-white/55">© 2026 Native Kitchen · Owerri, Imo State, Nigeria · Listings, menus, prices and events are sample content.</p>
+        <span className="mx-auto mt-10 block h-[2px] w-8 rounded-full bg-spark" aria-hidden />
+        <p className="mt-6 text-xs text-white/55">© 2026 Native · Owerri, Imo State, Nigeria · Listings, menus, prices and events are sample content.</p>
       </div>
     </footer>
   );
