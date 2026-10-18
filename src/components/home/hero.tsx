@@ -13,7 +13,7 @@ export function Hero() {
       aria-label="Igbo cultural celebration"
       className="relative isolate flex h-[calc(100svh-64px-env(safe-area-inset-bottom))] min-h-[30rem] items-end overflow-hidden text-white lg:h-[100svh] lg:min-h-[36rem]"
     >
-      <HeroVideo controls="a">
+      <HeroVideo>
         {/* Forest-green grade and gradients — the brand colour carried into the footage */}
         <div className="pointer-events-none absolute inset-0 bg-pine/35 mix-blend-soft-light" aria-hidden />
         <div className="pointer-events-none absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-forest-deep/60 to-transparent" aria-hidden />

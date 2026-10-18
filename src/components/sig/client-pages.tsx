@@ -20,7 +20,7 @@ export function SigSaved() {
   return (
     <>
       <SigPageHeader eyebrow="Your collection" title="Saved" description="Everything you’ve hearted — kitchens, stalls, stays and events — stored on this device.">
-        <div className="inline-flex rounded-full bg-white/10 p-1" role="tablist" aria-label="Filter saved">
+        <div className="inline-flex rounded-full bg-sand p-1" role="tablist" aria-label="Filter saved">
           {(
             [
               ["all", `All · ${total}`],
@@ -33,7 +33,7 @@ export function SigSaved() {
               role="tab"
               aria-selected={tab === k}
               onClick={() => setTab(k)}
-              className={cn("rounded-full px-4 py-2 text-[0.68rem] font-bold tracking-[0.12em] uppercase transition-colors", tab === k ? "bg-white text-forest-deep" : "text-white/80 hover:text-white")}
+              className={cn("rounded-full px-4 py-2 text-xs font-semibold transition-colors", tab === k ? "bg-forest text-on-forest" : "text-ink/70 hover:text-forest")}
             >
               {l}
             </button>
@@ -84,7 +84,7 @@ export function SigNotifications() {
   return (
     <>
       <SigPageHeader eyebrow="Inbox" title="Notifications" description={unread ? `${unread} unread ${unread === 1 ? "update" : "updates"}` : "You’re all caught up."}>
-        <button type="button" disabled={!unread} onClick={() => notificationActions.markAllRead(items.map((n) => n.id))} className={sigBtn("white")}>
+        <button type="button" disabled={!unread} onClick={() => notificationActions.markAllRead(items.map((n) => n.id))} className={sigBtn("outline")}>
           <CheckCheck className="size-4" /> Mark all read
         </button>
       </SigPageHeader>
@@ -104,7 +104,7 @@ export function SigNotifications() {
               >
                 <span className="flex items-start justify-between gap-3">
                   <span className="font-bold text-forest">{n.title}</span>
-                  <span className="shrink-0 text-[0.62rem] font-bold tracking-[0.14em] text-stone uppercase">{n.when}</span>
+                  <span className="shrink-0 text-xs font-semibold text-stone">{n.when}</span>
                 </span>
                 <span className="mt-1 block text-sm text-ink/80">{n.body}</span>
               </Link>

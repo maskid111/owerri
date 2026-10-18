@@ -59,14 +59,14 @@ function RowBody({ item }: { item: ExploreItem }) {
       <span className="grid-cols-1 grid w-16 shrink-0 place-items-center self-stretch rounded-xl bg-mint text-center text-forest">
         <span>
           <span className="block text-lg leading-none font-extrabold">{item.distanceKm !== undefined ? distanceLabel(item.distanceKm).split(" ")[0] : "—"}</span>
-          <span className="text-[0.6rem] font-bold tracking-[0.16em] uppercase">km</span>
+          <span className="text-xs font-semibold">km</span>
         </span>
       </span>
       <span className="relative size-16 shrink-0 overflow-hidden rounded-xl sm:size-20">
         <Photo name={item.image} alt={item.title} sizes="80px" className="transition-transform duration-500 group-hover:scale-110" />
       </span>
       <span className="min-w-0 flex-1">
-        <span className="text-[0.6rem] font-bold tracking-[0.18em] text-forest-light uppercase">{item.label}</span>
+        <span className="text-xs font-semibold text-forest-light">{item.label}</span>
         <span className="block truncate font-bold text-forest">{item.title}</span>
         <span className="block truncate text-xs text-stone">{item.time}</span>
       </span>
@@ -82,9 +82,9 @@ function TicketBody({ item }: { item: ExploreItem }) {
       <span className="relative flex w-[4.5rem] shrink-0 flex-col items-center justify-center bg-forest py-4 text-on-forest sm:w-20">
         {d ? (
           <>
-            <span className="text-[0.62rem] font-bold tracking-[0.2em] uppercase opacity-80">{d.weekday}</span>
+            <span className="text-xs font-semibold opacity-80">{d.weekday}</span>
             <span className="my-0.5 text-3xl leading-none font-extrabold">{d.day}</span>
-            <span className="text-[0.62rem] font-bold tracking-[0.2em] uppercase opacity-80">{d.month}</span>
+            <span className="text-xs font-semibold opacity-80">{d.month}</span>
           </>
         ) : (
           <>
@@ -99,7 +99,7 @@ function TicketBody({ item }: { item: ExploreItem }) {
         <Photo name={item.image} alt={item.title} sizes="128px" className="transition-transform duration-500 group-hover:scale-110" />
       </span>
       <span className="min-w-0 flex-1 p-4">
-        <span className="text-[0.6rem] font-bold tracking-[0.18em] text-forest-light uppercase">{item.label}</span>
+        <span className="text-xs font-semibold text-forest-light">{item.label}</span>
         <span className="block text-lg leading-tight font-bold text-forest">{item.title}</span>
         <span className="mt-1.5 flex items-center gap-1.5 truncate text-xs text-stone">
           <MapPin className="size-3.5 shrink-0" /> {item.location}
@@ -107,7 +107,7 @@ function TicketBody({ item }: { item: ExploreItem }) {
         <span className="mt-0.5 flex items-center gap-1.5 truncate text-xs text-stone">
           <Clock className="size-3.5 shrink-0" /> {item.time}
         </span>
-        <span className="mt-3 inline-flex items-center gap-1.5 text-[0.68rem] font-bold tracking-[0.14em] text-forest uppercase">
+        <span className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-forest">
           {item.ticketPrice ? (
             <>
               <Ticket className="size-4" /> Tickets · {naira(item.ticketPrice)}
@@ -165,7 +165,7 @@ function Sheet({ item, onClose }: { item: ExploreItem; onClose: () => void }) {
             <X className="size-5" />
           </button>
           <div className="absolute inset-x-0 bottom-0 p-5 text-white">
-            <span className="rounded-full bg-white px-3 py-1 text-[0.6rem] font-bold tracking-[0.18em] text-forest uppercase">{item.label}</span>
+            <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-forest">{item.label}</span>
             <h2 id={titleId} className="mt-3 text-3xl leading-tight text-white">
               {item.title}
             </h2>
@@ -197,7 +197,7 @@ function Sheet({ item, onClose }: { item: ExploreItem; onClose: () => void }) {
                 .filter((x): x is { icon: typeof Clock; k: string; v: string } => Boolean(x))
                 .map(({ icon: Icon, k, v }) => (
                   <div key={k} className="rounded-2xl bg-paper p-3 shadow-card">
-                    <dt className="flex items-center gap-1.5 text-[0.6rem] font-bold tracking-[0.18em] text-forest-light uppercase">
+                    <dt className="flex items-center gap-1.5 text-xs font-semibold text-forest-light">
                       <Icon className="size-3.5" /> {k}
                     </dt>
                     <dd className="mt-1 font-semibold text-ink">{v}</dd>
@@ -210,7 +210,7 @@ function Sheet({ item, onClose }: { item: ExploreItem; onClose: () => void }) {
               <div className="mt-6 rounded-2xl bg-forest p-4 text-on-forest">
                 <div className="flex items-center justify-between">
                   <span>
-                    <span className="block text-[0.62rem] font-bold tracking-[0.2em] uppercase opacity-75">Tickets</span>
+                    <span className="block text-xs font-semibold opacity-75">Tickets</span>
                     <span className="font-bold">{naira(item.ticketPrice)} each</span>
                   </span>
                   <span className="flex items-center gap-3">
@@ -225,7 +225,7 @@ function Sheet({ item, onClose }: { item: ExploreItem; onClose: () => void }) {
                     </button>
                   </span>
                 </div>
-                <button onClick={() => setDone(true)} className="group mt-4 flex h-12 w-full items-center justify-between rounded-full bg-white px-5 text-sm font-bold tracking-[0.08em] text-forest-deep uppercase">
+                <button onClick={() => setDone(true)} className="group mt-4 flex h-12 w-full items-center justify-between rounded-full bg-white px-5 text-sm font-semibold text-forest-deep">
                   Reserve {qty} · {naira(item.ticketPrice * qty)} <SigArrow />
                 </button>
                 <p className="mt-2 text-center text-xs opacity-75">Demo booking — no payment is taken.</p>

@@ -95,13 +95,18 @@ export function PhotoHero({
 }
 
 /** Circular-icon discovery shortcut (reference: Native Light homepage). */
-export function Shortcut({ href, label, icon: Icon, badge }: { href: string; label: string; icon: LucideIcon; badge?: number }) {
+export function Shortcut({ href, label, icon: Icon, badge, highlight }: { href: string; label: string; icon: LucideIcon; badge?: number; highlight?: boolean }) {
   return (
     <Link
       href={href}
       className="group flex h-full flex-col items-center gap-2.5 rounded-2xl px-1 py-3 text-center transition-colors hover:bg-sand/60"
     >
-      <span className="relative grid size-12 place-items-center rounded-full bg-mint text-forest transition-colors group-hover:bg-forest group-hover:text-on-forest sm:size-14">
+      <span
+        className={cn(
+          "relative grid size-12 place-items-center rounded-full transition-colors sm:size-14",
+          highlight ? "bg-forest text-on-forest group-hover:bg-forest-light" : "bg-mint text-forest group-hover:bg-forest group-hover:text-on-forest",
+        )}
+      >
         <Icon className="size-[22px] sm:size-6" strokeWidth={1.8} />
         {badge ? <span className="absolute -top-0.5 -right-0.5 size-3 rounded-full bg-accent ring-2 ring-paper" aria-label={`${badge} new`} /> : null}
       </span>

@@ -1,17 +1,17 @@
 import Link from "next/link";
-import { BedDouble, Briefcase, CalendarDays, Compass, Drama, Trees, UtensilsCrossed, type LucideIcon } from "lucide-react";
-import { exploreItems, marketSections, restaurants, stories } from "@/lib/data";
+import { BedDouble, Briefcase, CalendarDays, Drama, Store, Trees, UtensilsCrossed, type LucideIcon } from "lucide-react";
+import { exploreItems, marketSections, restaurants, stories, topRestaurants } from "@/lib/data";
 import { Photo } from "../ui";
 import { SigExploreItem } from "./explore-item";
 import { SigHero } from "./hero";
 import { SigArrow, sigBtn, SigEyebrow, SigRestaurantCard, SigSection, SigStoryFeature, SigStoryRow, SigTile } from "./ui";
 
 const categories: { label: string; hint: string; href: string; icon: LucideIcon }[] = [
-  { label: "Native Food", hint: "Kitchens & dishes", href: "/market", icon: UtensilsCrossed },
-  { label: "Culture & Heritage", hint: "Mbari, masquerades", href: "/culture", icon: Drama },
-  { label: "Nature & Places", hint: "Lakes, rivers, trails", href: "/tours/nature", icon: Trees },
+  { label: "Order Food", hint: "Restaurants & delivery", href: "/restaurants", icon: UtensilsCrossed },
+  { label: "Local Market", hint: "Produce, spices, crafts", href: "/market", icon: Store },
   { label: "Stays & Getaways", hint: "Lodges & hotels", href: "/tours/stays", icon: BedDouble },
-  { label: "Nearby Experiences", hint: "Close to the centre", href: "/nearby", icon: Compass },
+  { label: "Nature & Places", hint: "Lakes, rivers, trails", href: "/tours/nature", icon: Trees },
+  { label: "Culture & Heritage", hint: "Mbari, masquerades", href: "/culture", icon: Drama },
   { label: "Events", hint: "Festivals & nights out", href: "/events", icon: CalendarDays },
 ];
 
@@ -27,7 +27,18 @@ export function SigHome() {
     <>
       <SigHero />
 
-      {/* Category grid (3 × 2 like the reference) — open, no container */}
+      {/* Food first: restaurants you can order from, Annie’s Kitchen on top */}
+      <SigSection eyebrow="Order food" title="Good food, delivered." href="/restaurants" linkLabel="All restaurants" className="pt-14 lg:pt-24">
+        <div className="no-scrollbar -mx-4 flex snap-x gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:grid sm:grid-cols-4 sm:gap-4 sm:overflow-visible sm:px-0">
+          {topRestaurants()
+            .slice(0, 4)
+            .map((r) => (
+              <SigRestaurantCard key={r.slug} restaurant={r} className="w-[46%] shrink-0 snap-start sm:w-auto" />
+            ))}
+        </div>
+      </SigSection>
+
+      {/* Category grid (3 × 2 like the reference) — Order Food first */}
       <section className="container-x pt-14 lg:pt-24">
         <ul className="mx-auto grid max-w-5xl grid-cols-3 gap-x-2 gap-y-6 lg:grid-cols-6">
           {categories.map(({ label, href, icon: Icon }) => (

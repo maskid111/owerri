@@ -4,11 +4,11 @@ import Link from "next/link";
 import { ArrowLeft, Plus, ShoppingBag, Star } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
 import { cart, useCart } from "@/lib/cart-store";
-import { areaName, getRestaurant, menuSections, type MenuItem, type MenuSection, type Restaurant } from "@/lib/data";
-import { cn, distanceLabel, naira } from "@/lib/utils";
+import { getRestaurant, locationLabel, menuSections, type MenuItem, type MenuSection, type Restaurant } from "@/lib/data";
+import { cn, naira } from "@/lib/utils";
 import { CartConflictDialog, CartDrawer, CartLines, CartTotals, FulfilmentToggle, QtyStepper } from "../cart-ui";
 import { HoursRow, RestaurantActions } from "../restaurant-actions";
-import { Photo } from "../ui";
+import { Photo, ProfileNotice } from "../ui";
 import { SigArrow, sigBtn, SigEyebrow } from "./ui";
 
 type Tab = "Menu" | "About" | "Reviews";
@@ -50,14 +50,20 @@ export function SigMenu({ restaurant: r, menu }: { restaurant: Restaurant; menu:
             <p className="mt-2 text-white/75">{r.tagline}</p>
             <p className="mt-4 flex flex-wrap gap-2 text-xs font-bold">
               <span className="inline-flex items-center gap-1 rounded-full bg-white px-3 py-1 text-forest-deep">
-                <Star className="size-3.5 fill-accent text-accent" /> {r.rating.toFixed(1)} ({r.reviewCount})
+                {r.reviewCount ? (
+                  <>
+                    <Star className="size-3.5 fill-accent text-accent" /> {r.rating.toFixed(1)} ({r.reviewCount})
+                  </>
+                ) : (
+                  "New on Native"
+                )}
               </span>
-              <span className="rounded-full border border-white/30 px-3 py-1">
-                {distanceLabel(r.distanceKm)} · {areaName(r.area)}
-              </span>
+              <span className="rounded-full border border-white/30 px-3 py-1">{locationLabel(r)}</span>
             </p>
           </div>
         </div>
+
+        <ProfileNotice restaurant={r} className="mt-5" />
 
         <div className="mt-6 flex gap-6 border-b border-line" role="tablist" aria-label={`${r.name} sections`}>
           {(["Menu", "About", "Reviews"] as Tab[]).map((t) => (
@@ -66,7 +72,7 @@ export function SigMenu({ restaurant: r, menu }: { restaurant: Restaurant; menu:
               role="tab"
               aria-selected={tab === t}
               onClick={() => setTab(t)}
-              className={cn("relative pb-3 text-[0.75rem] font-bold tracking-[0.16em] uppercase", tab === t ? "text-forest" : "text-stone hover:text-forest")}
+              className={cn("relative pb-3 text-sm font-semibold", tab === t ? "text-forest" : "text-stone hover:text-forest")}
             >
               {t}
               <span className={cn("absolute inset-x-0 -bottom-px h-[3px] rounded-t-full bg-forest transition-transform", tab === t ? "scale-x-100" : "scale-x-0")} />
@@ -124,7 +130,7 @@ export function SigMenu({ restaurant: r, menu }: { restaurant: Restaurant; menu:
                                 <button
                                   onClick={() => add(m)}
                                   aria-label={`Add ${m.name} to cart`}
-                                  className="inline-flex h-8 items-center gap-1 rounded-full border-2 border-forest px-3 text-[0.65rem] font-bold tracking-[0.12em] text-forest uppercase transition-colors hover:bg-forest hover:text-on-forest"
+                                  className="inline-flex h-8 items-center gap-1 rounded-full border-2 border-forest px-3 text-xs font-semibold text-forest transition-colors hover:bg-forest hover:text-on-forest"
                                 >
                                   <Plus className="size-3.5" strokeWidth={3} /> Add
                                 </button>
@@ -140,7 +146,9 @@ export function SigMenu({ restaurant: r, menu }: { restaurant: Restaurant; menu:
                 </ul>
               </section>
             ))}
-            <p className="text-xs text-stone">Prices in naira (₦). Sample menu — prices are illustrative.</p>
+            <p className="text-xs text-stone">
+              Prices in naira (₦). {r.sampleProfile ? `Sample menu — dishes and prices to be confirmed by ${r.name}.` : "Sample menu — prices are illustrative."}
+            </p>
           </div>
 
           {/* Order panel (desktop) */}
@@ -185,10 +193,11 @@ export function SigMenu({ restaurant: r, menu }: { restaurant: Restaurant; menu:
 
       {tab === "Reviews" && (
         <div className="container-x mt-8 grid grid-cols-1 gap-4 md:grid-cols-2">
+          {r.reviews.length === 0 && <p className="text-stone">No reviews yet — {r.name} is new on Native.</p>}
           {r.reviews.map((rev) => (
             <figure key={rev.author} className="rounded-2xl bg-forest p-5 text-on-forest">
               <blockquote className="text-lg leading-snug font-semibold">“{rev.text}”</blockquote>
-              <figcaption className="mt-3 text-xs font-bold tracking-[0.14em] uppercase opacity-70">
+              <figcaption className="mt-3 text-xs font-semibold opacity-70">
                 {rev.author} · {rev.date} · {rev.rating}/5
               </figcaption>
             </figure>
@@ -204,7 +213,7 @@ export function SigMenu({ restaurant: r, menu }: { restaurant: Restaurant; menu:
               {summary.count} {summary.count === 1 ? "item" : "items"}
             </span>
             <span className="ml-auto text-sm font-extrabold">{naira(summary.subtotal)}</span>
-            <span className="inline-flex h-10 items-center gap-1.5 rounded-full bg-white px-4 text-[0.7rem] font-bold tracking-[0.1em] text-forest-deep uppercase">
+            <span className="inline-flex h-10 items-center gap-1.5 rounded-full bg-white px-4 text-sm font-semibold text-forest-deep">
               View order <SigArrow />
             </span>
           </button>

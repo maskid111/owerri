@@ -4,6 +4,7 @@ import { Check, FileText, LayoutDashboard, Palette, ShieldAlert, Store, Users } 
 import { designVersions, setDesignVersion, useDesignVersion, type DesignVersion } from "@/lib/design";
 import { setSiteTheme, themes, useSiteTheme } from "@/lib/theme";
 import { cn } from "@/lib/utils";
+import { LOGO } from "@/components/brand";
 
 const sections = [
   { label: "Overview", icon: LayoutDashboard },
@@ -138,7 +139,8 @@ function Preview({ version }: { version: DesignVersion }) {
           <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-black/35" />
           <div className="absolute top-2.5 right-3 left-3 flex items-center justify-between">
             <span className="flex flex-col leading-none text-white">
-              <span className="font-[Fraunces,serif] text-[13px] font-medium">Native</span>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={LOGO.white} alt="" className="h-4 w-auto" />
               <span className="mt-0.5 text-[5px] tracking-[0.12em] opacity-80">Native, beyond the plate</span>
             </span>
             <span className="flex gap-1">
@@ -169,7 +171,8 @@ function Preview({ version }: { version: DesignVersion }) {
       <div className={cn("relative h-40", dance)}>
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/40" />
         <span className="absolute inset-x-0 top-2.5 flex flex-col items-center leading-none text-white">
-          <span className="font-[Fraunces,serif] text-[13px] font-medium">Native</span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={LOGO.white} alt="" className="h-4 w-auto" />
           <span className="mt-0.5 text-[5px] tracking-[0.12em] opacity-80">Native, beyond the plate</span>
         </span>
         <div className="absolute inset-x-6 bottom-3 flex h-6 items-center justify-end gap-1 rounded-full bg-white p-1">

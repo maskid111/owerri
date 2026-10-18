@@ -2,45 +2,49 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef } from "react";
-import { isActivePath, isImmersive, navigation } from "@/lib/navigation";
-import { useUnreadCount } from "@/lib/notifications-store";
+import { Bookmark, House, Menu, Store, UtensilsCrossed } from "lucide-react";
+import { useEffect } from "react";
+import { isActivePath, isImmersive } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
+import { openSigMenu } from "./header";
 
-/** Version B mobile dock: every section in order (as in the reference), scrollable, icon above label. */
+const dockItems = [
+  { href: "/", label: "Home", icon: House },
+  { href: "/restaurants", label: "Food", icon: UtensilsCrossed },
+  { href: "/market", label: "Market", icon: Store },
+  { href: "/saved", label: "Saved", icon: Bookmark },
+];
+
+/** Version B mobile dock: a small floating pill with four destinations and Menu — calm, thumb-friendly. */
 export function SigDock() {
   const pathname = usePathname();
-  const unread = useUnreadCount();
-  const ref = useRef<HTMLUListElement>(null);
-
-  useEffect(() => {
-    ref.current?.querySelector('[aria-current="page"]')?.scrollIntoView({ inline: "center", block: "nearest" });
-  }, [pathname]);
-
   if (isImmersive(pathname)) return null;
 
   return (
-    <nav aria-label="Sections" className="pb-safe fixed inset-x-0 bottom-0 z-40 border-t border-line bg-paper shadow-[0_-8px_24px_-16px_rgb(7_42_29/0.35)] lg:hidden">
-      <ul ref={ref} className="no-scrollbar flex h-16 snap-x items-stretch overflow-x-auto px-1">
-        {navigation.map(({ href, label, icon: Icon }) => {
+    <nav aria-label="Quick links" className="pb-safe fixed inset-x-0 bottom-0 z-40 px-3 pb-2 lg:hidden">
+      <ul className="mx-auto flex h-14 max-w-sm items-stretch justify-around rounded-full border border-line/70 bg-paper/95 px-2 shadow-lift backdrop-blur">
+        {dockItems.map(({ href, label, icon: Icon }) => {
           const active = isActivePath(pathname, href);
           return (
-            <li key={href} className="snap-start">
+            <li key={href} className="flex-1">
               <Link
                 href={href}
                 aria-current={active ? "page" : undefined}
-                className={cn("relative flex h-full w-[4.6rem] flex-col items-center justify-center gap-1 text-center text-[10px] leading-tight font-bold", active ? "text-forest" : "text-stone")}
+                className={cn("relative flex h-full flex-col items-center justify-center gap-0.5 text-[10px] font-medium", active ? "text-forest" : "text-stone")}
               >
-                <span className={cn("relative grid h-7 w-11 place-items-center rounded-full transition-colors", active && "bg-forest text-on-forest")}>
-                  <Icon className="size-[18px]" strokeWidth={active ? 2.2 : 1.8} />
-                  {href === "/notifications" && unread > 0 && <span className="absolute -top-0.5 right-1 size-2 rounded-full bg-accent" />}
-                </span>
-                <span className="line-clamp-1 px-0.5">{label}</span>
-                {active && <span className="absolute bottom-1 size-1 rounded-full bg-spark" aria-hidden />}
+                <Icon className="size-5" strokeWidth={active ? 2.1 : 1.7} />
+                {label}
+                {active && <span className="absolute bottom-1 h-[2px] w-3 rounded-full bg-spark" aria-hidden />}
               </Link>
             </li>
           );
         })}
+        <li className="flex-1">
+          <button onClick={openSigMenu} className="flex h-full w-full flex-col items-center justify-center gap-0.5 text-[10px] font-medium text-stone">
+            <Menu className="size-5" strokeWidth={1.7} />
+            Menu
+          </button>
+        </li>
       </ul>
     </nav>
   );

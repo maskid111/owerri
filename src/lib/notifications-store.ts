@@ -19,8 +19,8 @@ export function useNotifications(): LiveNotice[] {
   return useMemo(() => {
     const fromOrders: Notice[] = orders.slice(0, 5).map((o) => ({
       id: `order-${o.id}`,
-      title: `Order ${o.id} confirmed`,
-      body: `${o.restaurantName} is preparing your ${o.mode === "delivery" ? "delivery" : "pickup"} order.`,
+      title: `Order preview ${o.id} saved`,
+      body: `Your ${o.restaurantName} ${o.mode === "delivery" ? "delivery" : "pickup"} order is saved in this preview — it has not been sent to the restaurant.`,
       when: "Recently",
       href: "/orders",
       kind: "offer",

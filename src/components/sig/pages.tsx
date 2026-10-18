@@ -17,6 +17,7 @@ import { SigExploreItem } from "./explore-item";
 import { SigMenu } from "./menu";
 import { SigRestaurants, SigRestaurantsFromParams } from "./restaurants";
 import { SigFeed, SigScopedFeed } from "./feed";
+import { FloatingCartBar } from "../food";
 import { SigArrow, sigBtn, SigEyebrow, SigNote, SigPageHeader, SigRestaurantRow, SigSection, SigStoryFeature, SigStoryRow, SigTile } from "./ui";
 
 /* ------------------------------------------------------------------ */
@@ -75,7 +76,7 @@ export function SigMarket() {
       >
         <div className="flex flex-wrap justify-center gap-2">
           {marketSections.map((m) => (
-            <Link key={m.name} href={m.href} className="rounded-full border border-white/30 px-4 py-2 text-[0.68rem] font-bold tracking-[0.14em] uppercase hover:bg-white hover:text-forest-deep">
+            <Link key={m.name} href={m.href} className="rounded-full border border-line px-4 py-2 text-sm font-medium text-forest transition-colors hover:border-forest hover:bg-forest hover:text-on-forest">
               {m.name}
             </Link>
           ))}
@@ -148,10 +149,10 @@ export function SigTours() {
     <>
       <SigPageHeader eyebrow="Tours" title="Slow down. Look around." description="Lodges in the palms, lakes at sunset and forest rivers — all within easy reach of Owerri." image="green-hills">
         <div className="flex justify-center gap-3">
-          <Link href="/tours/stays" className={sigBtn("white")}>
+          <Link href="/tours/stays" className={sigBtn("solid")}>
             <BedDouble className="size-4" /> Stays & Getaways
           </Link>
-          <Link href="/tours/nature" className={sigBtn("ghost")}>
+          <Link href="/tours/nature" className={sigBtn("outline")}>
             <Trees className="size-4" /> Nature & Places
           </Link>
         </div>
@@ -215,7 +216,7 @@ export async function SigStory({ params }: { params: Promise<{ slug: string }> }
   return (
     <article>
       <SigPageHeader eyebrow={`${story.category} · ${story.readTime}`} title={story.title} description={story.dek} image={story.image}>
-        <p className="text-sm text-white/70">
+        <p className="text-sm text-stone">
           {story.author} · {story.date}
         </p>
       </SigPageHeader>
@@ -298,7 +299,7 @@ export function SigDishes() {
       <SigPageHeader eyebrow="Dish guide" title="Signature dishes" description="What’s in them, how to eat them, and where to order the best versions in Owerri." image="soups-spread">
         <div className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 sm:flex-wrap sm:justify-center">
           {dishes.map((d) => (
-            <a key={d.slug} href={`#${d.slug}`} className="shrink-0 rounded-full border border-white/30 px-4 py-2 text-[0.68rem] font-bold tracking-[0.14em] uppercase hover:bg-white hover:text-forest-deep">
+            <a key={d.slug} href={`#${d.slug}`} className="shrink-0 rounded-full border border-line px-4 py-2 text-sm font-medium text-forest transition-colors hover:border-forest hover:bg-forest hover:text-on-forest">
               {d.name}
             </a>
           ))}
@@ -311,7 +312,7 @@ export function SigDishes() {
             <article key={d.slug} data-anchor={d.slug} className="scroll-mt-28 overflow-hidden rounded-[1.6rem] bg-paper shadow-card">
               <div className="relative aspect-square">
                 <Photo name={d.image} alt={d.name} sizes="(min-width: 1024px) 33vw, 50vw" />
-                <span className="absolute top-3 left-3 rounded-full bg-white px-3 py-1 text-[0.6rem] font-bold tracking-[0.18em] text-forest uppercase">{d.kind}</span>
+                <span className="absolute top-3 left-3 rounded-full bg-white px-3 py-1 text-xs font-semibold text-forest">{d.kind}</span>
                 <span className="absolute top-3 right-3 flex gap-0.5 rounded-full bg-forest-deep/80 px-2 py-1">
                   {[1, 2, 3].map((n) => (
                     <Flame key={n} className={cn("size-3.5", n <= d.heat ? "fill-leaf text-leaf" : "text-white/30")} />
@@ -320,7 +321,7 @@ export function SigDishes() {
               </div>
               <div className="p-5">
                 <h2 className="text-2xl text-forest">{d.name}</h2>
-                {d.igbo && <p className="text-xs font-bold tracking-[0.16em] text-forest-light uppercase">{d.igbo}</p>}
+                {d.igbo && <p className="text-xs font-semibold text-forest-light">{d.igbo}</p>}
                 <p className="mt-2 line-clamp-4 text-sm leading-relaxed text-ink/80">{d.description}</p>
                 <p className="mt-3 text-xs text-stone">
                   <span className="font-bold text-forest">Best with:</span> {d.bestWith}
@@ -519,10 +520,11 @@ export function SigNotFound() {
 export function SigRestaurantsPage() {
   return (
     <>
-      <SigPageHeader eyebrow="Native Food" title="Food & Restaurants" description="Bukas, kitchens, cafés and bars across Owerri — order for pickup or delivery." image="soups-spread" />
+      <SigPageHeader eyebrow="Order food" title="Food & Restaurants" description="Find a restaurant or a dish and order for delivery or pickup across Owerri." />
       <Suspense fallback={<SigRestaurants />}>
         <SigRestaurantsFromParams />
       </Suspense>
+      <FloatingCartBar />
     </>
   );
 }

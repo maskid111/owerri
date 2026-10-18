@@ -3,7 +3,7 @@ import { ArrowRight, MapPin, Star, Store, Truck } from "lucide-react";
 import type { Restaurant } from "@/lib/data";
 import { cn, distanceLabel, priceLabel } from "@/lib/utils";
 import { SaveButton } from "./save-button";
-import { Photo, Rating } from "./ui";
+import { NewBadge, Photo, RestaurantRating } from "./ui";
 
 const compact = (n: number) => (n >= 1000 ? `${(n / 1000).toFixed(1).replace(/\.0$/, "")}k` : String(n));
 
@@ -29,12 +29,16 @@ export function FeaturedCard({ restaurant: r, badge = "Top Pick", className, pri
             </Link>
           </h3>
           <p className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.8rem] text-stone">
+            {r.reviewCount ? (
+              <span className="inline-flex items-center gap-1">
+                <Star className="size-3.5 fill-star text-star" aria-hidden />
+                <span className="font-bold text-ink">{r.rating.toFixed(1)}</span> ({compact(r.reviewCount)} reviews)
+              </span>
+            ) : (
+              <NewBadge />
+            )}
             <span className="inline-flex items-center gap-1">
-              <Star className="size-3.5 fill-star text-star" aria-hidden />
-              <span className="font-bold text-ink">{r.rating.toFixed(1)}</span> ({compact(r.reviewCount)} reviews)
-            </span>
-            <span className="inline-flex items-center gap-1">
-              <MapPin className="size-3.5 text-accent" aria-hidden /> {distanceLabel(r.distanceKm)}
+              <MapPin className="size-3.5 text-accent" aria-hidden /> {r.sampleProfile ? "Owerri" : distanceLabel(r.distanceKm)}
             </span>
           </p>
           <p className="mt-1 truncate text-[0.8rem] text-stone">{r.type.replace(/ • /g, " · ")}</p>
@@ -48,7 +52,20 @@ export function FeaturedCard({ restaurant: r, badge = "Top Pick", className, pri
 }
 
 /** Horizontal listing card from the Food & Restaurants reference. */
-export function ListingCard({ restaurant: r, openNow, className, priority }: { restaurant: Restaurant; openNow?: boolean; className?: string; priority?: boolean }) {
+export function ListingCard({
+  restaurant: r,
+  openNow,
+  dishes,
+  className,
+  priority,
+}: {
+  restaurant: Restaurant;
+  openNow?: boolean;
+  /** Menu dishes matching the current search, shown as "Serves …". */
+  dishes?: string[];
+  className?: string;
+  priority?: boolean;
+}) {
   const ServiceIcon = r.service === "Dine-in only" ? Store : Truck;
   return (
     <article className={cn("group relative flex gap-4 py-4", className)}>
@@ -62,16 +79,17 @@ export function ListingCard({ restaurant: r, openNow, className, priority }: { r
             {r.name}
           </Link>
         </h3>
-        <Rating value={r.rating} count={r.reviewCount} />
+        <RestaurantRating restaurant={r} />
         <p className="text-sm text-ink/80">
           {r.cuisine} <span className="text-stone">•</span> <span className="tracking-wider">{priceLabel(r.price)}</span>
         </p>
         <p className="flex items-center gap-1.5 text-sm text-ink/80">
-          <MapPin className="size-4 text-stone" aria-hidden /> {distanceLabel(r.distanceKm)}
-          {openNow !== undefined && (
+          <MapPin className="size-4 text-stone" aria-hidden /> {r.sampleProfile ? "Owerri" : distanceLabel(r.distanceKm)}
+          {openNow !== undefined && r.open && (
             <span className={cn("ml-1 text-xs font-semibold", openNow ? "text-forest-light" : "text-stone")}>· {openNow ? "Open now" : "Closed"}</span>
           )}
         </p>
+        {dishes && dishes.length > 0 && <p className="line-clamp-1 text-sm text-forest">Serves {dishes.slice(0, 2).join(", ")}</p>}
         <span className="mt-0.5 inline-flex w-fit items-center gap-1.5 rounded-full bg-accent px-3 py-1 text-[0.75rem] font-semibold text-on-accent">
           <ServiceIcon className="size-3.5" aria-hidden /> {r.service}
         </span>

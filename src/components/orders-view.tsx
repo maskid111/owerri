@@ -2,32 +2,18 @@
 
 import Link from "next/link";
 import { CheckCircle2, ClipboardList, RotateCcw, ShoppingBag } from "lucide-react";
-import { useId, useState, useSyncExternalStore } from "react";
+import { useId, useState } from "react";
 import { cart, useCart, useOrders, type Order } from "@/lib/cart-store";
 import { getRestaurant } from "@/lib/data";
 import { cn, naira } from "@/lib/utils";
 import { CartLines, CartTotals, FulfilmentToggle } from "./cart-ui";
 import { Arrow, ButtonLink, buttonClass, Photo } from "./ui";
 
-/** Current minute (ms / 60000), refreshed every 30s. Null during SSR. */
-function useMinuteClock() {
-  return useSyncExternalStore<number | null>(
-    (cb) => {
-      const id = window.setInterval(cb, 30_000);
-      return () => window.clearInterval(id);
-    },
-    () => Math.floor(Date.now() / 60_000),
-    () => null,
-  );
-}
-
-function orderStatus(order: Order, nowMinute: number | null) {
-  if (nowMinute === null) return "Placed";
-  const elapsed = nowMinute - Math.floor(Date.parse(order.placedAt) / 60_000);
-  if (elapsed < 10) return "Preparing";
-  if (elapsed < 40) return order.mode === "delivery" ? "On the way" : "Ready for pickup";
-  return order.mode === "delivery" ? "Delivered" : "Collected";
-}
+/*
+ * Frontend prototype: placing an order saves it in this browser only. Nothing is sent to the restaurant,
+ * no payment is taken and no delivery is arranged — the copy below says so plainly.
+ * When real ordering is connected, replace `cart.placeOrder` with the API call and show live statuses.
+ */
 
 /** `chrome={false}` drops the page title so another design version can supply its own header. */
 export function OrdersView({ chrome = true }: { chrome?: boolean }) {
@@ -177,31 +163,44 @@ function Checkout({ onPlaced }: { onPlaced: (o: Order) => void }) {
         <button type="submit" className={buttonClass("primary", "lg", "w-full")}>
           Place order · {naira(summary.total)}
         </button>
-        <p className="text-center text-xs text-stone">Demo checkout — pay on {summary.mode === "delivery" ? "delivery" : "pickup"}. No payment is taken.</p>
+        <p className="text-center text-xs leading-relaxed text-stone">
+          Preview checkout — online ordering isn’t live yet. Your order is saved in this browser only: it is not sent to {r.name}, no payment is taken and no
+          delivery is arranged.
+        </p>
       </div>
     </form>
   );
 }
 
 function Confirmation({ order, onDone }: { order: Order; onDone: () => void }) {
-  const steps = order.mode === "delivery" ? ["Confirmed", "Preparing", "On the way", "Delivered"] : ["Confirmed", "Preparing", "Ready for pickup"];
   return (
     <div className="mx-auto max-w-lg rounded-[1.5rem] border border-line/70 bg-paper p-6 text-center shadow-card sm:p-8">
       <CheckCircle2 className="mx-auto size-14 text-forest-light" strokeWidth={1.5} />
-      <h2 className="mt-3 text-3xl font-semibold text-forest">Order placed</h2>
+      <h2 className="mt-3 text-3xl font-semibold text-forest">Order preview saved</h2>
       <p className="mt-2 text-stone">
-        {order.restaurantName} has your order <span className="font-semibold text-ink">{order.id}</span>.{" "}
-        {order.mode === "delivery" ? "Estimated delivery in 30–45 minutes." : "Ready for pickup in about 20 minutes."}
+        Reference <span className="font-semibold text-ink">{order.id}</span> · {order.mode === "delivery" ? "Delivery" : "Pickup"} from {order.restaurantName}
       </p>
-      <ol className="mt-6 flex items-start justify-between gap-2 text-[11px] font-semibold text-stone">
-        {steps.map((s, i) => (
-          <li key={s} className="flex flex-1 flex-col items-center gap-1.5">
-            <span className={cn("grid size-7 place-items-center rounded-full text-xs", i === 0 ? "bg-forest text-on-forest" : "bg-sand text-stone")}>{i + 1}</span>
-            {s}
+      <ul className="mt-5 divide-y divide-line rounded-2xl border border-line text-left text-sm">
+        {order.lines.map((l) => (
+          <li key={l.id} className="flex justify-between gap-3 px-4 py-2.5">
+            <span>
+              {l.qty}× {l.name}
+            </span>
+            <span className="font-semibold">{naira(l.price * l.qty)}</span>
           </li>
         ))}
-      </ol>
-      <p className="mt-6 font-display text-2xl font-semibold text-forest">{naira(order.total)}</p>
+        {order.fee > 0 && (
+          <li className="flex justify-between gap-3 px-4 py-2.5 text-stone">
+            <span>Delivery fee (sample)</span>
+            <span>{naira(order.fee)}</span>
+          </li>
+        )}
+      </ul>
+      <p className="mt-4 font-display text-2xl font-semibold text-forest">{naira(order.total)}</p>
+      <p className="mt-4 rounded-2xl bg-sand/70 px-4 py-3 text-sm leading-relaxed text-ink/80">
+        Online ordering isn’t live yet, so this order has <span className="font-semibold">not</span> been sent to {order.restaurantName} and no delivery has been arranged.
+        It’s saved in this browser so you can review or reorder it later.
+      </p>
       <div className="mt-6 grid gap-3 sm:grid-cols-2">
         <button onClick={onDone} className={buttonClass("forest", "md")}>
           View past orders
@@ -215,7 +214,6 @@ function Confirmation({ order, onDone }: { order: Order; onDone: () => void }) {
 }
 
 function History({ orders, onReorder }: { orders: Order[]; onReorder: () => void }) {
-  const now = useMinuteClock();
   if (!orders.length) {
     return (
       <div className="rounded-[1.25rem] border border-dashed border-line px-6 py-16 text-center">
@@ -223,7 +221,7 @@ function History({ orders, onReorder }: { orders: Order[]; onReorder: () => void
           <ClipboardList className="size-6" />
         </span>
         <p className="mt-4 font-display text-2xl font-semibold text-forest">No orders yet</p>
-        <p className="mt-1 text-stone">Orders you place will appear here.</p>
+        <p className="mt-1 text-stone">Orders you place in this preview will appear here.</p>
       </div>
     );
   }
@@ -231,7 +229,6 @@ function History({ orders, onReorder }: { orders: Order[]; onReorder: () => void
     <ul className="grid gap-4 lg:grid-cols-2">
       {orders.map((o) => {
         const r = getRestaurant(o.restaurant);
-        const status = orderStatus(o, now);
         return (
           <li key={o.id} className="flex gap-4 rounded-[1.25rem] border border-line/70 bg-paper p-4 shadow-card">
             {r && (
@@ -242,9 +239,7 @@ function History({ orders, onReorder }: { orders: Order[]; onReorder: () => void
             <div className="min-w-0 flex-1">
               <div className="flex items-start justify-between gap-2">
                 <p className="truncate font-display text-lg font-semibold text-forest">{o.restaurantName}</p>
-                <span className={cn("shrink-0 rounded-full px-2.5 py-0.5 text-[11px] font-bold", status === "Delivered" || status === "Collected" ? "bg-mint text-forest" : "bg-tint text-forest")}>
-                  {status}
-                </span>
+                <span className="shrink-0 rounded-full bg-sand px-2.5 py-0.5 text-[11px] font-bold text-forest">Preview · not sent</span>
               </div>
               <p className="text-xs text-stone">
                 {o.id} · {new Date(o.placedAt).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "Africa/Lagos" })}

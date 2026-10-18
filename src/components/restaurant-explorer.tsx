@@ -5,8 +5,9 @@ import { AnimatePresence, motion } from "motion/react";
 import { ArrowLeft, ChevronDown, Search, SlidersHorizontal, X } from "lucide-react";
 import { useMemo, useState } from "react";
 import { ListingCard } from "@/components/restaurant-card";
+import { FloatingCartBar } from "./food";
 import { foodCategories, neighbourhoods, type FoodCategory } from "@/lib/data";
-import { filterRestaurants, NO_RESTAURANT_FILTERS, type RestaurantFilters, type RestaurantSort } from "@/lib/restaurant-filter";
+import { filterRestaurants, matchingDishes, NO_RESTAURANT_FILTERS, type RestaurantFilters, type RestaurantSort } from "@/lib/restaurant-filter";
 import { useLagosMinutes } from "@/lib/use-lagos-time";
 import { cn, isOpenAt } from "@/lib/utils";
 import { buttonClass, chipClass, SampleNote } from "./ui";
@@ -17,7 +18,7 @@ const NO_FILTERS = NO_RESTAURANT_FILTERS;
 
 export function RestaurantExplorer({ initialCategory, initialQuery = "" }: { initialCategory?: FoodCategory; initialQuery?: string }) {
   const [query, setQuery] = useState(initialQuery);
-  const [searchOpen, setSearchOpen] = useState(Boolean(initialQuery));
+  const [searchOpen, setSearchOpen] = useState(true); // restaurant & dish search is visible by default on mobile
   const [category, setCategory] = useState<FoodCategory | "All">(initialCategory ?? "All");
   const [filters, setFilters] = useState<Filters>(NO_FILTERS);
   const [sort, setSort] = useState<Sort>("recommended");
@@ -51,7 +52,7 @@ export function RestaurantExplorer({ initialCategory, initialQuery = "" }: { ini
           {searchOpen ? <X className="size-6" /> : <Search className="size-6" />}
         </button>
       </div>
-      <p className="mt-1 hidden max-w-xl text-stone lg:block">Restaurants, bukas, cafés and bars across Owerri, Imo State — with pickup and delivery from local kitchens.</p>
+      <p className="mt-1 max-w-xl text-sm text-stone sm:text-base">Order from restaurants across Owerri for delivery or pickup — search by restaurant or dish.</p>
 
       <AnimatePresence initial={false}>
         {searchOpen && (
@@ -104,7 +105,13 @@ export function RestaurantExplorer({ initialCategory, initialQuery = "" }: { ini
 
           <div className="grid divide-y divide-line md:grid-cols-2 md:gap-x-8 md:divide-y-0 md:[&>*]:border-b md:[&>*]:border-line">
             {results.map((r, i) => (
-              <ListingCard key={r.slug} restaurant={r} priority={i < 2} openNow={minutes === null ? undefined : isOpenAt(r.open, r.close, minutes)} />
+              <ListingCard
+                key={r.slug}
+                restaurant={r}
+                priority={i < 2}
+                dishes={matchingDishes(r.slug, query)}
+                openNow={minutes === null || !r.open ? undefined : isOpenAt(r.open, r.close, minutes)}
+              />
             ))}
           </div>
 
@@ -117,9 +124,10 @@ export function RestaurantExplorer({ initialCategory, initialQuery = "" }: { ini
               </button>
             </div>
           )}
-          <SampleNote className="py-6">Distances are approximate, measured from Owerri city centre. Listings are sample content.</SampleNote>
+          <SampleNote className="py-6 pb-24">Distances are approximate, measured from Owerri city centre. Listings are sample content.</SampleNote>
         </div>
       </div>
+      <FloatingCartBar />
 
       {/* Mobile filter sheet */}
       <AnimatePresence>
@@ -160,13 +168,13 @@ export function RestaurantExplorer({ initialCategory, initialQuery = "" }: { ini
 function SearchInput({ query, setQuery, autoFocus, className }: { query: string; setQuery: (q: string) => void; autoFocus?: boolean; className?: string }) {
   return (
     <label className={cn("relative block", className)}>
-      <span className="sr-only">Search restaurants</span>
+      <span className="sr-only">Search restaurants or dishes</span>
       <Search className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-stone" />
       <input
         value={query}
         autoFocus={autoFocus}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search name, cuisine or vibe…"
+        placeholder="Restaurant or dish…"
         className="h-11 w-full rounded-full border border-line bg-paper pr-10 pl-10 text-sm outline-none focus:border-forest"
       />
       {query && (

@@ -79,7 +79,7 @@ export function CartTotals({ summary }: { summary: CartSummary }) {
         <dd className="font-semibold">{naira(summary.subtotal)}</dd>
       </div>
       <div className="flex justify-between">
-        <dt className="text-stone">{summary.mode === "delivery" ? "Delivery fee" : "Pickup"}</dt>
+        <dt className="text-stone">{summary.mode === "delivery" ? "Delivery fee (sample)" : "Pickup"}</dt>
         <dd className="font-semibold">{summary.fee ? naira(summary.fee) : "Free"}</dd>
       </div>
       <div className="flex justify-between border-t border-line pt-2 text-base">
@@ -154,7 +154,7 @@ export function CartDrawer({ open, onClose }: { open: boolean; onClose: () => vo
                   <FulfilmentToggle mode={summary.mode} />
                   <CartTotals summary={summary} />
                   <Link href="/orders" onClick={onClose} className={buttonClass("primary", "lg", "w-full")}>
-                    Go to checkout <Arrow />
+                    Review order & checkout <Arrow />
                   </Link>
                 </div>
               </>

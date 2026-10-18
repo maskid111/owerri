@@ -12,7 +12,6 @@ const columns = [
     title: "More",
     links: [
       { href: "/explore", label: "Explore everything" },
-      { href: "/restaurants", label: "Food & restaurants" },
       { href: "/dishes", label: "Signature dishes" },
       { href: "/culture", label: "Culture & heritage" },
       { href: "/orders", label: "Cart & orders" },

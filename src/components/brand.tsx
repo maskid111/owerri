@@ -5,11 +5,14 @@ export const BRAND = { name: "Native", tagline: "Native, beyond the plate" } as 
 
 type Size = "sm" | "md" | "lg" | "xl";
 
-const wordSize: Record<Size, string> = {
-  sm: "text-[1.45rem]",
-  md: "text-[1.7rem] sm:text-[1.9rem]",
-  lg: "text-5xl sm:text-6xl",
-  xl: "text-[3.75rem] sm:text-[5.5rem]",
+/** Official logo artwork: green letters (white variant for dark backgrounds); the gold leaf is never recoloured. */
+export const LOGO = { green: "/brand/native-logo.svg", white: "/brand/native-logo-white.svg", ratio: 164 / 63 } as const;
+
+const logoHeight: Record<Size, string> = {
+  sm: "h-8",
+  md: "h-9 sm:h-10",
+  lg: "h-16 sm:h-20",
+  xl: "h-24 sm:h-32",
 };
 const taglineSize: Record<Size, string> = {
   sm: "text-[0.6rem]",
@@ -19,9 +22,8 @@ const taglineSize: Record<Size, string> = {
 };
 
 /**
- * The Native wordmark — the ONLY place the logo is drawn.
- * Plain text for now; when the official logo arrives, replace the markup below (e.g. with an <Image>)
- * and every header, footer, drawer, splash screen and admin preview updates with it.
+ * The Native logo — the ONLY place it is drawn, so every header, footer, drawer, splash screen and
+ * admin preview uses the same artwork. `tone="light"` swaps the green letters for white on dark backgrounds.
  */
 export function Wordmark({
   tone = "dark",
@@ -45,8 +47,9 @@ export function Wordmark({
         className,
       )}
     >
-      <span className={cn("font-brand font-medium tracking-[-0.02em]", wordSize[size])}>{BRAND.name}</span>
-      {tagline && <span className={cn("mt-1.5 font-sans font-medium tracking-[0.12em] opacity-75", taglineSize[size])}>{BRAND.tagline}</span>}
+      {/* eslint-disable-next-line @next/next/no-img-element -- static SVG artwork, no optimisation needed */}
+      <img src={tone === "light" ? LOGO.white : LOGO.green} alt={BRAND.name} width={164} height={63} className={cn("w-auto", logoHeight[size])} draggable={false} />
+      {tagline && <span className={cn("mt-1 font-sans font-medium tracking-[0.12em] opacity-75", taglineSize[size])}>{BRAND.tagline}</span>}
     </span>
   );
 }

@@ -2,19 +2,19 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Bookmark, House, Menu, Mountain, Store } from "lucide-react";
+import { Bookmark, House, Menu, Store, UtensilsCrossed } from "lucide-react";
 import { isActivePath, isImmersive } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 import { openNavDrawer } from "./nav-drawer";
 
 const tabs = [
   { href: "/", label: "Home", icon: House },
+  { href: "/restaurants", label: "Food", icon: UtensilsCrossed },
   { href: "/market", label: "Market", icon: Store },
-  { href: "/tours", label: "Tours", icon: Mountain },
   { href: "/saved", label: "Saved", icon: Bookmark },
 ];
 
-/** Mobile bottom bar: the four most-used destinations plus "Menu", which opens the full navigation drawer. */
+/** Mobile bottom bar: Home, Food, Market and Saved plus "Menu", which opens the full navigation drawer. */
 export function BottomNav() {
   const pathname = usePathname();
   if (isImmersive(pathname)) return null;

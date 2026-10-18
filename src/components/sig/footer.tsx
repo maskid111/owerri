@@ -6,7 +6,6 @@ import { SigWordmark } from "./ui";
 const flat = navigation.flatMap((n) => [n, ...(n.children ?? [])]);
 const more = [
   ["/explore", "Explore"],
-  ["/restaurants", "Restaurants"],
   ["/dishes", "Dishes"],
   ["/culture", "Culture"],
   ["/neighbourhoods", "Neighbourhoods"],
@@ -26,7 +25,7 @@ export function SigFooter() {
         <div className="mx-auto mt-7 flex max-w-md justify-center">
           <NewsletterForm dark />
         </div>
-        <ul className="mx-auto mt-10 flex max-w-4xl flex-wrap justify-center gap-x-6 gap-y-3 text-[0.72rem] font-bold tracking-[0.16em] uppercase">
+        <ul className="mx-auto mt-10 flex max-w-4xl flex-wrap justify-center gap-x-6 gap-y-3 text-sm font-semibold">
           {flat.map((l) => (
             <li key={l.href}>
               <Link href={l.href} className="text-white/85 transition-colors hover:text-leaf">

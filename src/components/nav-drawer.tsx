@@ -5,23 +5,20 @@ import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowRight, ChevronDown, ChevronRight, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { isActivePath, navigation, type NavItem } from "@/lib/navigation";
+import { accountNav, isActivePath, mainNav, type NavItem } from "@/lib/navigation";
 import { useUnreadCount } from "@/lib/notifications-store";
-import { useLagosMinutes } from "@/lib/use-lagos-time";
 import { cn } from "@/lib/utils";
 import { Logo } from "./ui";
 
 const OPEN_EVENT = "native:open-nav";
 export const openNavDrawer = () => window.dispatchEvent(new Event(OPEN_EVENT));
 
-/** Slide-in navigation drawer from the mobile reference: greeting, full menu in order, "Explore More" card. */
+/** Slide-in navigation drawer: full menu in order, then an "Explore More" card. */
 export function NavDrawer() {
   const [open, setOpen] = useState(false);
   const [toursOpen, setToursOpen] = useState(false);
   const pathname = usePathname();
-  const minutes = useLagosMinutes();
   const unread = useUnreadCount();
-  const greeting = minutes === null ? "Welcome," : minutes < 720 ? "Good morning," : minutes < 1020 ? "Good afternoon," : "Good evening,";
 
   useEffect(() => {
     const onOpen = () => setOpen(true);
@@ -85,16 +82,8 @@ export function NavDrawer() {
               </button>
             </div>
 
-            <Link href="/settings" onClick={close} className="mt-6 flex items-center gap-3 px-1 py-2">
-              <span className="min-w-0 flex-1">
-                <span className="block text-sm text-stone">{greeting}</span>
-                <span className="block font-display text-xl font-semibold text-forest">Explorer</span>
-              </span>
-              <ChevronRight className="size-5 text-stone" />
-            </Link>
-
-            <ul className="mt-4 space-y-0.5">
-              {navigation.slice(0, 5).map((item) => (
+            <ul className="mt-6 space-y-0.5">
+              {mainNav.map((item) => (
                 <li key={item.href}>
                   {item.children ? (
                     <>
@@ -126,7 +115,7 @@ export function NavDrawer() {
             </ul>
             <div className="my-3 h-px bg-line" />
             <ul className="space-y-0.5">
-              {navigation.slice(5).map((item) => (
+              {accountNav.map((item) => (
                 <li key={item.href}>{row(item)}</li>
               ))}
             </ul>

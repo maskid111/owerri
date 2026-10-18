@@ -5,16 +5,16 @@ import { usePathname } from "next/navigation";
 import { ChevronDown, Menu, Search, ShoppingBag } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useCart } from "@/lib/cart-store";
-import { isActivePath, isImmersive, navigation } from "@/lib/navigation";
+import { accountNav, isActivePath, isImmersive, mainNav, navigation } from "@/lib/navigation";
 import { useUnreadCount } from "@/lib/notifications-store";
 import { cn } from "@/lib/utils";
 import { NavDrawer, openNavDrawer } from "./nav-drawer";
 import { openSearch } from "./search-dialog";
 import { Logo } from "./ui";
 
-/** Items 1–6 render as text links; 7–10 as labelled icon buttons (text from 2xl) — order is preserved. */
-const textItems = navigation.slice(0, 6);
-const iconItems = navigation.slice(6);
+/** Discovery sections render as text links (short labels); the rest as labelled icon buttons (text from 2xl) — order is preserved. */
+const textItems = mainNav;
+const iconItems = accountNav;
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -72,8 +72,8 @@ export function SiteHeader() {
                     {item.children ? (
                       <ToursMenu item={item} className={cls} pathname={pathname} bar={bar} overHero={overHero} />
                     ) : (
-                      <Link href={item.href} aria-current={active ? "page" : undefined} className={cls}>
-                        {item.label}
+                      <Link href={item.href} title={item.label} aria-current={active ? "page" : undefined} className={cls}>
+                        {item.short ?? item.label}
                         {bar}
                       </Link>
                     )}

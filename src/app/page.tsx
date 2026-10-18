@@ -6,7 +6,7 @@ import { MarketTile, PatternBanner, TourTile } from "@/components/native";
 import { FeaturedCard } from "@/components/restaurant-card";
 import { StoryCard } from "@/components/story-card";
 import { Arrow, ButtonLink, SectionHeader } from "@/components/ui";
-import { exploreItems, marketSections, restaurants, stories } from "@/lib/data";
+import { exploreItems, marketSections, restaurants, stories, topRestaurants } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import { Design } from "@/components/design";
 import { SigHome } from "@/components/sig/home";
@@ -27,7 +27,19 @@ function HomePage() {
     <>
       <Hero />
 
-      {/* One quiet line of brand context, then discovery shortcuts */}
+      {/* Food first: restaurants you can order from, Annie’s Kitchen on top */}
+      <section className="container-x pt-14 lg:pt-24">
+        <SectionHeader title="Good food, delivered." subtitle="Order from restaurants in Owerri." href="/restaurants" linkLabel="All restaurants" />
+        <div className={cn(scroller, "mt-6 sm:grid-cols-2 lg:grid-cols-3")}>
+          {topRestaurants()
+            .slice(0, 3)
+            .map((r, i) => (
+              <FeaturedCard key={r.slug} restaurant={r} badge={null} className={cn(item, i === 2 && "sm:hidden lg:block")} />
+            ))}
+        </div>
+      </section>
+
+      {/* One quiet line of brand context, then discovery shortcuts (Food first) */}
       <section className="container-x pt-16 text-center lg:pt-28">
         <p className="mx-auto max-w-2xl font-display text-3xl leading-tight font-medium text-balance text-forest sm:text-5xl">
           Food, culture and places from the heart of Igboland.

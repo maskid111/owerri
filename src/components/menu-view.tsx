@@ -4,11 +4,11 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight, CakeSlice, ChevronUp, ConciergeBell, CupSoda, MapPin, Plus, ShoppingBag, Soup, Star, UtensilsCrossed, type LucideIcon } from "lucide-react";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { cart, useCart } from "@/lib/cart-store";
-import { areaName, getRestaurant, menuSections, type MenuItem, type MenuSection, type Restaurant } from "@/lib/data";
-import { cn, distanceLabel, naira } from "@/lib/utils";
+import { getRestaurant, locationLabel, menuSections, type MenuItem, type MenuSection, type Restaurant } from "@/lib/data";
+import { cn, naira } from "@/lib/utils";
 import { CartConflictDialog, CartDrawer, QtyStepper } from "./cart-ui";
 import { HoursRow, RestaurantActions } from "./restaurant-actions";
-import { Photo, Rating } from "./ui";
+import { Photo, ProfileNotice, Rating } from "./ui";
 
 type Tab = "Menu" | "About" | "Reviews" | "Photos";
 const tabs: Tab[] = ["Menu", "About", "Reviews", "Photos"];
@@ -59,9 +59,15 @@ export function MenuView({ restaurant: r, menu }: { restaurant: Restaurant; menu
             <ArrowLeft className="size-5" />
           </Link>
           <span className="absolute top-4 right-4 inline-flex items-center gap-1 rounded-full bg-paper px-3 py-1.5 text-sm shadow-card">
-            <Star className="size-4 fill-star text-star" aria-hidden />
-            <span className="font-bold">{r.rating.toFixed(1)}</span>
-            <span className="text-stone">({r.reviewCount})</span>
+            {r.reviewCount ? (
+              <>
+                <Star className="size-4 fill-star text-star" aria-hidden />
+                <span className="font-bold">{r.rating.toFixed(1)}</span>
+                <span className="text-stone">({r.reviewCount})</span>
+              </>
+            ) : (
+              <span className="font-semibold text-forest">New on Native</span>
+            )}
           </span>
           <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-4 pb-9 sm:p-6 sm:pb-10 lg:pb-7">
             <div className="text-cream">
@@ -70,7 +76,7 @@ export function MenuView({ restaurant: r, menu }: { restaurant: Restaurant; menu
               </h1>
               <p className="mt-1 text-sm text-cream/90">{r.type}</p>
               <p className="mt-0.5 flex items-center gap-1 text-sm text-cream/90">
-                <MapPin className="size-3.5" aria-hidden /> {distanceLabel(r.distanceKm)} · {areaName(r.area)}, Imo State
+                <MapPin className="size-3.5" aria-hidden /> {locationLabel(r)}
               </p>
             </div>
             <p className="hidden max-w-[12rem] text-right font-display text-2xl leading-tight text-leaf italic sm:block">{r.tagline}</p>
@@ -94,6 +100,10 @@ export function MenuView({ restaurant: r, menu }: { restaurant: Restaurant; menu
               </button>
             ))}
           </div>
+        </div>
+
+        <div className="container-x">
+          <ProfileNotice restaurant={r} className="mt-4" />
         </div>
 
         {tab === "Menu" && (
@@ -158,7 +168,9 @@ export function MenuView({ restaurant: r, menu }: { restaurant: Restaurant; menu
                   </section>
                 );
               })}
-              <p className="pt-6 text-xs text-stone">Prices in Nigerian naira (₦). Sample menu — prices are illustrative.</p>
+              <p className="pt-6 text-xs text-stone">
+                Prices in Nigerian naira (₦). {r.sampleProfile ? `Sample menu — dishes and prices to be confirmed by ${r.name}.` : "Sample menu — prices are illustrative."}
+              </p>
             </div>
           </div>
         )}
@@ -183,13 +195,17 @@ export function MenuView({ restaurant: r, menu }: { restaurant: Restaurant; menu
 
         {tab === "Reviews" && (
           <div className="container-x pt-6">
-            <div className="flex items-center gap-3">
-              <span className="font-display text-5xl font-semibold text-forest">{r.rating.toFixed(1)}</span>
-              <span>
-                <Rating value={r.rating} />
-                <span className="block text-sm text-stone">{r.reviewCount.toLocaleString("en-US")} reviews</span>
-              </span>
-            </div>
+            {r.reviewCount ? (
+              <div className="flex items-center gap-3">
+                <span className="font-display text-5xl font-semibold text-forest">{r.rating.toFixed(1)}</span>
+                <span>
+                  <Rating value={r.rating} />
+                  <span className="block text-sm text-stone">{r.reviewCount.toLocaleString("en-US")} reviews</span>
+                </span>
+              </div>
+            ) : (
+              <p className="text-stone">No reviews yet — {r.name} is new on Native.</p>
+            )}
             <div className="mt-5 grid gap-4 md:grid-cols-2">
               {r.reviews.map((rev) => (
                 <figure key={rev.author} className="rounded-[1.25rem] border border-line/70 bg-paper p-5 shadow-card">

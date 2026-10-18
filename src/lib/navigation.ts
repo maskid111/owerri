@@ -1,11 +1,13 @@
-import { BedDouble, Bell, Bookmark, CalendarDays, CircleHelp, House, MapPin, Mountain, Newspaper, Settings, Store, Trees, type LucideIcon } from "lucide-react";
+import { BedDouble, Bell, Bookmark, CalendarDays, CircleHelp, House, MapPin, Mountain, Newspaper, Settings, Store, Trees, UtensilsCrossed, type LucideIcon } from "lucide-react";
 
-export type NavItem = { label: string; href: string; icon: LucideIcon; description?: string; children?: NavItem[] };
+/** `short` is the compact label used where space is tight (desktop header, mobile docks). */
+export type NavItem = { label: string; short?: string; href: string; icon: LucideIcon; description?: string; children?: NavItem[] };
 
 /** Site navigation, in the required order. Header, drawer, footer and sitemap-style lists all read from here. */
 export const navigation: NavItem[] = [
   { label: "Home", href: "/", icon: House },
-  { label: "Local Market", href: "/market", icon: Store, description: "Traditional food, produce, spices and crafts" },
+  { label: "Food & Restaurants", short: "Food", href: "/restaurants", icon: UtensilsCrossed, description: "Order meals from Owerri restaurants" },
+  { label: "Local Market", short: "Market", href: "/market", icon: Store, description: "Traditional food, produce, spices and crafts" },
   {
     label: "Tours",
     href: "/tours",
@@ -17,13 +19,17 @@ export const navigation: NavItem[] = [
     ],
   },
   { label: "Nearby", href: "/nearby", icon: MapPin, description: "Places and experiences close to you" },
-  { label: "Events & Hangouts", href: "/events", icon: CalendarDays, description: "Festivals, live music and nights out" },
+  { label: "Events & Hangouts", short: "Events", href: "/events", icon: CalendarDays, description: "Festivals, live music and nights out" },
   { label: "Saved", href: "/saved", icon: Bookmark },
   { label: "Notifications", href: "/notifications", icon: Bell },
   { label: "Blog", href: "/blog", icon: Newspaper },
   { label: "Settings", href: "/settings", icon: Settings },
   { label: "Help / Support", href: "/help", icon: CircleHelp },
 ];
+
+/** Items 1–6 are the discovery sections; the rest are personal and support pages. */
+export const mainNav = navigation.slice(0, 6);
+export const accountNav = navigation.slice(6);
 
 export function isActivePath(pathname: string, href: string) {
   return href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);

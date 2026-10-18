@@ -65,6 +65,26 @@ export function Rating({ value, count, className }: { value: number; count?: num
   );
 }
 
+/** Restaurant rating, or a "New on Native" label while a restaurant has no reviews yet. */
+export function RestaurantRating({ restaurant: r, className }: { restaurant: { rating: number; reviewCount: number }; className?: string }) {
+  if (!r.reviewCount) return <NewBadge className={className} />;
+  return <Rating value={r.rating} count={r.reviewCount} className={className} />;
+}
+
+export function NewBadge({ className }: { className?: string }) {
+  return <span className={cn("inline-flex w-fit items-center rounded-full bg-mint px-2.5 py-0.5 text-xs font-semibold text-forest", className)}>New on Native</span>;
+}
+
+/** Honest notice for a restaurant whose details have not been confirmed yet (e.g. Annie’s Kitchen at launch). */
+export function ProfileNotice({ restaurant: r, className }: { restaurant: { name: string; sampleProfile?: boolean }; className?: string }) {
+  if (!r.sampleProfile) return null;
+  return (
+    <p className={cn("text-xs leading-relaxed text-stone", className)}>
+      New on Native — menu, prices, hours and delivery details are samples until confirmed by {r.name}.
+    </p>
+  );
+}
+
 type Variant = "primary" | "forest" | "outline" | "light" | "cream";
 type Size = "sm" | "md" | "lg";
 

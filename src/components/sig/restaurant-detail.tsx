@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, MapPin, Star } from "lucide-react";
-import { areaName, getMenu, getRestaurant, restaurants } from "@/lib/data";
-import { distanceLabel, naira } from "@/lib/utils";
+import { getMenu, getRestaurant, locationLabel, restaurants } from "@/lib/data";
+import { naira } from "@/lib/utils";
 import { ReserveButton } from "../reserve-dialog";
 import { HoursRow, RestaurantActions } from "../restaurant-actions";
 import { SaveButton } from "../save-button";
-import { Photo } from "../ui";
+import { Photo, ProfileNotice } from "../ui";
 import { SigArrow, sigBtn, SigEyebrow, SigRestaurantCard, SigSection } from "./ui";
 
 /** Version B restaurant profile. */
@@ -22,8 +22,8 @@ export async function SigRestaurantDetail({ params }: { params: Promise<{ slug: 
       <section className="relative isolate flex min-h-[26rem] items-end overflow-hidden bg-forest-deep text-white lg:min-h-[34rem]">
         <Photo name={r.cover} alt={`${r.name} — ${r.type}`} sizes="100vw" priority className="-z-20" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-t from-forest-deep via-forest-deep/40 to-forest-deep/20" />
-        <Link href="/restaurants" className="absolute top-4 left-4 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-[0.68rem] font-bold tracking-[0.14em] text-forest-deep uppercase lg:top-6 lg:left-8">
-          <ArrowLeft className="size-4" /> Kitchens
+        <Link href="/restaurants" className="absolute top-4 left-4 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-semibold text-forest-deep lg:top-6 lg:left-8">
+          <ArrowLeft className="size-4" /> Restaurants
         </Link>
         <SaveButton slug={r.slug} name={r.name} variant="circle" className="absolute top-4 right-4 lg:top-6 lg:right-8" />
         <div className="container-x pb-10 lg:pb-14">
@@ -32,10 +32,16 @@ export async function SigRestaurantDetail({ params }: { params: Promise<{ slug: 
           <p className="mt-3 max-w-xl text-lg text-white/85">{r.tagline}</p>
           <div className="mt-5 flex flex-wrap gap-2 text-sm">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 font-bold text-forest-deep">
-              <Star className="size-4 fill-accent text-accent" /> {r.rating.toFixed(1)} · {r.reviewCount} reviews
+              {r.reviewCount ? (
+                <>
+                  <Star className="size-4 fill-accent text-accent" /> {r.rating.toFixed(1)} · {r.reviewCount} reviews
+                </>
+              ) : (
+                "New on Native"
+              )}
             </span>
             <span className="inline-flex items-center gap-1.5 rounded-full border border-white/30 px-3 py-1.5">
-              <MapPin className="size-4" /> {distanceLabel(r.distanceKm)} · {areaName(r.area)}
+              <MapPin className="size-4" /> {locationLabel(r)}
             </span>
             <span className="rounded-full border border-white/30 px-3 py-1.5">{r.service}</span>
           </div>
@@ -46,6 +52,7 @@ export async function SigRestaurantDetail({ params }: { params: Promise<{ slug: 
         <div>
           <SigEyebrow>About</SigEyebrow>
           <p className="mt-3 text-xl leading-relaxed text-ink/90">{r.description}</p>
+          <ProfileNotice restaurant={r} className="mt-5" />
           <div className="mt-5 flex flex-wrap gap-2">
             {r.tags.map((t) => (
               <span key={t} className="rounded-full border-2 border-line px-3 py-1 text-xs font-bold text-forest">
@@ -54,9 +61,9 @@ export async function SigRestaurantDetail({ params }: { params: Promise<{ slug: 
             ))}
           </div>
 
-          <div className="mt-12 flex items-end justify-between border-b border-line pb-3">
+          <div data-anchor="dishes" className="mt-12 flex scroll-mt-28 items-end justify-between border-b border-line pb-3">
             <h2 className="text-3xl text-forest">Signature dishes</h2>
-            <Link href={`/restaurants/${r.slug}/menu`} className="text-[0.68rem] font-bold tracking-[0.14em] text-forest uppercase underline underline-offset-4">
+            <Link href={`/restaurants/${r.slug}/menu`} className="text-xs font-semibold text-forest underline underline-offset-4">
               Full menu
             </Link>
           </div>
@@ -86,6 +93,7 @@ export async function SigRestaurantDetail({ params }: { params: Promise<{ slug: 
           </div>
 
           <h2 className="mt-12 text-3xl text-forest">What people say</h2>
+          {r.reviews.length === 0 && <p className="mt-3 text-stone">No reviews yet — {r.name} is new on Native.</p>}
           <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
             {r.reviews.map((rev) => (
               <figure key={rev.author} className="rounded-2xl bg-forest p-5 text-on-forest">
@@ -95,7 +103,7 @@ export async function SigRestaurantDetail({ params }: { params: Promise<{ slug: 
                   ))}
                 </p>
                 <blockquote className="mt-3 text-lg leading-snug font-semibold">“{rev.text}”</blockquote>
-                <figcaption className="mt-3 text-xs font-bold tracking-[0.14em] uppercase opacity-70">
+                <figcaption className="mt-3 text-xs font-semibold opacity-70">
                   {rev.author} · {rev.date}
                 </figcaption>
               </figure>
@@ -109,17 +117,37 @@ export async function SigRestaurantDetail({ params }: { params: Promise<{ slug: 
             <div className="mt-5">
               <HoursRow restaurant={r} />
             </div>
-            <Link href={`/restaurants/${r.slug}/menu`} className={sigBtn("solid", "mt-5 h-12 w-full")}>
-              {r.service === "Dine-in only" ? "View menu" : "Order from the menu"} <SigArrow />
-            </Link>
+            {r.service === "Dine-in only" ? (
+              <Link href={`/restaurants/${r.slug}/menu`} className={sigBtn("solid", "mt-5 h-12 w-full")}>
+                View menu <SigArrow />
+              </Link>
+            ) : (
+              <div className="mt-5 grid grid-cols-2 gap-2">
+                <Link href="#dishes" className={sigBtn("outline", "h-12")}>
+                  View menu
+                </Link>
+                <Link href={`/restaurants/${r.slug}/menu`} className={sigBtn("solid", "h-12")}>
+                  Order now
+                </Link>
+              </div>
+            )}
             {r.service === "Dine-in only" && <ReserveButton name={r.name} className="mt-3 w-full" />}
             <p className="mt-3 text-center text-xs text-stone">{r.address}</p>
           </div>
         </aside>
       </div>
 
+      {/* Mobile: keep ordering one tap away while reading the profile */}
+      {r.service !== "Dine-in only" && (
+        <div className="pb-safe fixed inset-x-0 bottom-0 z-30 border-t border-line bg-paper/95 px-4 py-3 backdrop-blur lg:hidden">
+          <Link href={`/restaurants/${r.slug}/menu`} className={sigBtn("solid", "h-12 w-full")}>
+            Order now <SigArrow />
+          </Link>
+        </div>
+      )}
+
       {related.length > 0 && (
-        <SigSection eyebrow="Keep exploring" title="You might also like" href="/restaurants" className="pb-6">
+        <SigSection eyebrow="Keep exploring" title="You might also like" href="/restaurants" className="pb-24 lg:pb-6">
           <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
             {related.map((x) => (
               <SigRestaurantCard key={x.slug} restaurant={x} />

@@ -6,7 +6,7 @@
  */
 
 import type { ImageName } from "./images";
-import { hoursLabel } from "./utils";
+import { distanceLabel, hoursLabel } from "./utils";
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -69,7 +69,14 @@ export type Restaurant = {
   featured?: boolean;
   menu: string[]; // catalogue ids
   signature: string[]; // catalogue ids shown under "Signature Dishes"
+  /** Real menu prices in naira, keyed by catalogue id. Overrides the illustrative catalogue price. */
+  prices?: Record<string, number>;
   reviews: Review[];
+  /**
+   * Profile not yet confirmed by the business. The UI shows it as "New on Native", hides rating, distance,
+   * phone and opening hours, and labels the menu, prices and delivery details as sample placeholders.
+   */
+  sampleProfile?: boolean;
 };
 
 export type Dish = {
@@ -234,13 +241,14 @@ export function getMenu(r: Restaurant): MenuItem[] {
   const byId = new Map(catalogue.map((c) => [c.id, c]));
   const scale = (p: number) => Math.round((p * priceFactor[r.price]) / 100) * 100;
   const items: MenuItem[] = [];
+  const price = (c: CatalogueItem) => r.prices?.[c.id] ?? scale(c.price);
   for (const id of r.signature) {
     const c = byId.get(id);
-    if (c) items.push({ ...c, price: scale(c.price), section: "Signature Dishes" });
+    if (c) items.push({ ...c, price: price(c), section: "Signature Dishes" });
   }
   for (const id of r.menu) {
     const c = byId.get(id);
-    if (c && !r.signature.includes(id)) items.push({ ...c, price: scale(c.price) });
+    if (c && !r.signature.includes(id)) items.push({ ...c, price: price(c) });
   }
   return items;
 }
@@ -249,7 +257,108 @@ export function getMenu(r: Restaurant): MenuItem[] {
 /* Restaurants                                                         */
 /* ------------------------------------------------------------------ */
 
+/** Restaurants listed first, in this order, wherever restaurants are recommended (Annie’s Kitchen is Native’s first). */
+export const TOP_RESTAURANTS = ["annies-kitchen", "chicken-republic", "kilimanjaro"];
+
 export const restaurants: Restaurant[] = [
+  {
+    /*
+     * ANNIE’S KITCHEN — EDITABLE PROFILE.
+     * Only the name is confirmed.
+     * Every field marked SAMPLE is a placeholder: replace it with details supplied by Annie’s Kitchen,
+     * then remove `sampleProfile` so the UI stops labelling the profile as unconfirmed.
+     */
+    slug: "annies-kitchen",
+    name: "Annie’s Kitchen",
+    tagline: "Home-style meals in Owerri",
+    description: "Annie’s Kitchen on Native. Browse the menu and order for delivery or pickup in Owerri.",
+    cuisine: "Nigerian", // SAMPLE
+    type: "Restaurant • Delivery", // SAMPLE
+    categories: ["Local", "Continental"], // SAMPLE
+    area: "", // SAMPLE — neighbourhood slug to be confirmed
+    address: "Owerri, Imo State", // SAMPLE — street address to be confirmed
+    price: 2, // SAMPLE
+    rating: 0, // new on Native — no reviews yet
+    reviewCount: 0,
+    distanceKm: Infinity, // SAMPLE — unknown until the address is confirmed
+    open: "", // SAMPLE — opening hours to be confirmed ("HH:MM")
+    close: "",
+    days: "To be confirmed",
+    phone: "", // SAMPLE — phone number to be confirmed
+    service: "Pickup & delivery", // SAMPLE — delivery area and fee to be confirmed
+    tags: ["New on Native"],
+    image: "swallow-spread",
+    cover: "fish-feast",
+    gallery: ["fish-feast", "swallow-spread", "jollof-plated", "pepper-soup-pot"],
+    // SAMPLE menu — illustrative dishes and prices until Annie’s Kitchen supplies its own (add real prices in `prices`).
+    signature: ["ofe-owerri", "jollof-chicken", "egusi-pounded-yam", "fried-rice-chicken"],
+    menu: ["ofe-nsala", "goat-pepper-soup", "abacha-ugba", "rice-stew", "peppered-goat", "dodo", "grilled-chicken-platter", "creamy-chicken-pasta", "zobo", "pineapple-juice", "chocolate-cake"],
+    prices: {},
+    reviews: [],
+    sampleProfile: true,
+  },
+  {
+    // Unconfirmed profile — only the name is known. Replace every SAMPLE field, then remove `sampleProfile`.
+    slug: "chicken-republic",
+    name: "Chicken Republic",
+    tagline: "Chicken, rice and quick meals",
+    description: "Chicken Republic on Native. Browse the menu and order for delivery or pickup in Owerri.",
+    cuisine: "Fast food", // SAMPLE
+    type: "Quick service • Delivery", // SAMPLE
+    categories: ["Fast Food"], // SAMPLE
+    area: "", // SAMPLE
+    address: "Owerri, Imo State", // SAMPLE
+    price: 2, // SAMPLE
+    rating: 0,
+    reviewCount: 0,
+    distanceKm: Infinity, // SAMPLE
+    open: "", // SAMPLE
+    close: "",
+    days: "To be confirmed",
+    phone: "", // SAMPLE
+    service: "Pickup & delivery", // SAMPLE
+    tags: ["New on Native"],
+    image: "fried-rice-chicken",
+    cover: "grilled-platter",
+    gallery: ["grilled-platter", "fried-rice-chicken", "grilled-chicken", "burger"],
+    // SAMPLE menu and prices
+    signature: ["fried-rice-chicken", "jollof-chicken", "grilled-chicken-platter"],
+    menu: ["beef-burger", "grilled-chicken-potatoes", "dodo", "pineapple-juice", "chocolate-cake"],
+    prices: {},
+    reviews: [],
+    sampleProfile: true,
+  },
+  {
+    // Unconfirmed profile — only the name is known. Replace every SAMPLE field, then remove `sampleProfile`.
+    slug: "kilimanjaro",
+    name: "Kilimanjaro",
+    tagline: "Rice, chicken and everyday favourites",
+    description: "Kilimanjaro on Native. Browse the menu and order for delivery or pickup in Owerri.",
+    cuisine: "Fast food", // SAMPLE
+    type: "Quick service • Delivery", // SAMPLE
+    categories: ["Fast Food", "Local"], // SAMPLE
+    area: "", // SAMPLE
+    address: "Owerri, Imo State", // SAMPLE
+    price: 2, // SAMPLE
+    rating: 0,
+    reviewCount: 0,
+    distanceKm: Infinity, // SAMPLE
+    open: "", // SAMPLE
+    close: "",
+    days: "To be confirmed",
+    phone: "", // SAMPLE
+    service: "Pickup & delivery", // SAMPLE
+    tags: ["New on Native"],
+    image: "chicken-jollof",
+    cover: "jollof-skewers",
+    gallery: ["jollof-skewers", "chicken-jollof", "rice-stew", "dodo"],
+    // SAMPLE menu and prices
+    signature: ["jollof-chicken", "rice-stew", "peppered-goat"],
+    menu: ["fried-rice-chicken", "chicken-pepper-soup", "beef-burger", "dodo", "zobo", "pineapple-juice"],
+    prices: {},
+    reviews: [],
+    sampleProfile: true,
+  },
   {
     slug: "the-green-terrace",
     name: "The Green Terrace",
@@ -1501,7 +1610,17 @@ export const stories: Story[] = [
 export const getRestaurant = (slug: string) => restaurants.find((r) => r.slug === slug);
 export const getStory = (slug: string) => stories.find((s) => s.slug === slug);
 export const getNeighbourhood = (slug: string) => neighbourhoods.find((n) => n.slug === slug);
-export const areaName = (slug: string) => getNeighbourhood(slug)?.name ?? slug;
+export const areaName = (slug: string) => getNeighbourhood(slug)?.name ?? (slug || "Owerri");
+/** Annie’s Kitchen, Chicken Republic, Kilimanjaro, then featured kitchens — the homepage food row. */
+export const topRestaurants = () => [...TOP_RESTAURANTS.map((s) => getRestaurant(s)!), ...restaurants.filter((r) => r.featured)];
+
+/** "1.1 km · Ikenegbu" — or just "Owerri" while a restaurant’s address is still unconfirmed. */
+export function locationLabel(r: Restaurant) {
+  return r.sampleProfile ? "Owerri, Imo State" : `${distanceLabel(r.distanceKm)} · ${areaName(r.area)}`;
+}
+
+/** Opening hours text, or a clear placeholder when they are not known yet. */
+export const restaurantHours = (r: Restaurant) => (r.open && r.close ? hoursLabel(r.open, r.close) : "Hours to be confirmed");
 
 export type ExploreItem = {
   slug: string;
@@ -1558,14 +1677,14 @@ export const exploreItems: ExploreItem[] = [
     kind: "restaurant",
     title: r.name,
     image: r.cover,
-    location: `${areaName(r.area)}${r.area === "oguta-lake" ? "" : ", Owerri"}`,
-    time: `${r.days} · ${hoursLabel(r.open, r.close)}`,
+    location: r.sampleProfile ? "Owerri" : `${areaName(r.area)}${r.area === "oguta-lake" ? "" : ", Owerri"}`,
+    time: r.sampleProfile ? "Hours to be confirmed" : `${r.days} · ${hoursLabel(r.open, r.close)}`,
     categories: r.categories.includes("Bars & Lounges") ? ["Food & Drink", "Hangouts"] : ["Food & Drink"],
     description: r.tagline,
     price: "₦".repeat(r.price),
-    distanceKm: r.distanceKm,
-    rating: r.rating,
-    reviewCount: r.reviewCount,
+    distanceKm: r.sampleProfile ? undefined : r.distanceKm,
+    rating: r.reviewCount ? r.rating : undefined,
+    reviewCount: r.reviewCount || undefined,
     label: r.categories.includes("Cafés") ? "Café" : r.categories.includes("Bars & Lounges") ? "Bar & lounge" : "Restaurant",
     href: `/restaurants/${r.slug}`,
   })),

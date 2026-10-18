@@ -13,7 +13,7 @@ export function SigHero() {
       aria-label="Igbo cultural celebration"
       className="relative isolate flex h-[calc(100svh-64px-env(safe-area-inset-bottom))] min-h-[30rem] items-end justify-center overflow-hidden text-white lg:h-[100svh] lg:min-h-[36rem]"
     >
-      <HeroVideo controls="b">
+      <HeroVideo>
         {/* Forest-green grade and gradients — the brand colour carried into the footage */}
         <div className="pointer-events-none absolute inset-0 bg-pine/35 mix-blend-soft-light" aria-hidden />
         <div className="pointer-events-none absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-forest-deep/65 to-transparent" aria-hidden />
@@ -35,7 +35,7 @@ export function SigHero() {
           </button>
           <Link
             href="/explore"
-            className="inline-flex h-12 shrink-0 items-center rounded-full bg-forest px-6 text-[0.72rem] font-bold tracking-[0.14em] text-on-forest uppercase transition-colors hover:bg-forest-light sm:px-7"
+            className="inline-flex h-12 shrink-0 items-center rounded-full bg-forest px-6 text-sm font-semibold text-on-forest transition-colors hover:bg-forest-light sm:px-7"
           >
             Explore
           </Link>

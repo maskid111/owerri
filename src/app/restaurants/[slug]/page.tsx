@@ -6,9 +6,9 @@ import { ReserveButton } from "@/components/reserve-dialog";
 import { HoursRow, RestaurantActions } from "@/components/restaurant-actions";
 import { FeaturedCard } from "@/components/restaurant-card";
 import { SaveButton } from "@/components/save-button";
-import { Arrow, ButtonLink, Photo, Rating, SampleNote, SectionHeader } from "@/components/ui";
-import { areaName, getMenu, getRestaurant, restaurants } from "@/lib/data";
-import { distanceLabel, naira } from "@/lib/utils";
+import { Arrow, ButtonLink, Photo, ProfileNotice, Rating, RestaurantRating, SampleNote, SectionHeader } from "@/components/ui";
+import { areaName, getMenu, getRestaurant, locationLabel, restaurants } from "@/lib/data";
+import { naira } from "@/lib/utils";
 import { Design } from "@/components/design";
 import { SigRestaurantDetail } from "@/components/sig/restaurant-detail";
 
@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: PageProps<"/restaurants/[slug
   const { slug } = await params;
   const r = getRestaurant(slug);
   if (!r) return { title: "Not found" };
-  return { title: r.name, description: `${r.type} in ${areaName(r.area)}, Owerri. ${r.description}` };
+  return { title: r.name, description: `${r.type} in ${r.area ? `${areaName(r.area)}, ` : ""}Owerri. ${r.description}` };
 }
 
 async function RestaurantPage({ params }: { params: PageProps<"/restaurants/[slug]">["params"] }) {
@@ -65,35 +65,48 @@ async function RestaurantPage({ params }: { params: PageProps<"/restaurants/[slu
         <div className="container-x pt-5 lg:w-auto lg:px-0 lg:pt-10">
           <h1 className="text-[2.1rem] leading-[1.08] font-semibold text-forest lg:text-5xl">{r.name}</h1>
           <p className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-[0.95rem] text-ink/80">
-            <Rating value={r.rating} count={r.reviewCount} className="text-[0.95rem]" />
+            <RestaurantRating restaurant={r} className="text-[0.95rem]" />
             <span className="text-stone">·</span>
             {r.type.split(" • ").join(" · ")}
           </p>
           <p className="mt-1.5 flex items-center gap-1.5 text-[0.95rem] text-ink/80">
-            <MapPin className="size-4 fill-forest text-paper" aria-hidden /> {distanceLabel(r.distanceKm)} · {areaName(r.area)}
+            <MapPin className="size-4 fill-forest text-paper" aria-hidden /> {locationLabel(r)}
           </p>
 
           <RestaurantActions restaurant={r} className="mt-6 max-w-sm" />
 
           <p className="mt-6 leading-relaxed text-ink/85">{r.description}</p>
+          <ProfileNotice restaurant={r} className="mt-4" />
 
           <div className="mt-5">
             <HoursRow restaurant={r} />
           </div>
 
-          <ButtonLink href={`/restaurants/${r.slug}/menu`} size="lg" className="mt-6 w-full text-base">
-            View menu
-          </ButtonLink>
           {r.service === "Dine-in only" ? (
-            <ReserveButton name={r.name} className="mt-3 w-full" />
+            <>
+              <ButtonLink href={`/restaurants/${r.slug}/menu`} size="lg" className="mt-6 w-full text-base">
+                View menu
+              </ButtonLink>
+              <ReserveButton name={r.name} className="mt-3 w-full" />
+            </>
           ) : (
-            <p className="mt-3 text-center text-sm text-stone">{r.service} · order from the menu</p>
+            <>
+              <div className="mt-6 grid grid-cols-2 gap-3">
+                <ButtonLink href="#dishes" variant="outline" size="lg" className="text-base">
+                  View menu
+                </ButtonLink>
+                <ButtonLink href={`/restaurants/${r.slug}/menu`} size="lg" className="text-base">
+                  Order now
+                </ButtonLink>
+              </div>
+              <p className="mt-3 text-center text-sm text-stone">{r.service} · add dishes from the menu, then check out</p>
+            </>
           )}
         </div>
       </div>
 
       {/* Popular dishes */}
-      <section className="container-x pt-10 lg:pt-16">
+      <section id="dishes" className="container-x scroll-mt-24 pt-10 lg:pt-16">
         <SectionHeader title="Popular dishes" subtitle="Our most loved and recommended." href={`/restaurants/${r.slug}/menu`} linkLabel="Full menu" />
         <div className="no-scrollbar -mx-4 mt-4 flex snap-x gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:grid sm:grid-cols-4 sm:gap-4 sm:overflow-visible sm:px-0">
           {popular.map((m) => (
@@ -110,7 +123,10 @@ async function RestaurantPage({ params }: { params: PageProps<"/restaurants/[slu
 
       {/* Reviews */}
       <section className="container-x pt-10 lg:pt-16">
-        <SectionHeader title="What people say" subtitle={`${r.rating.toFixed(1)} average from ${r.reviewCount.toLocaleString("en-US")} reviews`} />
+        <SectionHeader
+          title="What people say"
+          subtitle={r.reviewCount ? `${r.rating.toFixed(1)} average from ${r.reviewCount.toLocaleString("en-US")} reviews` : `No reviews yet — ${r.name} is new on Native.`}
+        />
         <div className="mt-4 grid gap-4 md:grid-cols-2">
           {r.reviews.map((rev) => (
             <figure key={rev.author} className="rounded-[1.25rem] border border-line/70 bg-paper p-5 shadow-card">
@@ -129,7 +145,9 @@ async function RestaurantPage({ params }: { params: PageProps<"/restaurants/[slu
             </span>
           ))}
         </div>
-        <SampleNote className="mt-4">Sample listing — photos illustrate the style of venue and dishes, not this exact business.</SampleNote>
+        <SampleNote className="mt-4">
+          {r.sampleProfile ? "Photos illustrate the kind of dishes on the menu until the restaurant supplies its own." : "Sample listing — photos illustrate the style of venue and dishes, not this exact business."}
+        </SampleNote>
       </section>
 
       {related.length > 0 && (

@@ -55,7 +55,7 @@ export function SigFeed({
             <div className="flex rounded-full bg-sand p-1" role="radiogroup" aria-label="Sort">
               {(
                 [
-                  ["recommended", "Top picks"],
+                  ["recommended", "Popular"],
                   ["nearest", "Nearest"],
                   ["rating", "Rated"],
                 ] as const
@@ -65,7 +65,7 @@ export function SigFeed({
                   role="radio"
                   aria-checked={sort === v}
                   onClick={() => setSort(v)}
-                  className={cn("h-10 rounded-full px-3.5 text-[0.68rem] font-bold tracking-[0.1em] uppercase transition-colors sm:px-4", sort === v ? "bg-forest text-on-forest" : "text-stone hover:text-forest")}
+                  className={cn("h-10 rounded-full px-3 whitespace-nowrap text-xs font-semibold transition-colors sm:px-4", sort === v ? "bg-forest text-on-forest" : "text-stone hover:text-forest")}
                 >
                   {l}
                 </button>
@@ -100,7 +100,7 @@ export function SigFeed({
               aria-selected={filter === f}
               onClick={() => setFilter(f)}
               className={cn(
-                "relative shrink-0 px-3.5 py-3 text-[0.72rem] font-bold tracking-[0.12em] whitespace-nowrap uppercase transition-colors",
+                "relative shrink-0 px-3.5 py-3 text-sm font-semibold whitespace-nowrap transition-colors",
                 filter === f ? "text-forest" : "text-stone hover:text-forest",
               )}
             >
@@ -111,7 +111,7 @@ export function SigFeed({
         </div>
       </div>
 
-      <p className="mt-8 mb-4 text-[0.7rem] font-bold tracking-[0.2em] text-stone uppercase" aria-live="polite">
+      <p className="mt-8 mb-4 text-sm font-semibold text-stone" aria-live="polite">
         {results.length} {results.length === 1 ? "result" : "results"}
       </p>
 

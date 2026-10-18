@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { Coffee, Fish, Flame, Martini, Pizza, Search, Soup, Sparkles, UtensilsCrossed, Wheat, X, type LucideIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 import { foodCategories, type FoodCategory } from "@/lib/data";
-import { filterRestaurants, NO_RESTAURANT_FILTERS, type RestaurantSort } from "@/lib/restaurant-filter";
+import { filterRestaurants, matchingDishes, NO_RESTAURANT_FILTERS, type RestaurantSort } from "@/lib/restaurant-filter";
 import { useLagosMinutes } from "@/lib/use-lagos-time";
 import { cn } from "@/lib/utils";
 import { sigBtn, SigRestaurantCard } from "./ui";
@@ -35,16 +35,16 @@ export function SigRestaurants({ initialCategory, initialQuery = "" }: { initial
   );
 
   return (
-    <div className="container-x -mt-8 grid grid-cols-1 gap-8 pb-10 lg:-mt-10 lg:grid-cols-[15rem_1fr]">
+    <div className="container-x grid grid-cols-1 gap-8 pt-10 pb-24 lg:grid-cols-[15rem_1fr] lg:pt-12">
       <aside className="relative z-10 min-w-0 lg:sticky lg:top-24 lg:self-start">
         <div className="rounded-[1.75rem] bg-paper p-3 shadow-lift">
           <label className="relative block">
-            <span className="sr-only">Search kitchens</span>
+            <span className="sr-only">Search restaurants or dishes</span>
             <Search className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-stone" />
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search kitchens…"
+              placeholder="Restaurant or dish…"
               className="h-11 w-full rounded-full bg-sand pr-9 pl-10 text-sm outline-none focus:ring-2 focus:ring-forest"
             />
             {query && (
@@ -77,10 +77,12 @@ export function SigRestaurants({ initialCategory, initialQuery = "" }: { initial
         </div>
       </aside>
 
-      <div className="min-w-0 lg:pt-16">
+      <div className="min-w-0">
         <div className="flex flex-wrap items-center gap-2">
-          <p className="mr-auto text-[0.7rem] font-bold tracking-[0.2em] text-stone uppercase" aria-live="polite">
-            {results.length} kitchens{category !== "All" && ` · ${category}`}
+          <p className="mr-auto text-sm font-semibold text-stone" aria-live="polite">
+            {results.length} {results.length === 1 ? "restaurant" : "restaurants"}
+            {category !== "All" && ` · ${category}`}
+            {query.trim() && ` · “${query.trim()}”`}
           </p>
           {(
             [
@@ -92,7 +94,7 @@ export function SigRestaurants({ initialCategory, initialQuery = "" }: { initial
               key={label}
               aria-pressed={on}
               onClick={() => set(!on)}
-              className={cn("rounded-full border-2 px-4 py-1.5 text-[0.68rem] font-bold tracking-[0.1em] uppercase transition-colors", on ? "border-forest bg-forest text-on-forest" : "border-line text-forest hover:border-forest")}
+              className={cn("rounded-full border-2 px-4 py-1.5 text-xs font-semibold transition-colors", on ? "border-forest bg-forest text-on-forest" : "border-line text-forest hover:border-forest")}
             >
               {label}
             </button>
@@ -114,12 +116,13 @@ export function SigRestaurants({ initialCategory, initialQuery = "" }: { initial
         </div>
         <div className="mt-5 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 xl:grid-cols-4">
           {results.map((r) => (
-            <SigRestaurantCard key={r.slug} restaurant={r} />
+            <SigRestaurantCard key={r.slug} restaurant={r} dishes={matchingDishes(r.slug, query)} />
           ))}
         </div>
         {results.length === 0 && (
           <div className="rounded-[1.75rem] border-2 border-dashed border-line px-6 py-16 text-center">
-            <p className="text-2xl font-extrabold text-forest">No kitchens match.</p>
+            <p className="text-2xl font-extrabold text-forest">No restaurants match.</p>
+            <p className="mt-2 text-stone">Try another dish, restaurant name or category.</p>
             <button
               onClick={() => {
                 setQuery("");

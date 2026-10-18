@@ -23,16 +23,26 @@ Open http://localhost:3000
 ## Brand
 
 - **Name:** Native · **Tagline:** *Native, beyond the plate*
-- **Logo:** a plain-text wordmark drawn only by `Wordmark` in `src/components/brand.tsx` (Fraunces, `--font-brand`). Both versions, the splash screen, drawers, footers and admin previews use it — swap that one component for the official logo later.
-- **Colours:** forest green is primary; neutrals stay clean. A small orange accent `--color-spark` (#F1A10C, sampled from the supplied swatch) is used only for heading underlines, active-navigation indicators and tiny separators. No yellow or gold.
+- **Logo:** the official artwork, drawn only by `Wordmark` in `src/components/brand.tsx`, which every header, drawer, footer, the splash screen and the admin previews use. `public/brand/native-logo.svg` has green letters; `native-logo-white.svg` swaps the letters to white for dark backgrounds. The gold leaf is never recoloured. `native-logo-original.svg` is the file as supplied (the other two only trim the empty canvas padding).
+- **Colours:** forest green is primary; neutrals stay clean. A small orange accent `--color-spark` (#F1A10C, sampled from the supplied swatch) is used only for heading underlines, active-navigation indicators and tiny separators. No yellow or gold in the interface (the logo’s leaf is the only exception).
 - **Pattern:** the supplied image (`public/brand/native-pattern.jpg`) is kept; `bg-native-pattern` / `bg-native-pattern-lg` draw a mirrored tile of it at reduced scale under a deep-green wash so it reads as a quiet texture.
 
 ## Opening splash & homepage video
 
-- **Splash:** white screen with the wordmark and tagline, a soft entrance and fade (`globals.css`, `components/splash.tsx`). Shown once per browser session — not on internal navigation or reloads (`sessionStorage` flag set in `src/lib/theme-script.ts`). It never intercepts clicks, shortens under reduced motion, and a timer removes it even if animations are paused.
-- **Hero video:** the cultural-dance master supplied by the Native team (3840×2160, 25 fps, 9.6 s, no audio) is encoded as a seamless 8.8 s crossfade loop in `public/videos/`: `native-dance-portrait.mp4` (1080×1920 centre cut, tall phones), `native-dance-1080.mp4` (most screens) and `native-dance-2160.mp4` (large / high-density displays, skipped with Save-Data), plus matching posters. `components/hero-video.tsx` picks the rendition on the client; it autoplays muted and looped with `object-fit: cover`, has one discreet pause/play button, starts paused under reduced motion, and keeps the poster if a file can't play. Re-encode with ffmpeg (H.264 High, CRF 20–21, `-movflags +faststart`) if the master changes.
+- **Splash:** white screen with the wordmark and tagline, a soft entrance and fade (`globals.css`, `components/splash.tsx`). Shown on every full load of the homepage, and on the first page of a browser session elsewhere — never on internal navigation (`src/lib/theme-script.ts`). It never intercepts clicks, shortens under reduced motion, and a timer removes it even if animations are paused.
+- **Hero video:** the cultural-dance master supplied by the Native team (3840×2160, 25 fps, 9.6 s, no audio) is encoded as a seamless 8.8 s crossfade loop in `public/videos/`: `native-dance-portrait.mp4` (1080×1920 centre cut, tall phones), `native-dance-1080.mp4` (most screens) and `native-dance-2160.mp4` (large / high-density displays, skipped with Save-Data), plus matching posters. `components/hero-video.tsx` picks the rendition on the client; it autoplays muted and looped with `object-fit: cover`, has no visible player controls, stays on its poster under reduced motion, and keeps the poster if a file can't play. Re-encode with ffmpeg (H.264 High, CRF 20–21, `-movflags +faststart`) if the master changes.
 - **Welcome sequence:** `components/landing-story.tsx` reveals "Discover the heart of Owerri." → "Taste local." → "Explore culture." → "Find places worth discovering." → "Native, beyond the plate." word by word, once, starting after the splash. Version A uses large serif left-aligned text; Version B bold sans, centred. Screen readers get the full text once; reduced motion shows the opening line and tagline with no movement.
 - The landing viewport holds only **Explore** (→ `/explore`) and a **search field** (opens the site search pre-filled). Version A aligns them bottom-left; Version B uses one centred pill.
+
+## Food ordering
+
+Food ordering is a primary service: **Food & Restaurants** (`/restaurants`) is second in the navigation, first among the homepage shortcuts and in both mobile docks.
+
+- **Homepage:** a "Good food, delivered." row of restaurants directly below the video in both versions: Annie’s Kitchen first, then Chicken Republic and Kilimanjaro (`TOP_RESTAURANTS` in `src/lib/data.ts`), then featured kitchens.
+- **Food & Restaurants page:** every restaurant, with those three first under *Recommended*, plus category chips, delivery and open-now filters and sorting. Search matches restaurant names *and* dishes on their menus (“Serves Jollof Rice & Chicken”). A floating cart bar shows items, subtotal and Checkout.
+- **Journey:** Food & Restaurants → restaurant (View menu / Order now) → menu → cart drawer → `/orders` review & checkout → confirmation. One cart store (`src/lib/cart-store.ts`) powers every step.
+- **Honest prototype:** checkout says that online ordering isn’t live yet. Orders are saved in the browser only: nothing is sent to the restaurant, no payment is taken, no delivery is arranged and no fake delivery status is shown. The delivery fee is labelled as a sample. To connect real ordering, replace `cart.placeOrder`.
+- **Annie’s Kitchen, Chicken Republic and Kilimanjaro** have unconfirmed profiles: only their names are real. Menus, prices, cuisine, address, hours, phone and delivery details are `SAMPLE` placeholders in `src/lib/data.ts`. The site shows "New on Native" with a one-line note instead of inventing ratings, reviews, distance, hours or a phone number. To publish real details, put naira prices in `prices`, fill in `open`, `close`, `phone`, `address` and `area`, then remove `sampleProfile`.
 
 ## Two design versions
 
@@ -63,15 +73,16 @@ References live in `design-references/` (`native/` holds the current Native set:
 - **Two themes:** *Native Light* (default) and *Native Forest*. Theme-dependent tokens (`canvas`, `paper`, `ink`, `forest`, `accent`…) are overridden on `:root[data-theme="forest"]`; constant tokens (`pine`, `forest-deep`, `cream`, `leaf`) are for always-dark surfaces such as photo overlays, pattern sections and the footer.
 - **Version A palettes:** set under `/admin` (saved as `native:theme`), applied before first paint.
 - **Brand pattern:** the supplied image is kept as `public/brand/native-pattern.jpg`. `public/brand/native-pattern-tile.png` is the same image with a 9px white edge artefact trimmed and mirrored 2×2 so it repeats seamlessly. Use the `bg-native-pattern` / `bg-native-pattern-lg` utilities (hero edges, `PatternBanner`, footer, drawer, culture feature).
-- **Navigation:** defined once in `src/lib/navigation.ts` (Home, Local Market, Tours › Stays & Getaways / Nature & Places, Nearby, Events & Hangouts, Saved, Notifications, Blog, Settings, Help / Support) and used by the desktop header, mobile drawer and footer.
+- **Navigation:** defined once in `src/lib/navigation.ts` (Home, Food & Restaurants, Local Market, Tours › Stays & Getaways / Nature & Places, Nearby, Events & Hangouts, Saved, Notifications, Blog, Settings, Help / Support) and used by the desktop header, mobile drawer and footer.
 
 ## Pages
 
-- `/` – photographic hero carousel, discovery shortcuts, Tours, Local Market, pattern cultural feature, Nearby, Events & Hangouts, stories
+- `/` – cultural video hero, restaurants row, discovery shortcuts, Tours, Local Market, pattern cultural feature, Nearby, Events & Hangouts, stories
 - `/market` – traditional food (kitchens you can order from), fresh produce, spices & ingredients, crafts
 - `/tours`, `/tours/stays`, `/tours/nature` · `/nearby` · `/events` – scoped discovery feeds (`?cat=`, `?item=<slug>` opens the details/tickets sheet)
 - `/saved`, `/notifications`, `/blog`, `/settings`, `/help`, `/admin`
-- Existing flows kept: `/explore`, `/restaurants` (+ `[slug]`, `[slug]/menu` ordering), `/orders` checkout, `/culture`, `/dishes`, `/neighbourhoods`, `/stories/[slug]`, `/credits`, ⌘K search
+- `/restaurants` – Food & Restaurants (+ `[slug]` profile, `[slug]/menu` ordering), `/orders` cart review & checkout
+- Existing flows kept: `/explore`, `/culture`, `/dishes`, `/neighbourhoods`, `/stories/[slug]`, `/credits`, ⌘K search
 
 ## Data & images
 

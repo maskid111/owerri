@@ -1,6 +1,5 @@
 "use client";
 
-import { Pause, Play } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { openSearch } from "./search-dialog";
@@ -11,7 +10,8 @@ import { openSearch } from "./search-dialog";
  * so each screen gets a sharp file without downloading more than it needs:
  *  - portrait 1080×1920 centre-cut for tall phone screens
  *  - 1920×1080 for most laptops and desktops
- *  - 3840×2160 for large / high-density displays (skipped when the visitor asks to save data)
+ *  - 3840×2160 for large / high-density displays (skipped when the visitor asks to save data).
+ * Reduced motion: the video stays on its poster frame.
  */
 export const HERO_VIDEO = {
   portrait: { src: "/videos/native-dance-portrait.mp4", poster: "/videos/native-dance-poster-portrait.jpg" },
@@ -29,12 +29,10 @@ function pickRendition(): Rendition {
   return window.innerWidth * window.devicePixelRatio > 2400 && !saveData ? "uhd" : "hd";
 }
 
-/** `children` are overlays painted above the footage but below the playback control. */
-export function HeroVideo({ controls = "a", className, children }: { controls?: "a" | "b"; className?: string; children?: React.ReactNode }) {
+/** `children` are overlays painted above the footage. There are no visible player controls. */
+export function HeroVideo({ className, children }: { className?: string; children?: React.ReactNode }) {
   const ref = useRef<HTMLVideoElement>(null);
   const [rendition, setRendition] = useState<Rendition | null>(null);
-  const [playing, setPlaying] = useState(false);
-  const [failed, setFailed] = useState(false);
 
   // Screen shape and density are unknown while prerendering, so the rendition is chosen on the client.
   useEffect(() => {
@@ -57,17 +55,8 @@ export function HeroVideo({ controls = "a", className, children }: { controls?: 
       v.pause();
       return;
     }
-    v.play()
-      .then(() => setPlaying(true))
-      .catch(() => setPlaying(false)); // autoplay blocked: poster remains, play button available
+    v.play().catch(() => undefined); // autoplay blocked: the poster frame remains
   }, [rendition]);
-
-  const toggle = () => {
-    const v = ref.current;
-    if (!v) return;
-    if (v.paused) v.play().catch(() => undefined);
-    else v.pause();
-  };
 
   const current = HERO_VIDEO[rendition ?? "hd"];
 
@@ -86,26 +75,8 @@ export function HeroVideo({ controls = "a", className, children }: { controls?: 
         preload="auto"
         disablePictureInPicture
         aria-label={HERO_VIDEO.label}
-        onPlay={() => setPlaying(true)}
-        onPause={() => setPlaying(false)}
-        onError={() => setFailed(true)}
       />
       {children}
-      {!failed && rendition && (
-        <button
-          type="button"
-          onClick={toggle}
-          aria-label={playing ? "Pause background video" : "Play background video"}
-          className={cn(
-            "absolute z-10 grid place-items-center rounded-full text-white transition-colors",
-            controls === "a"
-              ? "top-20 right-4 size-10 bg-black/25 backdrop-blur-sm hover:bg-black/45 sm:top-24 sm:right-6"
-              : "top-24 left-4 size-9 border border-white/35 hover:bg-white/15 sm:left-6",
-          )}
-        >
-          {playing ? <Pause className="size-4" /> : <Play className="size-4" />}
-        </button>
-      )}
     </div>
   );
 }
