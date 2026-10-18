@@ -27,7 +27,7 @@ export function SigHome() {
     <>
       <SigHero />
 
-      {/* Food first: restaurants you can order from, Annie’s Kitchen on top */}
+      {/* Food first: restaurants you can order from, Annie’s Native Kitchen on top */}
       <SigSection eyebrow="Order food" title="Good food, delivered." href="/restaurants" linkLabel="All restaurants" className="pt-14 lg:pt-24">
         <div className="no-scrollbar -mx-4 flex snap-x gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:grid sm:grid-cols-4 sm:gap-4 sm:overflow-visible sm:px-0">
           {topRestaurants()

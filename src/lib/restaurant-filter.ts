@@ -6,7 +6,7 @@ export type RestaurantSort = "recommended" | "nearest" | "rating" | "price-asc" 
 export type RestaurantFilters = { area: string; prices: number[]; openOnly: boolean; deliveryOnly: boolean };
 export const NO_RESTAURANT_FILTERS: RestaurantFilters = { area: "all", prices: [], openOnly: false, deliveryOnly: false };
 
-/** Lower-case, straight apostrophes — so "annie's" finds "Annie’s Kitchen". */
+/** Lower-case, straight apostrophes — so "annie's" finds "Annie’s Native Kitchen". */
 const norm = (s: string) => s.toLowerCase().replace(/[’‘`]/g, "'");
 
 /** Searchable text per restaurant: name, cuisine, tags and every dish on its menu. */
@@ -52,7 +52,7 @@ export function filterRestaurants({
   if (sort === "rating") sorted.sort((a, b) => b.rating - a.rating);
   if (sort === "price-asc") sorted.sort((a, b) => a.price - b.price);
   if (sort === "price-desc") sorted.sort((a, b) => b.price - a.price);
-  // Annie’s Kitchen, Chicken Republic and Kilimanjaro lead the recommended order, then featured kitchens by rating.
+  // Annie’s Native Kitchen, Chicken Republic and Kilimanjaro lead the recommended order, then featured kitchens by rating.
   const rank = (r: (typeof restaurants)[number]) => {
     const i = TOP_RESTAURANTS.indexOf(r.slug);
     return i >= 0 ? 100 - i : r.featured ? 1 : 0;

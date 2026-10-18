@@ -257,21 +257,21 @@ export function getMenu(r: Restaurant): MenuItem[] {
 /* Restaurants                                                         */
 /* ------------------------------------------------------------------ */
 
-/** Restaurants listed first, in this order, wherever restaurants are recommended (Annie’s Kitchen is Native’s first). */
-export const TOP_RESTAURANTS = ["annies-kitchen", "chicken-republic", "kilimanjaro"];
+/** Restaurants listed first, in this order, wherever restaurants are recommended (Annie’s Native Kitchen is Native’s first). */
+export const TOP_RESTAURANTS = ["annies-native-kitchen", "chicken-republic", "kilimanjaro"];
 
 export const restaurants: Restaurant[] = [
   {
     /*
-     * ANNIE’S KITCHEN — EDITABLE PROFILE.
+     * ANNIE’S NATIVE KITCHEN — EDITABLE PROFILE.
      * Only the name is confirmed.
-     * Every field marked SAMPLE is a placeholder: replace it with details supplied by Annie’s Kitchen,
+     * Every field marked SAMPLE is a placeholder: replace it with details supplied by Annie’s Native Kitchen,
      * then remove `sampleProfile` so the UI stops labelling the profile as unconfirmed.
      */
-    slug: "annies-kitchen",
-    name: "Annie’s Kitchen",
+    slug: "annies-native-kitchen",
+    name: "Annie’s Native Kitchen",
     tagline: "Home-style meals in Owerri",
-    description: "Annie’s Kitchen on Native. Browse the menu and order for delivery or pickup in Owerri.",
+    description: "Annie’s Native Kitchen is now on Native. Browse the menu and order for delivery or pickup in Owerri.",
     cuisine: "Nigerian", // SAMPLE
     type: "Restaurant • Delivery", // SAMPLE
     categories: ["Local", "Continental"], // SAMPLE
@@ -290,7 +290,7 @@ export const restaurants: Restaurant[] = [
     image: "swallow-spread",
     cover: "fish-feast",
     gallery: ["fish-feast", "swallow-spread", "jollof-plated", "pepper-soup-pot"],
-    // SAMPLE menu — illustrative dishes and prices until Annie’s Kitchen supplies its own (add real prices in `prices`).
+    // SAMPLE menu — illustrative dishes and prices until Annie’s Native Kitchen supplies its own (add real prices in `prices`).
     signature: ["ofe-owerri", "jollof-chicken", "egusi-pounded-yam", "fried-rice-chicken"],
     menu: ["ofe-nsala", "goat-pepper-soup", "abacha-ugba", "rice-stew", "peppered-goat", "dodo", "grilled-chicken-platter", "creamy-chicken-pasta", "zobo", "pineapple-juice", "chocolate-cake"],
     prices: {},
@@ -1611,7 +1611,7 @@ export const getRestaurant = (slug: string) => restaurants.find((r) => r.slug ==
 export const getStory = (slug: string) => stories.find((s) => s.slug === slug);
 export const getNeighbourhood = (slug: string) => neighbourhoods.find((n) => n.slug === slug);
 export const areaName = (slug: string) => getNeighbourhood(slug)?.name ?? (slug || "Owerri");
-/** Annie’s Kitchen, Chicken Republic, Kilimanjaro, then featured kitchens — the homepage food row. */
+/** Annie’s Native Kitchen, Chicken Republic, Kilimanjaro, then featured kitchens — the homepage food row. */
 export const topRestaurants = () => [...TOP_RESTAURANTS.map((s) => getRestaurant(s)!), ...restaurants.filter((r) => r.featured)];
 
 /** "1.1 km · Ikenegbu" — or just "Owerri" while a restaurant’s address is still unconfirmed. */

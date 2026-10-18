@@ -75,7 +75,7 @@ export function NewBadge({ className }: { className?: string }) {
   return <span className={cn("inline-flex w-fit items-center rounded-full bg-mint px-2.5 py-0.5 text-xs font-semibold text-forest", className)}>New on Native</span>;
 }
 
-/** Honest notice for a restaurant whose details have not been confirmed yet (e.g. Annie’s Kitchen at launch). */
+/** Honest notice for a restaurant whose details have not been confirmed yet (e.g. Annie’s Native Kitchen at launch). */
 export function ProfileNotice({ restaurant: r, className }: { restaurant: { name: string; sampleProfile?: boolean }; className?: string }) {
   if (!r.sampleProfile) return null;
   return (

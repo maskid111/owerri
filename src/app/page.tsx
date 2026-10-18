@@ -27,7 +27,7 @@ function HomePage() {
     <>
       <Hero />
 
-      {/* Food first: restaurants you can order from, Annie’s Kitchen on top */}
+      {/* Food first: restaurants you can order from, Annie’s Native Kitchen on top */}
       <section className="container-x pt-14 lg:pt-24">
         <SectionHeader title="Good food, delivered." subtitle="Order from restaurants in Owerri." href="/restaurants" linkLabel="All restaurants" />
         <div className={cn(scroller, "mt-6 sm:grid-cols-2 lg:grid-cols-3")}>
