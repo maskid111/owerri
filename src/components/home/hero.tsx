@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Search } from "lucide-react";
 import { HeroSearchField, HeroVideo } from "@/components/hero-video";
+import { ExplorePattern } from "@/components/explore-pattern";
 import { LandingStory } from "@/components/landing-story";
 
 /**
@@ -28,9 +29,10 @@ export function Hero() {
         <div className="flex max-w-2xl flex-col gap-3 sm:flex-row sm:items-center">
           <Link
             href="/explore"
-            className="inline-flex h-14 shrink-0 items-center justify-center rounded-full bg-pine px-10 text-[0.95rem] font-semibold text-white ring-1 ring-white/15 transition-colors hover:bg-[#15573c]"
+            className="group relative isolate inline-flex h-14 shrink-0 items-center justify-center overflow-hidden rounded-full bg-pine px-10 text-[0.95rem] font-semibold text-white ring-1 ring-white/15 transition-colors hover:bg-[#15573c]"
           >
-            Explore
+            <ExplorePattern />
+            <span className="relative">Explore</span>
           </Link>
           <HeroSearchField
             id="hero-search-a"

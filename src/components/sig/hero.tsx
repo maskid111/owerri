@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Search } from "lucide-react";
 import { HeroSearchField, HeroVideo } from "../hero-video";
+import { ExplorePattern } from "../explore-pattern";
 import { LandingStory } from "../landing-story";
 
 /**
@@ -35,9 +36,10 @@ export function SigHero() {
           </button>
           <Link
             href="/explore"
-            className="inline-flex h-12 shrink-0 items-center rounded-full bg-forest px-6 text-sm font-semibold text-on-forest transition-colors hover:bg-forest-light sm:px-7"
+            className="group relative isolate inline-flex h-12 shrink-0 items-center overflow-hidden rounded-full bg-forest px-6 text-sm font-semibold text-on-forest transition-colors hover:bg-forest-light sm:px-8"
           >
-            Explore
+            <ExplorePattern />
+            <span className="relative">Explore</span>
           </Link>
         </HeroSearchField>
       </div>
