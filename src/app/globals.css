@@ -339,37 +339,3 @@
   }
 }
 
-/* ------------------------------------------------------------------ */
-/* Homepage welcome sequence (components/landing-story.tsx)            */
-/* ------------------------------------------------------------------ */
-.landing-word {
-  animation: landingWord 0.95s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-}
-.landing-out {
-  animation: landingOut 0.65s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-@keyframes landingWord {
-  from {
-    opacity: 0;
-    transform: translateY(0.35em);
-    filter: blur(10px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-    filter: none;
-  }
-}
-@keyframes landingOut {
-  to {
-    opacity: 0;
-    transform: translateY(-0.2em);
-    filter: blur(6px);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .landing-word,
-  .landing-out {
-    animation: none;
-  }
-}

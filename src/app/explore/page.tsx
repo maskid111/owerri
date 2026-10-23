@@ -7,7 +7,7 @@ import { SigFeedPage } from "@/components/sig/pages";
 
 export const metadata: Metadata = {
   title: "Explore",
-  description: "Restaurants, market stalls, hotels, nature, hangout spots, events and cultural experiences around Owerri, Imo State.",
+  description: "Restaurants, market stalls, hotels, nature, hangout spots, events and cultural experiences — all in one place.",
 };
 
 function ExplorePage() {
@@ -19,5 +19,5 @@ function ExplorePage() {
 }
 
 export default function Page() {
-  return <Design a={<ExplorePage />} b={<SigFeedPage scope="all" eyebrow="Explore" title="Explore Owerri" description="Kitchens, market stalls, stays, nature, hangouts, events and culture around Owerri, Imo State." image="green-hills" defaultSort="recommended" />} />;
+  return <Design a={<ExplorePage />} b={<SigFeedPage scope="all" eyebrow="Explore" title="Explore Native" description="Kitchens, market stalls, stays, nature, hangouts, events and culture — all in one place." image="green-hills" defaultSort="recommended" />} />;
 }

@@ -16,7 +16,7 @@ function NotFound() {
           Back home <Arrow />
         </ButtonLink>
         <ButtonLink href="/explore" variant="outline">
-          Explore Owerri
+          Explore Native
         </ButtonLink>
       </div>
     </section>

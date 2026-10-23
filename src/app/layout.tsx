@@ -19,8 +19,8 @@ export const metadata: Metadata = {
     template: "%s · Native",
   },
   description:
-    "Native — food, culture, places and experiences in Owerri, Imo State: local market, tours, stays, events and kitchens to order from.",
-  keywords: ["Native", "Owerri", "Imo State", "Nigerian food", "local market", "tours", "events", "culture"],
+    "Native — order food from local restaurants and discover markets, culture, stays, events and experiences, all in one place.",
+  keywords: ["Native", "food ordering", "restaurants", "Nigerian food", "local market", "tours", "events", "culture"],
 };
 
 export const viewport: Viewport = {

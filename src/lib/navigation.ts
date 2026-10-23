@@ -6,7 +6,7 @@ export type NavItem = { label: string; short?: string; href: string; icon: Lucid
 /** Site navigation, in the required order. Header, drawer, footer and sitemap-style lists all read from here. */
 export const navigation: NavItem[] = [
   { label: "Home", href: "/", icon: House },
-  { label: "Food & Restaurants", short: "Food", href: "/restaurants", icon: UtensilsCrossed, description: "Order meals from Owerri restaurants" },
+  { label: "Restaurants", short: "Food", href: "/restaurants", icon: UtensilsCrossed, description: "Order meals from local restaurants" },
   { label: "Local Market", short: "Market", href: "/market", icon: Store, description: "Traditional food, produce, spices and crafts" },
   {
     label: "Tours",

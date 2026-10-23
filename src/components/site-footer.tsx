@@ -31,7 +31,7 @@ export function SiteFooter() {
           <div>
             <Logo light />
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-cream/75">
-              Food, culture, places and experiences from Owerri and Imo State — all in one place. Native, beyond the plate.
+              Food, culture, places and experiences — all in one place. Native, beyond the plate.
             </p>
             <div className="mt-6">
               <p className="mb-3 text-sm font-semibold">Weekend picks in your inbox</p>
@@ -56,7 +56,7 @@ export function SiteFooter() {
           </div>
         </div>
         <div className="mt-10 flex flex-col gap-2 border-t border-cream/15 pt-6 text-xs text-cream/60 sm:flex-row sm:justify-between">
-          <p>© 2026 Native · Owerri, Imo State, Nigeria</p>
+          <p>© 2026 Native</p>
           <p>Listings, menus, prices and events are sample content for this preview.</p>
         </div>
       </div>

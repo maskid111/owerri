@@ -26,7 +26,7 @@ export function OrdersView({ chrome = true }: { chrome?: boolean }) {
       {chrome && (
         <div className="pt-5 lg:pt-10">
           <h1 className="text-[1.9rem] font-semibold text-forest sm:text-4xl lg:text-5xl">Orders</h1>
-          <p className="mt-1 text-stone">Your cart, checkout and past orders from Owerri kitchens.</p>
+          <p className="mt-1 text-stone">Your cart, checkout and past orders from local kitchens.</p>
         </div>
       )}
 

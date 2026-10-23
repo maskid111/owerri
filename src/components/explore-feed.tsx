@@ -16,8 +16,8 @@ export function ExploreFeed({
   initialSort = "recommended",
   initialItem,
   scope = "all",
-  heading = "Explore Owerri",
-  description = "Restaurants, cafés, market stalls, hotels, nature, hangout spots, events and cultural experiences around Owerri, Imo State.",
+  heading = "Explore Native",
+  description = "Restaurants, cafés, market stalls, hotels, nature, hangout spots, events and cultural experiences — all in one place.",
   showHeading = true,
 }: {
   initialFilter?: ExploreFilter;

@@ -46,7 +46,7 @@ export function SiteHeader() {
         )}
       >
         <div className="mx-auto flex h-16 max-w-[90rem] items-center gap-2 px-3 sm:gap-3 sm:px-4 sm:px-6 lg:h-[76px] lg:gap-3 lg:px-6 xl:gap-6 xl:px-8">
-          <button onClick={openNavDrawer} className={cn(iconBtn, "-ml-2", !overHero && "lg:hidden")} aria-label="Open menu">
+          <button onClick={openNavDrawer} className={cn(iconBtn, "-ml-2 lg:hidden")} aria-label="Open menu">
             <Menu className="size-6" />
           </button>
           <Link href="/" aria-label="Native home" className="shrink-0">
@@ -58,7 +58,7 @@ export function SiteHeader() {
             </span>
           </Link>
 
-          <nav aria-label="Main" className={cn("ml-auto hidden items-center", !overHero && "lg:flex")}>
+          <nav aria-label="Main" className="ml-auto hidden items-center lg:flex">
             <ul className="flex items-center gap-0.5">
               {textItems.map((item) => {
                 const active = isActivePath(pathname, item.href);
@@ -106,7 +106,7 @@ export function SiteHeader() {
             </ul>
           </nav>
 
-          <div className={cn("ml-auto flex items-center gap-0.5", !overHero && "lg:ml-2 lg:border-l lg:border-line lg:pl-3")}>
+          <div className={cn("ml-auto flex items-center gap-0.5 lg:ml-2 lg:border-l lg:pl-3", overHero ? "lg:border-cream/25" : "lg:border-line")}>
             <button onClick={openSearch} className={iconBtn} aria-label="Search">
               <Search className="size-5" />
             </button>

@@ -24,7 +24,7 @@ export function SavedList() {
         <p className="mx-auto mt-1 max-w-sm text-stone">Start exploring and tap the heart on places you want to try.</p>
         <div className="mt-6 flex flex-wrap justify-center gap-3">
           <ButtonLink href="/explore">
-            Explore Owerri <Arrow />
+            Explore Native <Arrow />
           </ButtonLink>
           <ButtonLink href="/restaurants" variant="outline">
             Food & restaurants

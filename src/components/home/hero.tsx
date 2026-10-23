@@ -1,50 +1,58 @@
 import Link from "next/link";
 import { Search } from "lucide-react";
-import { HeroSearchField, HeroVideo } from "@/components/hero-video";
 import { ExplorePattern } from "@/components/explore-pattern";
-import { LandingStory } from "@/components/landing-story";
+import { HeroSearchField, HeroVideo } from "@/components/hero-video";
 
 /**
- * Version A landing viewport: edge-to-edge cultural footage, a short serif welcome sequence and
- * two controls — Explore and search — anchored bottom-left, like the rest of Version A.
+ * Version A homepage top: a compact, product-first hero over the Native footage (one headline,
+ * Order food + Explore), then the site search overlapping its bottom edge. The service tiles follow
+ * directly, so the main options are visible without scrolling.
  */
 export function Hero() {
   return (
-    <section
-      aria-label="Welcome to Native"
-      className="relative isolate flex h-[calc(100svh-64px-env(safe-area-inset-bottom))] min-h-[30rem] items-end overflow-hidden text-white lg:h-[100svh] lg:min-h-[36rem]"
-    >
-      <HeroVideo>
-        {/* Forest-green grade and gradients — the brand colour carried into the footage */}
-        <div className="pointer-events-none absolute inset-0 bg-pine/35 mix-blend-soft-light" aria-hidden />
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-forest-deep/60 to-transparent" aria-hidden />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[62%] bg-gradient-to-t from-forest-deep/90 via-forest-deep/45 to-transparent" aria-hidden />
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-2/3 bg-gradient-to-r from-forest-deep/35 to-transparent" aria-hidden />
-      </HeroVideo>
+    <>
+      <section aria-label="Welcome to Native" className="relative isolate overflow-hidden bg-forest-deep text-white">
+        <HeroVideo className="-z-10">
+          <div className="pointer-events-none absolute inset-0 bg-pine/30 mix-blend-soft-light" aria-hidden />
+          <div
+            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-forest-deep via-forest-deep/55 to-forest-deep/35 lg:bg-gradient-to-r lg:from-forest-deep lg:via-forest-deep/70 lg:to-forest-deep/10"
+            aria-hidden
+          />
+        </HeroVideo>
 
-      <div className="relative container-x pb-7 sm:pb-12 lg:pb-16">
-        <div className="mb-8 sm:mb-10 lg:mb-12">
-          <LandingStory variant="a" />
+        <div className="container-x pt-24 pb-16 sm:pt-28 lg:pt-36 lg:pb-24">
+          <h1 className="max-w-xl font-display text-[2.5rem] leading-[1.02] font-medium sm:text-6xl">
+            Real flavours.
+            <br />
+            Real places.
+          </h1>
+          <div className="mt-7 flex flex-wrap gap-3">
+            <Link href="/restaurants" className="inline-flex h-12 items-center rounded-full bg-white px-6 text-sm font-semibold text-forest-deep transition-colors hover:bg-cream">
+              Order food
+            </Link>
+            <Link
+              href="/explore"
+              className="group relative isolate inline-flex h-12 items-center overflow-hidden rounded-full bg-pine px-8 text-sm font-semibold text-white ring-1 ring-white/20 transition-colors hover:bg-[#15573c]"
+            >
+              <ExplorePattern />
+              <span className="relative">Explore</span>
+            </Link>
+          </div>
         </div>
-        <div className="flex max-w-2xl flex-col gap-3 sm:flex-row sm:items-center">
-          <Link
-            href="/explore"
-            className="group relative isolate inline-flex h-14 shrink-0 items-center justify-center overflow-hidden rounded-full bg-pine px-10 text-[0.95rem] font-semibold text-white ring-1 ring-white/15 transition-colors hover:bg-[#15573c]"
-          >
-            <ExplorePattern />
-            <span className="relative">Explore</span>
-          </Link>
-          <HeroSearchField
-            id="hero-search-a"
-            className="flex h-14 flex-1 items-center gap-3 rounded-full border border-white/35 bg-pine/35 pr-2 pl-6 backdrop-blur-md transition-colors focus-within:border-white focus-within:bg-pine/50"
-            inputClassName="text-[0.95rem] text-white placeholder:text-white/80"
-          >
-            <button type="submit" className="grid size-10 shrink-0 place-items-center rounded-full text-white hover:bg-white/15" aria-label="Search">
-              <Search className="size-5" />
-            </button>
-          </HeroSearchField>
-        </div>
+      </section>
+
+      <div className="container-x relative z-10 -mt-7">
+        <HeroSearchField
+          id="hero-search-a"
+          placeholder="Restaurants, dishes, places…"
+          className="flex h-14 items-center gap-2 rounded-full border border-line/70 bg-paper pr-1.5 pl-5 shadow-lift"
+          inputClassName="text-[0.95rem] text-ink placeholder:text-stone"
+        >
+          <button type="submit" className="inline-flex h-11 shrink-0 items-center gap-2 rounded-full bg-forest px-4 text-sm font-semibold text-on-forest transition-colors hover:bg-forest-light sm:px-5" aria-label="Search">
+            <Search className="size-4" /> <span className="hidden sm:inline">Search</span>
+          </button>
+        </HeroSearchField>
       </div>
-    </section>
+    </>
   );
 }

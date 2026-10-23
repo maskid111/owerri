@@ -1,24 +1,19 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowRight, ChevronDown, ChevronRight, X } from "lucide-react";
+import { X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { accountNav, isActivePath, mainNav, type NavItem } from "@/lib/navigation";
-import { useUnreadCount } from "@/lib/notifications-store";
-import { cn } from "@/lib/utils";
+import { AppMenuList } from "./app-menu";
 import { Logo } from "./ui";
 
 const OPEN_EVENT = "native:open-nav";
 export const openNavDrawer = () => window.dispatchEvent(new Event(OPEN_EVENT));
 
-/** Slide-in navigation drawer: full menu in order, then an "Explore More" card. */
+/** Slide-in navigation drawer: the grouped site menu (see AppMenuList). */
 export function NavDrawer() {
   const [open, setOpen] = useState(false);
-  const [toursOpen, setToursOpen] = useState(false);
   const pathname = usePathname();
-  const unread = useUnreadCount();
 
   useEffect(() => {
     const onOpen = () => setOpen(true);
@@ -40,28 +35,6 @@ export function NavDrawer() {
 
   const close = () => setOpen(false);
 
-  const row = (item: NavItem, child = false) => {
-    const active = item.href === "/" ? pathname === "/" : isActivePath(pathname, item.href) && !(item.children && pathname !== item.href);
-    const Icon = item.icon;
-    return (
-      <Link
-        href={item.href}
-        onClick={close}
-        aria-current={active ? "page" : undefined}
-        className={cn(
-          "flex items-center gap-3.5 rounded-xl px-3 py-2.5 text-[0.95rem] font-medium transition-colors",
-          child && "py-2 pl-11 text-sm",
-          active ? "bg-sand font-semibold text-forest" : "text-ink hover:bg-sand/60",
-        )}
-      >
-        <Icon className={cn("shrink-0 text-forest", child ? "size-[18px]" : "size-[22px]")} strokeWidth={active ? 2.3 : 1.9} />
-        <span className="flex-1">{item.label}</span>
-        {item.href === "/notifications" && unread > 0 && <span className="grid h-5 min-w-5 place-items-center rounded-full bg-accent px-1 text-[11px] font-bold text-on-accent">{unread}</span>}
-        <ChevronRight className="size-4 text-stone" />
-      </Link>
-    );
-  };
-
   return (
     <AnimatePresence>
       {open && (
@@ -73,7 +46,7 @@ export function NavDrawer() {
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
             transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-            className="pb-safe absolute inset-y-0 left-0 flex w-[86%] max-w-sm flex-col overflow-y-auto rounded-r-[1.75rem] bg-paper px-4 pt-5"
+            className="pb-safe absolute inset-y-0 left-0 flex w-[88%] max-w-sm flex-col overflow-y-auto rounded-r-[1.75rem] bg-canvas px-4 pt-5"
           >
             <div className="flex items-center justify-between px-1">
               <Logo />
@@ -82,53 +55,7 @@ export function NavDrawer() {
               </button>
             </div>
 
-            <ul className="mt-6 space-y-0.5">
-              {mainNav.map((item) => (
-                <li key={item.href}>
-                  {item.children ? (
-                    <>
-                      <div className="flex items-center">
-                        <div className="flex-1">{row(item)}</div>
-                        <button
-                          type="button"
-                          onClick={() => setToursOpen((v) => !v)}
-                          aria-expanded={toursOpen || item.children.some((c) => isActivePath(pathname, c.href))}
-                          aria-label="Show tour types"
-                          className="grid size-10 place-items-center rounded-xl text-forest hover:bg-sand"
-                        >
-                          <ChevronDown className={cn("size-4 transition-transform", (toursOpen || item.children.some((c) => isActivePath(pathname, c.href))) && "rotate-180")} />
-                        </button>
-                      </div>
-                      {(toursOpen || item.children.some((c) => isActivePath(pathname, c.href))) && (
-                        <ul className="space-y-0.5">
-                          {item.children.map((c) => (
-                            <li key={c.href}>{row(c, true)}</li>
-                          ))}
-                        </ul>
-                      )}
-                    </>
-                  ) : (
-                    row(item)
-                  )}
-                </li>
-              ))}
-            </ul>
-            <div className="my-3 h-px bg-line" />
-            <ul className="space-y-0.5">
-              {accountNav.map((item) => (
-                <li key={item.href}>{row(item)}</li>
-              ))}
-            </ul>
-
-            <Link href="/explore" onClick={close} className="mt-5 mb-5 flex items-center gap-3 rounded-2xl bg-native-pattern p-4 text-cream">
-              <span className="flex-1">
-                <span className="block font-semibold">Explore More</span>
-                <span className="block text-xs text-cream/80">Food · Culture · Places · Experiences</span>
-              </span>
-              <span className="grid size-9 place-items-center rounded-full border border-cream/60">
-                <ArrowRight className="size-4" />
-              </span>
-            </Link>
+            <AppMenuList pathname={pathname} onNavigate={close} />
           </motion.nav>
         </motion.div>
       )}

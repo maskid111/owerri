@@ -8,13 +8,13 @@ import { SigFeedPage } from "@/components/sig/pages";
 
 export const metadata: Metadata = {
   title: "Stays & Getaways",
-  description: "Hotels, lodges and weekend getaways in and around Owerri, Imo State.",
+  description: "Hotels, lodges and weekend getaways worth remembering.",
 };
 
 function OriginalPage() {
   return (
     <>
-      <PhotoHero eyebrow="Tours · Stays & Getaways" title="Stay somewhere worth remembering." description="Hotels, lodges and weekend getaways in and around Owerri, Imo State." image="lodge" imageAlt="A thatched lodge among green hills" />
+      <PhotoHero eyebrow="Tours · Stays & Getaways" title="Stay somewhere worth remembering." description="Hotels, lodges and weekend getaways worth remembering." image="lodge" imageAlt="A thatched lodge among green hills" />
       <Suspense fallback={<ExploreFeed scope="stays" showHeading={false} initialSort="recommended" />}>
         <ScopedFeed scope="stays" showHeading={false} defaultSort="recommended" />
       </Suspense>
@@ -23,5 +23,5 @@ function OriginalPage() {
 }
 
 export default function Page() {
-  return <Design a={<OriginalPage />} b={<SigFeedPage scope="stays" eyebrow="Tours · Stays & Getaways" title="Stay somewhere worth remembering" description="Hotels, lodges and weekend getaways in and around Owerri, Imo State." image="lodge" defaultSort="recommended" />} />;
+  return <Design a={<OriginalPage />} b={<SigFeedPage scope="stays" eyebrow="Tours · Stays & Getaways" title="Stay somewhere worth remembering" description="Hotels, lodges and weekend getaways worth remembering." image="lodge" defaultSort="recommended" />} />;
 }

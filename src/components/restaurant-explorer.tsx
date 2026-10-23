@@ -42,7 +42,7 @@ export function RestaurantExplorer({ initialCategory, initialQuery = "" }: { ini
         <Link href="/" aria-label="Back to home" className="-ml-2 grid size-10 place-items-center rounded-full text-forest hover:bg-forest/5 lg:hidden">
           <ArrowLeft className="size-6" />
         </Link>
-        <h1 className="flex-1 text-[1.6rem] leading-tight font-semibold tracking-tight text-forest min-[400px]:text-[1.75rem] sm:text-4xl lg:text-5xl">Food & Restaurants</h1>
+        <h1 className="flex-1 text-[1.6rem] leading-tight font-semibold tracking-tight text-forest min-[400px]:text-[1.75rem] sm:text-4xl lg:text-5xl">Restaurants</h1>
         <button
           onClick={() => setSearchOpen((v) => !v)}
           aria-expanded={searchOpen}
@@ -52,7 +52,7 @@ export function RestaurantExplorer({ initialCategory, initialQuery = "" }: { ini
           {searchOpen ? <X className="size-6" /> : <Search className="size-6" />}
         </button>
       </div>
-      <p className="mt-1 max-w-xl text-sm text-stone sm:text-base">Order from restaurants across Owerri for delivery or pickup — search by restaurant or dish.</p>
+      <p className="mt-1 max-w-xl text-sm text-stone sm:text-base">Order from local restaurants for delivery or pickup — search by restaurant or dish.</p>
 
       <AnimatePresence initial={false}>
         {searchOpen && (

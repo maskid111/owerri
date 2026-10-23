@@ -165,7 +165,7 @@ export const foodCategories: FoodCategory[] = [
 
 export const menuSections: { name: MenuSection; blurb: string }[] = [
   { name: "Signature Dishes", blurb: "Our most loved and recommended." },
-  { name: "Local Dishes", blurb: "Authentic flavours from the heart of Owerri." },
+  { name: "Local Dishes", blurb: "Authentic flavours, cooked the traditional way." },
   { name: "Continental", blurb: "A taste of the world." },
   { name: "Drinks", blurb: "Cool sips for every mood." },
   { name: "Desserts", blurb: "Something sweet to finish." },
@@ -1613,6 +1613,28 @@ export const getNeighbourhood = (slug: string) => neighbourhoods.find((n) => n.s
 export const areaName = (slug: string) => getNeighbourhood(slug)?.name ?? (slug || "Owerri");
 /** Annie’s Native Kitchen, Chicken Republic, Kilimanjaro, then featured kitchens — the homepage food row. */
 export const topRestaurants = () => [...TOP_RESTAURANTS.map((s) => getRestaurant(s)!), ...restaurants.filter((r) => r.featured)];
+
+/** Related kitchens: same categories first, then any others, never the restaurant itself. */
+export function relatedRestaurants(slug: string, limit = 3) {
+  const r = getRestaurant(slug);
+  const others = restaurants.filter((x) => x.slug !== slug);
+  const same = r ? others.filter((x) => x.categories.some((c) => r.categories.includes(c))) : [];
+  return [...same, ...others.filter((x) => !same.includes(x))].slice(0, limit);
+}
+
+/** Signature dishes from the restaurants listed first (one per restaurant, no repeats) — the "Popular dishes" rows. */
+export function popularDishes(limit = 8) {
+  const seen = new Set<string>();
+  const out: { restaurant: Restaurant; item: MenuItem }[] = [];
+  for (const restaurant of topRestaurants()) {
+    const item = getMenu(restaurant).find((m) => m.section === "Signature Dishes" && !seen.has(m.id));
+    if (!item) continue;
+    seen.add(item.id);
+    out.push({ restaurant, item });
+    if (out.length === limit) break;
+  }
+  return out;
+}
 
 /** "1.1 km · Ikenegbu" — or just "Owerri" while a restaurant’s address is still unconfirmed. */
 export function locationLabel(r: Restaurant) {

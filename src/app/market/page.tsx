@@ -9,7 +9,7 @@ import { SigMarket } from "@/components/sig/pages";
 
 export const metadata: Metadata = {
   title: "Local Market",
-  description: "Traditional food, fresh produce, spices and handmade crafts from Owerri, Imo State.",
+  description: "Traditional food, fresh produce, spices and handmade crafts from local markets and makers.",
 };
 
 const groups: { name: MarketGroup; id: string; blurb: string }[] = [
@@ -26,7 +26,7 @@ function MarketPage() {
       <PhotoHero
         eyebrow="Local Market"
         title="From the farm, the pot and the maker’s hands."
-        description="Order traditional food from local kitchens, then find the produce, spices and crafts that make Owerri taste and feel like home."
+        description="Order traditional food from local kitchens, then find the produce, spices and crafts that taste and feel like home."
         image="market-women"
         imageAlt="Women in colourful prints at an outdoor market"
         pattern

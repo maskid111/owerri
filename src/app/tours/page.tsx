@@ -9,7 +9,7 @@ import { SigTours } from "@/components/sig/pages";
 
 export const metadata: Metadata = {
   title: "Tours",
-  description: "Stays, getaways and nature around Owerri and Imo State — lodges, lakes, rivers, trails and waterfalls.",
+  description: "Stays, getaways and nature — lodges, lakes, rivers, trails and waterfalls.",
 };
 
 function ToursPage() {
@@ -21,7 +21,7 @@ function ToursPage() {
       <PhotoHero
         eyebrow="Tours"
         title="Slow down. Look around."
-        description="Lodges in the palms, lakes at sunset and forest rivers — all within easy reach of Owerri."
+        description="Lodges in the palms, lakes at sunset and forest rivers — all within easy reach."
         image="green-hills"
         imageAlt="Green hills and trees under a blue sky"
       />

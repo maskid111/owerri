@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, MapPin, Star, Store, Truck } from "lucide-react";
-import type { Restaurant } from "@/lib/data";
+import { areaName, type Restaurant } from "@/lib/data";
 import { cn, distanceLabel, priceLabel } from "@/lib/utils";
 import { SaveButton } from "./save-button";
 import { NewBadge, Photo, RestaurantRating } from "./ui";
@@ -51,7 +51,7 @@ export function FeaturedCard({ restaurant: r, badge = "Top Pick", className, pri
   );
 }
 
-/** Horizontal listing card from the Food & Restaurants reference. */
+/** Horizontal listing card from the Restaurants reference. */
 export function ListingCard({
   restaurant: r,
   openNow,
@@ -93,6 +93,38 @@ export function ListingCard({
         <span className="mt-0.5 inline-flex w-fit items-center gap-1.5 rounded-full bg-accent px-3 py-1 text-[0.75rem] font-semibold text-on-accent">
           <ServiceIcon className="size-3.5" aria-hidden /> {r.service}
         </span>
+      </div>
+    </article>
+  );
+}
+
+/** Photo-led restaurant card (homepage and "You might also like"): dark gradient, badge, save, name, place and rating. */
+export function RestaurantPhotoCard({ restaurant: r, className, priority }: { restaurant: Restaurant; className?: string; priority?: boolean }) {
+  const badge = r.sampleProfile ? "New on Native" : r.featured ? "Local favourite" : r.service === "Dine-in only" ? "Dine-in" : null;
+  return (
+    <article className={cn("group relative isolate flex aspect-[4/3] items-end overflow-hidden rounded-2xl bg-forest-deep text-white shadow-card", className)}>
+      <Photo name={r.cover} alt={`${r.name} — ${r.type}`} sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 85vw" priority={priority} className="-z-20 transition-transform duration-500 group-hover:scale-[1.04]" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-forest-deep/95 via-forest-deep/30 to-black/10" aria-hidden />
+      {badge && <span className="absolute top-3 left-3 rounded-full bg-spark px-2.5 py-1 text-[10px] font-bold tracking-wide text-forest-deep uppercase">{badge}</span>}
+      <SaveButton slug={r.slug} name={r.name} variant="photo" className="absolute top-2 right-2 z-10" />
+      <div className="w-full p-4">
+        <h3 className="truncate text-lg leading-tight font-semibold">
+          <Link href={`/restaurants/${r.slug}`} className="after:absolute after:inset-0">
+            {r.name}
+          </Link>
+        </h3>
+        <p className="mt-1 flex items-center justify-between gap-3 text-xs text-white/80">
+          <span className="flex min-w-0 items-center gap-1">
+            <MapPin className="size-3.5 shrink-0" aria-hidden /> <span className="truncate">{r.sampleProfile ? "Owerri" : areaName(r.area)}</span>
+          </span>
+          {r.reviewCount ? (
+            <span className="inline-flex shrink-0 items-center gap-1">
+              <Star className="size-3.5 fill-spark text-spark" aria-hidden /> {r.rating.toFixed(1)} <span className="text-white/60">({compact(r.reviewCount)})</span>
+            </span>
+          ) : (
+            <span className="shrink-0">{r.service === "Dine-in only" ? "Dine-in" : "Delivery"}</span>
+          )}
+        </p>
       </div>
     </article>
   );

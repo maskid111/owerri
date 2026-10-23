@@ -11,7 +11,7 @@ import { SigCulture } from "@/components/sig/pages";
 
 export const metadata: Metadata = {
   title: "Culture & Stories",
-  description: "Festivals, masquerades, music, art and stories from Owerri, Imo State — plus our guide to the perfect weekend in the city.",
+  description: "Festivals, masquerades, music, art and stories — plus our guide to a perfect cultural weekend.",
 };
 
 const weekend: { day: string; image: ImageName; items: { icon: typeof Sun; time: string; title: string; text: string; href: string }[] }[] = [
@@ -55,7 +55,7 @@ function CulturePage() {
           <div className="p-5 text-cream sm:p-8 lg:p-12">
             <p className="text-xs font-bold tracking-[0.16em] text-leaf uppercase">Culture & Stories</p>
             <h1 className="mt-2 max-w-2xl text-[2.1rem] leading-[1.05] font-semibold sm:text-5xl lg:text-6xl">The city beyond the plate.</h1>
-            <p className="mt-3 max-w-xl text-cream/85">Festivals, masquerades, highlife nights, art and the stories that make Owerri what it is.</p>
+            <p className="mt-3 max-w-xl text-cream/85">Festivals, masquerades, highlife nights, art and the stories behind them.</p>
           </div>
         </div>
       </section>

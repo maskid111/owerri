@@ -5,7 +5,7 @@ import { Suspense, type ReactNode } from "react";
 import { AppearanceSettings } from "@/app/admin/appearance-settings";
 import { ContactForm } from "@/app/help/contact-form";
 import { SettingsView } from "@/app/settings/settings-view";
-import { dishes, exploreItems, getMenu, getRestaurant, getStory, marketSections, neighbourhoods, places, restaurants, stories, type MarketGroup } from "@/lib/data";
+import { dishes, exploreItems, getMenu, relatedRestaurants, getRestaurant, getStory, marketSections, neighbourhoods, places, restaurants, stories, type MarketGroup } from "@/lib/data";
 import type { FeedScope, FeedSort } from "@/lib/feed";
 import { faqs } from "@/lib/help";
 import type { ImageName } from "@/lib/images";
@@ -71,7 +71,7 @@ export function SigMarket() {
             <br className="hidden sm:block" /> and the maker’s hands
           </>
         }
-        description="Order traditional food from local kitchens, then find the produce, spices and crafts that make Owerri feel like home."
+        description="Order traditional food from local kitchens, then find the produce, spices and crafts that feel like home."
         image="market-women"
       >
         <div className="flex flex-wrap justify-center gap-2">
@@ -147,7 +147,7 @@ export function SigTours() {
   const nature = exploreItems.filter((x) => x.label === "Nature");
   return (
     <>
-      <SigPageHeader eyebrow="Tours" title="Slow down. Look around." description="Lodges in the palms, lakes at sunset and forest rivers — all within easy reach of Owerri." image="green-hills">
+      <SigPageHeader eyebrow="Tours" title="Slow down. Look around." description="Lodges in the palms, lakes at sunset and forest rivers — all within easy reach." image="green-hills">
         <div className="flex justify-center gap-3">
           <Link href="/tours/stays" className={sigBtn("solid")}>
             <BedDouble className="size-4" /> Stays & Getaways
@@ -188,7 +188,7 @@ export function SigBlog() {
   const [lead, ...rest] = stories;
   return (
     <>
-      <SigPageHeader eyebrow="Discover" title="Stories beyond the plate" description="Food, heritage and the people who keep Owerri’s traditions alive." image="masquerade" />
+      <SigPageHeader eyebrow="Discover" title="Stories beyond the plate" description="Food, heritage and the people who keep local traditions alive." image="masquerade" />
       <SigSection eyebrow="Featured" title="Read this first" className="pt-14">
         <div className="grid-cols-1 grid gap-6 lg:grid-cols-[1.2fr_1fr]">
           <SigStoryFeature story={lead} />
@@ -247,7 +247,7 @@ export function SigCulture() {
   const culturalPlaces = exploreItems.filter((x) => x.kind === "place" && x.categories.includes("Culture"));
   return (
     <>
-      <SigPageHeader eyebrow="Culture & Heritage" title="The city beyond the plate" description="Festivals, masquerades, highlife nights, art and the stories that make Owerri what it is." image="festival" />
+      <SigPageHeader eyebrow="Culture & Heritage" title="The city beyond the plate" description="Festivals, masquerades, highlife nights, art and the stories behind them." image="festival" />
       <SigSection eyebrow="What’s on" title="Culture & music" href="/events?cat=Culture" className="pt-14">
         <div className="grid-cols-1 grid gap-4 md:grid-cols-2">
           {whatsOn.map((x) => (
@@ -296,7 +296,7 @@ const menuIds: Record<string, string[]> = {
 export function SigDishes() {
   return (
     <>
-      <SigPageHeader eyebrow="Dish guide" title="Signature dishes" description="What’s in them, how to eat them, and where to order the best versions in Owerri." image="soups-spread">
+      <SigPageHeader eyebrow="Dish guide" title="Signature dishes" description="What’s in them, how to eat them, and where to order the best versions." image="soups-spread">
         <div className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 sm:flex-wrap sm:justify-center">
           {dishes.map((d) => (
             <a key={d.slug} href={`#${d.slug}`} className="shrink-0 rounded-full border border-line px-4 py-2 text-sm font-medium text-forest transition-colors hover:border-forest hover:bg-forest hover:text-on-forest">
@@ -443,7 +443,7 @@ export function SigSettings() {
 export function SigOrders() {
   return (
     <>
-      <SigPageHeader eyebrow="Cart & checkout" title="Orders" description="Your cart, checkout and past orders from Owerri kitchens." />
+      <SigPageHeader eyebrow="Cart & checkout" title="Orders" description="Your cart, checkout and past orders from local kitchens." />
       <div className="pt-8">
         <OrdersView chrome={false} />
       </div>
@@ -520,7 +520,7 @@ export function SigNotFound() {
 export function SigRestaurantsPage() {
   return (
     <>
-      <SigPageHeader eyebrow="Order food" title="Food & Restaurants" description="Find a restaurant or a dish and order for delivery or pickup across Owerri." />
+      <SigPageHeader eyebrow="Order food" title="Restaurants" description="Find a restaurant or a dish and order from local kitchens for delivery or pickup." />
       <Suspense fallback={<SigRestaurants />}>
         <SigRestaurantsFromParams />
       </Suspense>
@@ -533,5 +533,5 @@ export async function SigMenuPage({ params }: { params: Promise<{ slug: string }
   const { slug } = await params;
   const r = getRestaurant(slug);
   if (!r) notFound();
-  return <SigMenu restaurant={r} menu={getMenu(r)} />;
+  return <SigMenu restaurant={r} menu={getMenu(r)} related={relatedRestaurants(slug, 4)} />;
 }

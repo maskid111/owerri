@@ -21,7 +21,7 @@ export function SigFooter() {
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-transparent to-forest-deep/50" aria-hidden />
       <div className="container-x py-14 text-center lg:py-20">
         <SigWordmark light size="lg" />
-        <p className="mx-auto mt-5 max-w-md text-white/80">Food, culture, places and experiences from Owerri and Imo State — all in one place.</p>
+        <p className="mx-auto mt-5 max-w-md text-white/80">Food, culture, places and experiences — all in one place.</p>
         <div className="mx-auto mt-7 flex max-w-md justify-center">
           <NewsletterForm dark />
         </div>
@@ -44,7 +44,7 @@ export function SigFooter() {
           ))}
         </ul>
         <span className="mx-auto mt-10 block h-[2px] w-8 rounded-full bg-spark" aria-hidden />
-        <p className="mt-6 text-xs text-white/55">© 2026 Native · Owerri, Imo State, Nigeria · Listings, menus, prices and events are sample content.</p>
+        <p className="mt-6 text-xs text-white/55">© 2026 Native · Listings, menus, prices and events are sample content.</p>
       </div>
     </footer>
   );

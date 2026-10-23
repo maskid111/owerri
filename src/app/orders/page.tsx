@@ -5,7 +5,7 @@ import { SigOrders } from "@/components/sig/pages";
 
 export const metadata: Metadata = {
   title: "Orders",
-  description: "Your cart, checkout and past orders from Owerri kitchens.",
+  description: "Your cart, checkout and past orders from local kitchens.",
 };
 
 function OrdersPage() {

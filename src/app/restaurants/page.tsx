@@ -6,8 +6,8 @@ import { Design } from "@/components/design";
 import { SigRestaurantsPage } from "@/components/sig/pages";
 
 export const metadata: Metadata = {
-  title: "Food & Restaurants",
-  description: "Restaurants, bukas, cafés and bars across Owerri, Imo State — filter by category, neighbourhood, price and opening hours, then order for pickup or delivery.",
+  title: "Restaurants",
+  description: "Restaurants, bukas, cafés and bars — filter by category, neighbourhood, price and opening hours, then order for pickup or delivery.",
 };
 
 function RestaurantsPage() {

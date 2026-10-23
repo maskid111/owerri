@@ -9,7 +9,7 @@ import { SigDishes } from "@/components/sig/pages";
 
 export const metadata: Metadata = {
   title: "Signature Dishes",
-  description: "A field guide to Owerri’s essential dishes — Ofe Owerri, nkwobi, abacha, egusi, isi ewu and more — and where to order them.",
+  description: "A field guide to essential local dishes — Ofe Owerri, nkwobi, abacha, egusi, isi ewu and more — and where to order them.",
 };
 
 /** Menu catalogue ids that correspond to each dish, used for "Where to order". */
@@ -29,7 +29,7 @@ const heatLabel = ["Mild", "Gentle warmth", "Spicy", "Fiery"];
 function DishesPage() {
   return (
     <>
-      <PageHeader title="Signature dishes" description="The soups, small chops and grills that define Owerri — what’s in them, how to eat them, and where to order the best versions.">
+      <PageHeader title="Signature dishes" description="The soups, small chops and grills worth knowing — what’s in them, how to eat them, and where to order the best versions.">
         <nav aria-label="Jump to dish" className="no-scrollbar -mx-4 mt-4 flex gap-2 overflow-x-auto px-4 sm:mx-0 sm:flex-wrap sm:px-0">
           {dishes.map((d) => (
             <a key={d.slug} href={`#${d.slug}`} className={chipClass(false)}>

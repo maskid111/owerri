@@ -1,11 +1,11 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowUpRight, BookOpen, CalendarDays, Compass, CornerDownLeft, MapPin, Search, Soup, Store, X } from "lucide-react";
+import { ArrowUpRight, BookOpen, CalendarDays, Compass, CornerDownLeft, MapPin, Search, Soup, Store, UtensilsCrossed, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { areaName, dishes, events, neighbourhoods, places, restaurants, stories } from "@/lib/data";
-import { cn } from "@/lib/utils";
+import { areaName, dishes, events, getMenu, neighbourhoods, places, restaurants, stories, topRestaurants } from "@/lib/data";
+import { cn, naira } from "@/lib/utils";
 
 export const OPEN_SEARCH_EVENT = "owerri:open-search";
 
@@ -24,6 +24,16 @@ const all: Result[] = [
     group: "Places to eat",
     icon: <Store className="size-4" />,
   })),
+  // Dishes you can order, from the restaurants listed first (one entry per dish per restaurant).
+  ...[...new Set([...topRestaurants(), ...restaurants])].flatMap((r) =>
+    getMenu(r).map((m) => ({
+      href: `/restaurants/${r.slug}`,
+      title: m.name,
+      meta: `${r.name} · ${naira(m.price)}`,
+      group: "On the menu",
+      icon: <UtensilsCrossed className="size-4" />,
+    })),
+  ),
   ...events.map((e) => ({
     href: `/explore?item=${e.slug}`,
     title: e.title,
@@ -106,11 +116,10 @@ export function SearchDialog() {
   }, [open]);
 
   const results = useMemo(() => {
-    const q = query.trim().toLowerCase();
+    const norm = (t: string) => t.toLowerCase().replace(/[’‘`]/g, "'");
+    const q = norm(query.trim());
     if (!q) return all.filter((r) => r.group === "Places to eat").slice(0, 5);
-    return all
-      .filter((r) => `${r.title} ${r.meta} ${r.group}`.toLowerCase().includes(q))
-      .slice(0, 10);
+    return all.filter((r) => norm(`${r.title} ${r.meta} ${r.group}`).includes(q)).slice(0, 12);
   }, [query]);
 
   const close = () => {

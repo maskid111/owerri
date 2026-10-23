@@ -1,48 +1,44 @@
 import Link from "next/link";
 import { Search } from "lucide-react";
-import { HeroSearchField, HeroVideo } from "../hero-video";
 import { ExplorePattern } from "../explore-pattern";
-import { LandingStory } from "../landing-story";
+import { HeroSearchField, HeroVideo } from "../hero-video";
 
 /**
- * Version B landing viewport: edge-to-edge cultural footage, a centred bold welcome sequence
- * and one floating pill that combines the search field with the Explore action.
+ * Version B homepage top: a rounded hero card over the Native footage with one centred headline, and a
+ * floating search pill (search + Explore) overlapping its bottom edge. Service bubbles follow directly.
  */
 export function SigHero() {
   return (
-    <section
-      aria-label="Welcome to Native"
-      className="relative isolate flex h-[calc(100svh-64px-env(safe-area-inset-bottom))] min-h-[30rem] items-end justify-center overflow-hidden text-white lg:h-[100svh] lg:min-h-[36rem]"
-    >
-      <HeroVideo>
-        {/* Forest-green grade and gradients — the brand colour carried into the footage */}
-        <div className="pointer-events-none absolute inset-0 bg-pine/35 mix-blend-soft-light" aria-hidden />
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-forest-deep/65 to-transparent" aria-hidden />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[62%] bg-gradient-to-t from-forest-deep/90 via-forest-deep/50 to-transparent" aria-hidden />
-      </HeroVideo>
-
-      <div className="relative w-full px-4 pb-8 sm:pb-14 lg:pb-20">
-        <div className="mb-8 sm:mb-10">
-          <LandingStory variant="b" />
-        </div>
-        <HeroSearchField
-          id="hero-search-b"
-          placeholder="Search Native…"
-          className="mx-auto flex h-16 w-full max-w-xl items-center gap-2 rounded-full bg-white p-2 pl-5 text-ink shadow-lift"
-          inputClassName="text-[0.95rem] text-ink placeholder:text-stone"
-        >
-          <button type="submit" className="grid size-11 shrink-0 place-items-center rounded-full text-forest hover:bg-sand" aria-label="Search">
-            <Search className="size-5" />
-          </button>
-          <Link
-            href="/explore"
-            className="group relative isolate inline-flex h-12 shrink-0 items-center overflow-hidden rounded-full bg-forest px-6 text-sm font-semibold text-on-forest transition-colors hover:bg-forest-light sm:px-8"
-          >
-            <ExplorePattern />
-            <span className="relative">Explore</span>
-          </Link>
-        </HeroSearchField>
+    <section aria-label="Welcome to Native" className="container-x pt-3 lg:pt-6">
+      <div className="relative isolate overflow-hidden rounded-[2rem] bg-forest-deep px-5 pt-10 pb-16 text-center text-white sm:pt-14 sm:pb-20 lg:rounded-[2.75rem] lg:pt-20 lg:pb-24">
+        <HeroVideo className="-z-10">
+          <div className="pointer-events-none absolute inset-0 bg-pine/30 mix-blend-soft-light" aria-hidden />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-forest-deep/90 via-forest-deep/55 to-forest-deep/45" aria-hidden />
+        </HeroVideo>
+        <h1 className="mx-auto max-w-2xl text-[2.5rem] leading-[1] text-white sm:text-6xl lg:text-7xl">
+          Good food.
+          <br />
+          Real places.
+        </h1>
       </div>
+
+      <HeroSearchField
+        id="hero-search-b"
+        placeholder="Food, places, events…"
+        className="relative z-10 mx-auto -mt-8 flex h-16 w-full max-w-2xl items-center gap-2 rounded-full bg-paper p-2 pl-5 text-ink shadow-lift"
+        inputClassName="text-[0.95rem] text-ink placeholder:text-stone"
+      >
+        <button type="submit" className="grid size-11 shrink-0 place-items-center rounded-full text-forest hover:bg-sand" aria-label="Search">
+          <Search className="size-5" />
+        </button>
+        <Link
+          href="/explore"
+          className="group relative isolate inline-flex h-12 shrink-0 items-center overflow-hidden rounded-full bg-forest px-6 text-sm font-semibold text-on-forest transition-colors hover:bg-forest-light sm:px-8"
+        >
+          <ExplorePattern />
+          <span className="relative">Explore</span>
+        </Link>
+      </HeroSearchField>
     </section>
   );
 }

@@ -9,7 +9,7 @@ import { SigBlog } from "@/components/sig/pages";
 
 export const metadata: Metadata = {
   title: "Discover",
-  description: "Stories about food, heritage, places and city life from Owerri, Imo State.",
+  description: "Stories about food, heritage, places and city life.",
 };
 
 function BlogPage() {
@@ -19,7 +19,7 @@ function BlogPage() {
       <PhotoHero
         eyebrow="Discover"
         title="Stories beyond the plate."
-        description="Food, heritage and the people who keep Owerri’s traditions alive."
+        description="Food, heritage and the people who keep local traditions alive."
         image="masquerade"
         imageAlt="Igbo masquerades in carved masks and beaded costumes"
         pattern
@@ -61,7 +61,7 @@ function BlogPage() {
           }
         >
           Native started with food — Ofe Owerri, abacha, pepper soup — and grew into a guide to everything around the table: the markets, the makers, the festivals and the
-          places that make Imo State home.
+          places that make home feel like home.
         </PatternBanner>
       </section>
     </>

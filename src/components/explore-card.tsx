@@ -213,3 +213,35 @@ function DialogBody({ item, onClose }: { item: ExploreItem; onClose: () => void 
     </motion.div>
   );
 }
+
+/** Photo-led experience card (homepage): dark gradient, kind badge, title and place. Opens details like ExploreCard. */
+export function ExperiencePhotoCard({ item, className }: { item: ExploreItem; className?: string }) {
+  const [open, setOpen] = useState(false);
+  const body = (
+    <>
+      <Photo name={item.image} alt={item.title} sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 85vw" className="-z-20 transition-transform duration-500 group-hover:scale-[1.04]" />
+      <span className="absolute inset-0 -z-10 bg-gradient-to-t from-forest-deep/95 via-forest-deep/25 to-transparent" aria-hidden />
+      {item.date && <DateBadge iso={item.date} className="absolute top-3 left-3" />}
+      <span className="w-full p-4 text-left">
+        <span className="block truncate text-lg leading-tight font-semibold">{item.title}</span>
+        <span className="mt-1 flex items-center gap-1 text-xs text-white/80">
+          <span className="rounded-full bg-white/15 px-2 py-0.5 font-semibold">{item.label}</span>
+          <MapPin className="ml-1 size-3.5 shrink-0" aria-hidden /> <span className="truncate">{item.location}</span>
+        </span>
+      </span>
+    </>
+  );
+  const cls = cn("group relative isolate flex aspect-[4/3] w-full items-end overflow-hidden rounded-2xl bg-forest-deep text-white shadow-card", className);
+  return item.href ? (
+    <Link href={item.href} className={cls}>
+      {body}
+    </Link>
+  ) : (
+    <>
+      <button type="button" onClick={() => setOpen(true)} className={cls}>
+        {body}
+      </button>
+      <ExploreDialog item={open ? item : null} onClose={() => setOpen(false)} />
+    </>
+  );
+}

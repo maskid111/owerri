@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { MenuView } from "@/components/menu-view";
-import { areaName, getMenu, getRestaurant, restaurants } from "@/lib/data";
+import { RestaurantPage } from "@/components/restaurant-page";
+import { areaName, getMenu, getRestaurant, relatedRestaurants, restaurants } from "@/lib/data";
 import { Design } from "@/components/design";
 import { SigMenuPage } from "@/components/sig/pages";
 
@@ -13,16 +13,17 @@ export async function generateMetadata({ params }: PageProps<"/restaurants/[slug
   const { slug } = await params;
   const r = getRestaurant(slug);
   if (!r) return { title: "Not found" };
-  return { title: `${r.name} menu`, description: `Order from ${r.name} in ${areaName(r.area)}, Owerri — ${r.type}.` };
+  return { title: `${r.name} menu`, description: `Order from ${r.name} in ${r.area ? `${areaName(r.area)}, ` : ""}Owerri — ${r.type}.` };
 }
 
-async function MenuPage({ params }: { params: PageProps<"/restaurants/[slug]/menu">["params"] }) {
+async function APage({ params }: { params: PageProps<"/restaurants/[slug]/menu">["params"] }) {
   const { slug } = await params;
   const r = getRestaurant(slug);
   if (!r) notFound();
-  return <MenuView restaurant={r} menu={getMenu(r)} />;
+  return <RestaurantPage restaurant={r} menu={getMenu(r)} related={relatedRestaurants(slug)} />;
 }
 
+/** Kept for existing links: the menu route shows the same ordering page as the restaurant route. */
 export default function Page({ params }: PageProps<"/restaurants/[slug]/menu">) {
-  return <Design a={<MenuPage params={params} />} b={<SigMenuPage params={params} />} />;
+  return <Design a={<APage params={params} />} b={<SigMenuPage params={params} />} />;
 }

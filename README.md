@@ -1,6 +1,6 @@
 # Native
 
-*Native, beyond the plate* — food, culture, places and experiences in Owerri, Imo State: local market, tours, stays, events and kitchens to order from.
+*Native, beyond the plate* — order food from local restaurants and discover markets, culture, stays, events and experiences, all in one place. The sample listings in this prototype are set in Owerri, Imo State.
 
 **Stack:** Next.js 16 (App Router, Cache Components) · TypeScript · Tailwind CSS v4 · Lucide React · Motion
 
@@ -27,20 +27,21 @@ Open http://localhost:3000
 - **Colours:** forest green is primary; neutrals stay clean. A small orange accent `--color-spark` (#F1A10C, sampled from the supplied swatch) is used only for heading underlines, active-navigation indicators and tiny separators. No yellow or gold in the interface (the logo’s leaf is the only exception).
 - **Pattern:** the supplied image (`public/brand/native-pattern.jpg`) is kept; `bg-native-pattern` / `bg-native-pattern-lg` draw a mirrored tile of it at reduced scale under a deep-green wash so it reads as a quiet texture.
 
-## Opening splash & homepage video
+## Opening splash & homepage
 
 - **Splash:** white screen with the wordmark and tagline, a soft entrance and fade (`globals.css`, `components/splash.tsx`). Shown on every full load of the homepage, and on the first page of a browser session elsewhere — never on internal navigation (`src/lib/theme-script.ts`). It never intercepts clicks, shortens under reduced motion, and a timer removes it even if animations are paused.
 - **Hero video:** the portrait master supplied by the Native team (2160×4096, 25 fps, 14.8 s, a slow push-in on three women holding woven baskets of fruit) is encoded as a seamless 13.8 s crossfade loop in `public/videos/`: `native-hero-portrait.mp4` (1080×1920, tall phones) and `native-hero-1080.mp4` (1920×1080, all other screens — the crop moves down with the camera so faces stay in frame), plus matching posters. `components/hero-video.tsx` picks the rendition on the client; it autoplays muted and looped with `object-fit: cover`, has no visible player controls, stays on its poster under reduced motion, and keeps the poster if a file can't play. Re-encode with ffmpeg (H.264 High, CRF 20–21, `-movflags +faststart`) if the master changes.
-- **Welcome sequence:** `components/landing-story.tsx` reveals "Discover the heart of Owerri." → "Taste local." → "Explore culture." → "Find places worth discovering." → "Native, beyond the plate." word by word, once, starting after the splash. Version A uses large serif left-aligned text; Version B bold sans, centred. Screen readers get the full text once; reduced motion shows the opening line and tagline with no movement.
-- The landing viewport holds only **Explore** (→ `/explore`) and a **search field** (opens the site search pre-filled). Version A aligns them bottom-left; Version B uses one centred pill.
+- **Product-first homepage:** the video now sits in a compact hero (location, one headline, Order food + Explore) instead of filling the screen. The site search (restaurants, dishes on menus, places, events) overlaps the hero, and the **service tiles** follow directly, so every service is visible on the first screen of a phone. The order below is food first: featured restaurants, popular dishes (add to cart from the card), markets & shops, culture & events, nearby experiences, then an "Explore Native" culture banner.
+- **Services** are defined once in `src/lib/services.ts` (Restaurants, Dishes, Local Markets, Culture & Events, Stays & Hospitality, Shops & Crafts, Nearby & Experiences, Places) and drawn with small flat illustrations from `src/components/service-art.tsx`. Version A shows soft-coloured square tiles; Version B shows round bubbles with label pills.
+- **Site menu:** both versions' mobile menus use the same grouped list (`components/app-menu.tsx`, `menuGroups` in `services.ts`): *Explore* (illustrated rows with a one-line hint), *Your space* (Saved, Orders, Notifications) and *Support*, then a culture card.
 
 ## Food ordering
 
-Food ordering is a primary service: **Food & Restaurants** (`/restaurants`) is second in the navigation, first among the homepage shortcuts and in both mobile docks.
+Food ordering is a primary service: **Restaurants** (`/restaurants`) is second in the navigation, first among the homepage shortcuts and in both mobile docks.
 
 - **Homepage:** a "Good food, delivered." row of restaurants directly below the video in both versions: Annie’s Native Kitchen first, then Chicken Republic and Kilimanjaro (`TOP_RESTAURANTS` in `src/lib/data.ts`), then featured kitchens.
-- **Food & Restaurants page:** every restaurant, with those three first under *Recommended*, plus category chips, delivery and open-now filters and sorting. Search matches restaurant names *and* dishes on their menus (“Serves Jollof Rice & Chicken”). A floating cart bar shows items, subtotal and Checkout.
-- **Journey:** Food & Restaurants → restaurant (View menu / Order now) → menu → cart drawer → `/orders` review & checkout → confirmation. One cart store (`src/lib/cart-store.ts`) powers every step.
+- **Restaurants page:** every restaurant, with those three first under *Recommended*, plus category chips, delivery and open-now filters and sorting. Search matches restaurant names *and* dishes on their menus (“Serves Jollof Rice & Chicken”). A floating cart bar shows items, subtotal and Checkout.
+- **Journey:** Home (or Restaurants) → restaurant → add dishes → cart drawer → `/orders` review & checkout → confirmation. The restaurant page *is* the ordering page: photo hero, tabs (Menu / About / Reviews / Gallery in A; Menu / About / Reviews in B), category circles, popular-dish cards and menu rows with Add buttons and quantity steppers (`components/restaurant-page.tsx`, `components/sig/menu.tsx`). `/restaurants/[slug]/menu` still works and shows the same page. Popular dishes can also be added straight from the homepage (`useOrdering` in `components/food.tsx`). One cart store (`src/lib/cart-store.ts`) powers every step.
 - **Honest prototype:** checkout says that online ordering isn’t live yet. Orders are saved in the browser only: nothing is sent to the restaurant, no payment is taken, no delivery is arranged and no fake delivery status is shown. The delivery fee is labelled as a sample. To connect real ordering, replace `cart.placeOrder`.
 - **Annie’s Native Kitchen, Chicken Republic and Kilimanjaro** have unconfirmed profiles: only their names are real. Menus, prices, cuisine, address, hours, phone and delivery details are `SAMPLE` placeholders in `src/lib/data.ts`. The site shows "New on Native" with a one-line note instead of inventing ratings, reviews, distance, hours or a phone number. To publish real details, put naira prices in `prices`, fill in `open`, `close`, `phone`, `address` and `area`, then remove `sampleProfile`.
 
@@ -51,9 +52,9 @@ The site ships two complete design systems over the same routes, data and busine
 | | Version A — Original UI | Version B — Native Signature Experience |
 | --- | --- | --- |
 | Presentation | existing components in `src/components` | `src/components/sig/*` |
-| Header / nav | serif logo, horizontal links, Tours dropdown, mobile drawer + 5-tab bar | centred uppercase wordmark, search bar, sticky icon rail of every section, full-screen grid menu, scrollable all-sections dock |
-| Hero | full-bleed photo carousel | stacked "Taste / Explore / Experience" headline with an arched photo frame |
-| Cards | photo + white body, horizontal listing cards | caption-bar tiles, portrait restaurant cards, distance rows, ticket-style events |
+| Header / nav | logo left, horizontal links (white over the homepage hero), grouped drawer + dark green bottom bar (Home, Food, Market, Saved, Menu) | centred logo, a few text links, grouped slide-in menu panel, floating pill dock |
+| Homepage | full-width compact video hero, overlapping search bar, square service tiles, dark photo cards | rounded video hero card, floating search pill, round service bubbles, light portrait cards |
+| Cards & menus | dark photo cards; restaurant page with dark hero, spark-orange Add buttons | caption-bar tiles, portrait restaurant cards, ticket-style events; restaurant page with rounded hero and a persistent order panel |
 | Footer | column footer on the pattern | centred wordmark footer on the full-strength pattern |
 
 **How it works**
@@ -73,15 +74,15 @@ References live in `design-references/` (`native/` holds the current Native set:
 - **Two themes:** *Native Light* (default) and *Native Forest*. Theme-dependent tokens (`canvas`, `paper`, `ink`, `forest`, `accent`…) are overridden on `:root[data-theme="forest"]`; constant tokens (`pine`, `forest-deep`, `cream`, `leaf`) are for always-dark surfaces such as photo overlays, pattern sections and the footer.
 - **Version A palettes:** set under `/admin` (saved as `native:theme`), applied before first paint.
 - **Brand pattern:** the supplied image is kept as `public/brand/native-pattern.jpg`. `public/brand/native-pattern-tile.png` is the same image with a 9px white edge artefact trimmed and mirrored 2×2 so it repeats seamlessly. Use the `bg-native-pattern` / `bg-native-pattern-lg` utilities (hero edges, `PatternBanner`, footer, drawer, culture feature).
-- **Navigation:** defined once in `src/lib/navigation.ts` (Home, Food & Restaurants, Local Market, Tours › Stays & Getaways / Nature & Places, Nearby, Events & Hangouts, Discover (`/blog`), Saved, Notifications, Settings, Help / Support) and used by the desktop header, mobile drawer and footer.
+- **Navigation:** defined once in `src/lib/navigation.ts` (Home, Restaurants, Local Market, Tours › Stays & Getaways / Nature & Places, Nearby, Events & Hangouts, Discover (`/blog`), Saved, Notifications, Settings, Help / Support) and used by the desktop header, mobile drawer and footer.
 
 ## Pages
 
-- `/` – cultural video hero, restaurants row, discovery shortcuts, Tours, Local Market, pattern cultural feature, Nearby, Events & Hangouts, stories
+- `/` – compact video hero, search, service tiles, featured restaurants, popular dishes, markets & shops, culture & events, nearby experiences, Explore Native banner
 - `/market` – traditional food (kitchens you can order from), fresh produce, spices & ingredients, crafts
 - `/tours`, `/tours/stays`, `/tours/nature` · `/nearby` · `/events` – scoped discovery feeds (`?cat=`, `?item=<slug>` opens the details/tickets sheet)
 - `/saved`, `/notifications`, `/blog`, `/settings`, `/help`, `/admin`
-- `/restaurants` – Food & Restaurants (+ `[slug]` profile, `[slug]/menu` ordering), `/orders` cart review & checkout
+- `/restaurants` – Restaurants (+ `[slug]` restaurant & ordering page; `[slug]/menu` shows the same page), `/orders` cart review & checkout
 - Existing flows kept: `/explore`, `/culture`, `/dishes`, `/neighbourhoods`, `/stories/[slug]`, `/credits`, ⌘K search
 
 ## Data & images

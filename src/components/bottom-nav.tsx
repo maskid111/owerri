@@ -20,7 +20,7 @@ export function BottomNav() {
   if (isImmersive(pathname)) return null;
 
   return (
-    <nav aria-label="Quick links" className="pb-safe fixed inset-x-0 bottom-0 z-40 border-t border-line bg-paper/95 backdrop-blur lg:hidden">
+    <nav aria-label="Quick links" className="pb-safe fixed inset-x-0 bottom-0 z-40 bg-forest-deep text-white shadow-[0_-8px_24px_rgba(8,35,26,0.18)] lg:hidden">
       <ul className="mx-auto grid h-[64px] max-w-lg grid-cols-5">
         {tabs.map(({ href, label, icon: Icon }) => {
           const active = isActivePath(pathname, href);
@@ -29,17 +29,17 @@ export function BottomNav() {
               <Link
                 href={href}
                 aria-current={active ? "page" : undefined}
-                className={cn("relative flex h-full flex-col items-center justify-center gap-1 text-[11px] font-semibold", active ? "text-forest" : "text-stone")}
+                className={cn("relative flex h-full flex-col items-center justify-center gap-1 text-[11px] font-semibold", active ? "text-spark" : "text-white/70")}
               >
-                <Icon className={cn("size-[22px]", active && "fill-forest/15")} strokeWidth={active ? 2.2 : 1.8} />
+                <Icon className={cn("size-[22px]", active && "fill-spark/20")} strokeWidth={active ? 2.2 : 1.8} />
                 {label}
-                {active && <span className="absolute bottom-1.5 h-[3px] w-5 rounded-full bg-spark" />}
+                {active && <span className="absolute top-0 h-[3px] w-8 rounded-b-full bg-spark" />}
               </Link>
             </li>
           );
         })}
         <li>
-          <button onClick={openNavDrawer} className="flex h-full w-full flex-col items-center justify-center gap-1 text-[11px] font-semibold text-stone">
+          <button onClick={openNavDrawer} className="flex h-full w-full flex-col items-center justify-center gap-1 text-[11px] font-semibold text-white/70">
             <Menu className="size-[22px]" strokeWidth={1.8} />
             Menu
           </button>
