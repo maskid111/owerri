@@ -67,45 +67,48 @@ export function AddToCart({
   );
 }
 
-/** Popular dishes with prices and add-to-cart, straight from the homepage. Version A: dark cards; B: light cards. */
+const dishBadge: Record<string, string> = {
+  "Signature Dishes": "Chef’s pick",
+  "Local Dishes": "Local dish",
+  Continental: "Continental",
+  Drinks: "Drink",
+  Desserts: "Dessert",
+};
+
+/**
+ * Popular dishes (reference: “Popular this week”): bordered cards with the photo, a small category badge,
+ * name, restaurant, price and an Add button (or quantity stepper) using the shared cart.
+ */
 export function PopularDishes({ dishes, variant }: { dishes: { restaurant: Restaurant; item: MenuItem }[]; variant: "a" | "b" }) {
   const { qtyOf, add, setQty, conflict } = useOrdering();
   return (
     <>
-      <ul className="no-scrollbar -mx-4 flex snap-x gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-4 sm:overflow-visible sm:px-0 lg:grid-cols-4">
-        {dishes.map(({ restaurant: r, item: m }) => {
-          const qty = qtyOf(r.slug, m.id);
+      <ul className="no-scrollbar -mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-1 sm:-mx-6 sm:px-6 md:mx-0 md:grid md:grid-cols-4 md:gap-4 md:overflow-visible md:px-0">
+        {dishes.map(({ restaurant: r, item: m }, i) => {
           const href = `/restaurants/${r.slug}`;
-          return variant === "a" ? (
-            <li key={`${r.slug}-${m.id}`} className="w-[64%] shrink-0 snap-start overflow-hidden rounded-2xl bg-forest-deep text-white shadow-card sm:w-auto">
-              <Link href={href} className="group relative block aspect-[4/3] overflow-hidden">
-                <Photo name={m.image} alt={m.name} sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 64vw" className="transition-transform duration-500 group-hover:scale-[1.04]" />
-                <span className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-forest-deep to-transparent" aria-hidden />
+          return (
+            <li
+              key={`${r.slug}-${m.id}`}
+              className={cn(
+                "flex w-[46%] shrink-0 snap-start flex-col overflow-hidden border border-line bg-paper sm:w-[31%] md:w-auto",
+                variant === "a" ? "rounded-xl" : "rounded-[1.25rem]",
+                i >= 4 && "md:hidden",
+              )}
+            >
+              <Link href={href} className="group relative block aspect-[16/11] overflow-hidden">
+                <Photo name={m.image} alt={m.name} sizes="(min-width: 768px) 25vw, (min-width: 640px) 31vw, 46vw" className="transition-transform duration-500 group-hover:scale-[1.04]" />
+                <span className="absolute top-2 left-2 rounded-full bg-spark px-2 py-0.5 text-[0.55rem] font-bold tracking-wide text-[#1a1405] uppercase sm:text-[0.6rem]">
+                  {dishBadge[m.section] ?? "Dish"}
+                </span>
               </Link>
-              <div className="px-3.5 pt-1 pb-3.5">
-                <Link href={href} className="block truncate font-semibold hover:underline">
+              <div className="flex flex-1 flex-col p-2.5 sm:p-3">
+                <Link href={href} className="truncate text-[0.8rem] font-semibold text-forest hover:underline sm:text-sm">
                   {m.name}
                 </Link>
-                <p className="truncate text-xs text-white/65">{r.name}</p>
-                <div className="mt-3 flex items-center justify-between gap-2">
-                  <span className="font-semibold">{naira(m.price)}</span>
-                  <AddToCart qty={qty} name={m.name} onAdd={() => add(r.slug, m)} onQty={(q) => setQty(m.id, q)} />
-                </div>
-              </div>
-            </li>
-          ) : (
-            <li key={`${r.slug}-${m.id}`} className="w-[64%] shrink-0 snap-start rounded-[1.4rem] bg-paper p-2 shadow-card sm:w-auto">
-              <Link href={href} className="group relative block aspect-square overflow-hidden rounded-[1.1rem]">
-                <Photo name={m.image} alt={m.name} sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 64vw" className="transition-transform duration-500 group-hover:scale-[1.04]" />
-              </Link>
-              <div className="px-1.5 pt-3 pb-1.5">
-                <Link href={href} className="block truncate font-bold text-forest hover:underline">
-                  {m.name}
-                </Link>
-                <p className="truncate text-xs text-stone">{r.name}</p>
-                <div className="mt-3 flex items-center justify-between gap-2">
-                  <span className="font-extrabold text-forest">{naira(m.price)}</span>
-                  <AddToCart qty={qty} name={m.name} onAdd={() => add(r.slug, m)} onQty={(q) => setQty(m.id, q)} tone="outline" />
+                <p className="truncate text-[0.68rem] text-stone sm:text-xs">{r.name}</p>
+                <div className="mt-auto flex items-center justify-between gap-2 pt-2">
+                  <span className="text-[0.8rem] font-semibold text-ink sm:text-sm">{naira(m.price)}</span>
+                  <AddToCart qty={qtyOf(r.slug, m.id)} name={m.name} onAdd={() => add(r.slug, m)} onQty={(q) => setQty(m.id, q)} tone={variant === "a" ? "warm" : "outline"} className="h-7 px-2.5" />
                 </div>
               </div>
             </li>

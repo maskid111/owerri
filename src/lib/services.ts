@@ -1,18 +1,14 @@
 import { Bell, Bookmark, CircleHelp, Settings, ShoppingBag, type LucideIcon } from "lucide-react";
 import type { ArtKind } from "@/components/service-art";
 
-/** The services Native offers, in priority order (food first). Homepage tiles in both versions read from here. */
-export type Service = { art: ArtKind; label: string; short: string; hint: string; href: string; tone: string };
-
-export const services: Service[] = [
-  { art: "restaurants", label: "Restaurants", short: "Restaurants", hint: "Order meals", href: "/restaurants", tone: "bg-[#fbe4d8]" },
-  { art: "dishes", label: "Dishes", short: "Dishes", hint: "Local flavours", href: "/dishes", tone: "bg-[#fdecd2]" },
-  { art: "markets", label: "Local Markets", short: "Markets", hint: "Fresh & local", href: "/market", tone: "bg-[#e2f0e2]" },
-  { art: "culture", label: "Culture & Events", short: "Culture & Events", hint: "Heritage & festivals", href: "/events", tone: "bg-[#e3edf4]" },
-  { art: "stays", label: "Stays & Hospitality", short: "Stays", hint: "Hotels & lodges", href: "/tours/stays", tone: "bg-[#eef1dc]" },
-  { art: "shops", label: "Shops & Crafts", short: "Shops & Crafts", hint: "Handmade goods", href: "/market#crafts-handmade", tone: "bg-[#f7e3e6]" },
-  { art: "nearby", label: "Nearby & Experiences", short: "Nearby", hint: "Close to you", href: "/nearby", tone: "bg-[#e6e9f6]" },
-  { art: "places", label: "Places", short: "Places", hint: "Lakes & nature", href: "/tours/nature", tone: "bg-[#dff0ec]" },
+/** The six homepage shortcuts (both versions), in the order of the reference design. */
+export const homeShortcuts: { art: ArtKind; label: string; href: string }[] = [
+  { art: "restaurants", label: "Restaurants", href: "/restaurants" },
+  { art: "dishes", label: "Dishes", href: "/dishes" },
+  { art: "places", label: "Places", href: "/tours/nature" },
+  { art: "culture", label: "Events", href: "/events" },
+  { art: "markets", label: "Market", href: "/market" },
+  { art: "mask", label: "Culture", href: "/culture" },
 ];
 
 /** Grouped site menu used by the mobile drawer (Version A) and the menu panel (Version B). */

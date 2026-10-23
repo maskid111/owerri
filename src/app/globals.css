@@ -116,27 +116,38 @@
   --shadow-lift: 0 2px 6px rgb(10 44 30 / 0.05), 0 18px 40px -20px rgb(10 44 30 / 0.22);
 }
 
-/* Native Forest — deep forest-green surfaces with light text */
+/*
+ * Background themes (chosen only in /admin; stored as `native:theme`, applied before first paint):
+ *   Option 1 — Native Original: the tokens above (and Version B's below).
+ *   Option 2 — Native Forest Dark: the overrides here. Layered dark greens — page < card < input/chip —
+ *   warm cream text, muted green lines, leaf-green accent; #F1A10C stays a small highlight (ratings, labels).
+ */
 :root[data-theme="forest"] {
   color-scheme: dark;
-  --color-canvas: #0b2a1f;
-  --color-paper: #113629;
-  --color-sand: #164333;
-  --color-line: #265343;
-  --color-ink: #ecf3ed;
-  --color-stone: #a7bdb0;
-  --color-forest: #e4f0e5;
-  --color-on-forest: #0b2a1f;
-  --color-forest-light: #9ad6ad;
-  --color-mint: #1a4a39;
-  --color-tint: #205640;
-  --color-accent: #8fd1a4;
-  --color-accent-hover: #a8ddb9;
-  --color-on-accent: #08231a;
-  --color-star: #9ad6ad;
-  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.25), 0 10px 26px -12px rgb(0 0 0 / 0.5);
-  --shadow-lift: 0 2px 6px rgb(0 0 0 / 0.3), 0 24px 48px -18px rgb(0 0 0 / 0.6);
+  --color-canvas: #0b1d15;
+  --color-paper: #12291f;
+  --color-sand: #183428;
+  --color-line: #274638;
+  --color-ink: #f1ead9;
+  --color-stone: #a9b8ac;
+  --color-forest: #efe6d0;
+  --color-on-forest: #0b1d15;
+  --color-forest-light: #9fd6b0;
+  --color-mint: #1a3b2c;
+  --color-tint: #22493a;
+  --color-accent: #9fd6b0;
+  --color-accent-hover: #b6e2c4;
+  --color-on-accent: #0b1d15;
+  --color-star: #f1a10c;
+  --color-forest-deep: #07150e;
+  --color-cream: #f1ead9;
+  --color-leaf: #9fd6b0;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3);
+  --shadow-lift: 0 2px 6px rgb(0 0 0 / 0.35), 0 24px 48px -18px rgb(0 0 0 / 0.65);
 }
+
+/* `dark:` utilities follow the admin background theme, not the operating system. */
+@custom-variant dark (&:where([data-theme="forest"], [data-theme="forest"] *));
 
 /* The supplied Native pattern (public/brand). The tile is the original image, trimmed of an edge artefact and
    mirrored 2×2 so it repeats without seams. Drawn at reduced scale under a deep-green wash so it reads as a
@@ -273,6 +284,30 @@
   --shadow-card: 0 1px 2px rgb(7 42 29 / 0.04);
   --shadow-lift: 0 2px 4px rgb(7 42 29 / 0.05), 0 20px 44px -22px rgb(7 42 29 / 0.28);
 }
+/* Version B under Option 2 — Native Forest Dark (same layering as Version A's dark palette) */
+:root[data-design="b"][data-theme="forest"] {
+  color-scheme: dark;
+  --color-canvas: #0a1b13;
+  --color-paper: #11281d;
+  --color-sand: #173327;
+  --color-line: #244436;
+  --color-ink: #f1ead9;
+  --color-stone: #a6b6aa;
+  --color-forest: #f1ead9;
+  --color-on-forest: #0a1b13;
+  --color-forest-light: #8fdba8;
+  --color-mint: #173a2a;
+  --color-tint: #1f4a37;
+  --color-accent: #8fdba8;
+  --color-accent-hover: #a6e5bb;
+  --color-on-accent: #0a1b13;
+  --color-star: #f1a10c;
+  --color-pine: #0b3b2a;
+  --color-forest-deep: #06130c;
+  --color-leaf: #8fdba8;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3);
+  --shadow-lift: 0 2px 6px rgb(0 0 0 / 0.35), 0 24px 48px -18px rgb(0 0 0 / 0.65);
+}
 :root[data-design="b"] :is(h1, h2) {
   font-weight: 700;
   letter-spacing: -0.025em;
@@ -307,6 +342,9 @@
   background: #ffffff;
   pointer-events: none; /* never blocks the page underneath */
   animation: splashOut 0.7s cubic-bezier(0.4, 0, 0.2, 1) 1.6s forwards;
+}
+:root[data-splash][data-theme="forest"] .native-splash {
+  background: var(--color-canvas);
 }
 :root[data-splash] .native-splash-inner {
   animation: splashIn 1.1s cubic-bezier(0.2, 0.7, 0.2, 1) both;

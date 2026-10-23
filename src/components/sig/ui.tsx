@@ -114,7 +114,7 @@ export function SigTileBody({
     <>
       <span className={cn("relative block overflow-hidden", aspect)}>
         <Photo name={image} alt={alt ?? title} sizes={sizes} className="transition-transform duration-700 ease-out group-hover:scale-[1.06]" />
-        {badge && <span className="absolute top-3 left-3 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-forest">{badge}</span>}
+        {badge && <span className="absolute top-3 left-3 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-forest-deep">{badge}</span>}
       </span>
       <span className="flex items-center gap-3 bg-forest px-4 py-3.5 text-on-forest">
         {Icon && <Icon className="size-5 shrink-0 opacity-90" strokeWidth={1.8} aria-hidden />}
@@ -272,7 +272,7 @@ export function SigStoryFeature({ story }: { story: Story }) {
       <Photo name={story.image} alt={story.title} sizes="(min-width: 1024px) 55vw, 100vw" className="-z-10 transition-transform duration-700 group-hover:scale-[1.04]" />
       <span className="absolute inset-0 -z-10 bg-gradient-to-t from-forest-deep via-forest-deep/40 to-transparent" />
       <span className="p-6 sm:p-8">
-        <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-forest">{story.category}</span>
+        <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-forest-deep">{story.category}</span>
         <span className="mt-3 block text-3xl leading-tight font-extrabold sm:text-4xl">{story.title}</span>
         <span className="mt-2 block max-w-lg text-white/80">{story.dek}</span>
         <span className={sigBtn("white", "mt-5")}>

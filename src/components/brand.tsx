@@ -47,8 +47,18 @@ export function Wordmark({
         className,
       )}
     >
-      {/* eslint-disable-next-line @next/next/no-img-element -- static SVG artwork, no optimisation needed */}
-      <img src={tone === "light" ? LOGO.white : LOGO.green} alt={BRAND.name} width={164} height={63} className={cn("w-auto", logoHeight[size])} draggable={false} />
+      {tone === "light" ? (
+        // eslint-disable-next-line @next/next/no-img-element -- static SVG artwork, no optimisation needed
+        <img src={LOGO.white} alt={BRAND.name} width={164} height={63} className={cn("w-auto", logoHeight[size])} draggable={false} />
+      ) : (
+        <>
+          {/* Green letters on light surfaces; white letters when the admin dark theme (Option 2) is active. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={LOGO.green} alt={BRAND.name} width={164} height={63} className={cn("w-auto dark:hidden", logoHeight[size])} draggable={false} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={LOGO.white} alt="" aria-hidden width={164} height={63} className={cn("hidden w-auto dark:block", logoHeight[size])} draggable={false} />
+        </>
+      )}
       {tagline && <span className={cn("mt-1 font-sans font-medium tracking-[0.12em] opacity-75", taglineSize[size])}>{BRAND.tagline}</span>}
     </span>
   );

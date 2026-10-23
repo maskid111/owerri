@@ -165,7 +165,7 @@ function Sheet({ item, onClose }: { item: ExploreItem; onClose: () => void }) {
             <X className="size-5" />
           </button>
           <div className="absolute inset-x-0 bottom-0 p-5 text-white">
-            <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-forest">{item.label}</span>
+            <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-forest-deep">{item.label}</span>
             <h2 id={titleId} className="mt-3 text-3xl leading-tight text-white">
               {item.title}
             </h2>

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Bookmark, House, Menu, Store, UtensilsCrossed } from "lucide-react";
+import { Bookmark, House, MapPin, Menu, Store, UtensilsCrossed } from "lucide-react";
 import { isActivePath, isImmersive } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 import { openNavDrawer } from "./nav-drawer";
@@ -10,18 +10,19 @@ import { openNavDrawer } from "./nav-drawer";
 const tabs = [
   { href: "/", label: "Home", icon: House },
   { href: "/restaurants", label: "Food", icon: UtensilsCrossed },
+  { href: "/tours/nature", label: "Places", icon: MapPin },
   { href: "/market", label: "Market", icon: Store },
   { href: "/saved", label: "Saved", icon: Bookmark },
 ];
 
-/** Mobile bottom bar: Home, Food, Market and Saved plus "Menu", which opens the full navigation drawer. */
+/** Mobile bottom bar: Home, Food, Places, Market and Saved plus "Menu", which opens the full navigation drawer. */
 export function BottomNav() {
   const pathname = usePathname();
   if (isImmersive(pathname)) return null;
 
   return (
     <nav aria-label="Quick links" className="pb-safe fixed inset-x-0 bottom-0 z-40 bg-forest-deep text-white shadow-[0_-8px_24px_rgba(8,35,26,0.18)] lg:hidden">
-      <ul className="mx-auto grid h-[64px] max-w-lg grid-cols-5">
+      <ul className="mx-auto grid h-[64px] max-w-lg grid-cols-6">
         {tabs.map(({ href, label, icon: Icon }) => {
           const active = isActivePath(pathname, href);
           return (

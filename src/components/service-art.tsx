@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-export type ArtKind = "home" | "restaurants" | "dishes" | "markets" | "culture" | "stays" | "shops" | "nearby" | "places" | "discover";
+export type ArtKind = "home" | "restaurants" | "dishes" | "markets" | "culture" | "stays" | "shops" | "nearby" | "places" | "discover" | "mask";
 
 /* Shared palette — warm, earthy and green, matching Native (no flat yellow). */
 const C = {
@@ -172,6 +172,21 @@ const art: Record<ArtKind, React.ReactNode> = {
       <path d="M10 51c8-3 14-3 22-1s14 2 22-1v4H10Z" fill={C.blue} />
       <path d="M17 44c0-8 1-14 4-19" fill="none" stroke={C.brown} strokeWidth="2.2" strokeLinecap="round" />
       <path d="M21 25c-5-3-10-1-11 2 4-1 7 0 11-2ZM21 25c3-5 8-5 10-3-4 0-7 1-10 3ZM21 25c0-5 2-8 5-9-1 3-2 6-5 9Z" fill={C.deepGreen} />
+    </>
+  ),
+
+  /* Carved wooden mask with a raffia fringe (culture & heritage) */
+  mask: (
+    <>
+      <Shadow />
+      <path d="M17 44c-2 6-1 10 1 12M22 46c-1 5 0 8 1 10M42 46c1 5 0 8-1 10M47 44c2 6 1 10-1 12" fill="none" stroke={C.tanDark} strokeWidth="2" strokeLinecap="round" />
+      <path d="M32 6c-11 0-17 9-17 21 0 13 7 25 17 25s17-12 17-25C49 15 43 6 32 6Z" fill={C.brown} />
+      <path d="M32 6c-5 3-7 8-7 14M32 6c5 3 7 8 7 14" fill="none" stroke={C.darkBrown} strokeWidth="1.6" strokeLinecap="round" />
+      <path d="M22 26c2-2 6-2 8 0-2 2-6 2-8 0ZM34 26c2-2 6-2 8 0-2 2-6 2-8 0Z" fill={C.cream} />
+      <path d="M32 27v12" stroke={C.darkBrown} strokeWidth="2" strokeLinecap="round" />
+      <path d="M27 44c3 2 7 2 10 0" fill="none" stroke={C.cream} strokeWidth="2" strokeLinecap="round" />
+      <path d="M19 33l2 3 2-3M41 33l2 3 2-3" fill="none" stroke={C.orange} strokeWidth="1.5" strokeLinejoin="round" />
+      <circle cx="32" cy="14" r="1.6" fill={C.cream} />
     </>
   ),
 

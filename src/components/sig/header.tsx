@@ -10,6 +10,7 @@ import { isActivePath, isImmersive } from "@/lib/navigation";
 import { useSaved } from "@/lib/saved-store";
 import { cn } from "@/lib/utils";
 import { AppMenuList } from "../app-menu";
+import { AccountButton } from "../auth/account";
 import { openSearch } from "../search-dialog";
 import { SigWordmark } from "./ui";
 
@@ -85,6 +86,7 @@ export function SigHeader() {
               <ShoppingBag className="size-5" strokeWidth={1.8} />
               {count > 0 && <span className={dot} />}
             </Link>
+            <AccountButton variant="b" />
             <button
               onClick={openSigMenu}
               className={cn(

@@ -245,3 +245,48 @@ export function ExperiencePhotoCard({ item, className }: { item: ExploreItem; cl
     </>
   );
 }
+
+/** Compact "Nearby" card (homepage, reference “Nearby you”): bordered card, photo with a distance badge, name and place. */
+export function NearbyCard({ item, variant = "a", className }: { item: ExploreItem; variant?: "a" | "b"; className?: string }) {
+  const [open, setOpen] = useState(false);
+  const body = (
+    <>
+      <span className="relative block aspect-[16/11] overflow-hidden">
+        <Photo name={item.image} alt={item.title} sizes="(min-width: 768px) 25vw, (min-width: 640px) 31vw, 46vw" className="transition-transform duration-500 group-hover:scale-[1.04]" />
+        {item.distanceKm !== undefined && (
+          <span className="absolute top-2 left-2 inline-flex items-center gap-0.5 rounded-full bg-forest-deep/80 px-2 py-0.5 text-[0.62rem] font-semibold text-white backdrop-blur">
+            <MapPin className="size-3" aria-hidden /> {distanceLabel(item.distanceKm)}
+          </span>
+        )}
+      </span>
+      <span className="block p-2.5 sm:p-3">
+        <span className="block truncate text-[0.8rem] font-semibold text-forest sm:text-sm">{item.title}</span>
+        <span className="mt-0.5 flex items-center justify-between gap-2 text-[0.68rem] text-stone sm:text-xs">
+          <span className="truncate">{item.label}</span>
+          {item.rating !== undefined && (
+            <span className="inline-flex shrink-0 items-center gap-0.5">
+              <Star className="size-3 fill-spark text-spark" aria-hidden /> {item.rating.toFixed(1)}
+            </span>
+          )}
+        </span>
+      </span>
+    </>
+  );
+  const cls = cn(
+    "group block w-[46%] shrink-0 snap-start overflow-hidden border border-line bg-paper text-left sm:w-[31%] md:w-auto",
+    variant === "a" ? "rounded-xl" : "rounded-[1.25rem]",
+    className,
+  );
+  return item.href ? (
+    <Link href={item.href} className={cls}>
+      {body}
+    </Link>
+  ) : (
+    <>
+      <button type="button" onClick={() => setOpen(true)} className={cls}>
+        {body}
+      </button>
+      <ExploreDialog item={open ? item : null} onClose={() => setOpen(false)} />
+    </>
+  );
+}

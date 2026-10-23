@@ -8,6 +8,7 @@ import { SigFooter } from "@/components/sig/footer";
 import { SigHeader } from "@/components/sig/header";
 import { SiteHeader } from "@/components/site-header";
 import { Splash } from "@/components/splash";
+import { Toaster } from "@/components/toaster";
 import { DesignSync } from "@/lib/design";
 import { ThemeSync } from "@/lib/theme";
 import { themeScript } from "@/lib/theme-script";
@@ -54,6 +55,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Design a={<SiteFooter />} b={<SigFooter />} />
         <Design a={<BottomNav />} b={<SigDock />} />
         <SearchDialog />
+        <Toaster />
         <SigHashScroll />
       </body>
     </html>

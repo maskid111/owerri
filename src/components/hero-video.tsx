@@ -80,12 +80,15 @@ export function HeroSearchField({
   className,
   inputClassName,
   placeholder = "Search food, places, events…",
+  leading,
   children,
 }: {
   id: string;
   className?: string;
   inputClassName?: string;
   placeholder?: string;
+  /** Rendered before the input (e.g. a search icon). */
+  leading?: React.ReactNode;
   children?: React.ReactNode;
 }) {
   const [q, setQ] = useState("");
@@ -101,6 +104,7 @@ export function HeroSearchField({
       <label className="sr-only" htmlFor={id}>
         Search Native
       </label>
+      {leading}
       <input
         id={id}
         type="search"

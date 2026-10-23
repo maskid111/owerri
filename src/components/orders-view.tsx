@@ -4,6 +4,8 @@ import Link from "next/link";
 import { CheckCircle2, ClipboardList, RotateCcw, ShoppingBag } from "lucide-react";
 import { useId, useState } from "react";
 import { cart, useCart, useOrders, type Order } from "@/lib/cart-store";
+import { useAuth } from "@/lib/auth/session";
+import { withNext } from "@/lib/auth/validation";
 import { getRestaurant } from "@/lib/data";
 import { cn, naira } from "@/lib/utils";
 import { CartLines, CartTotals, FulfilmentToggle } from "./cart-ui";
@@ -75,6 +77,7 @@ export function OrdersView({ chrome = true }: { chrome?: boolean }) {
 
 function Checkout({ onPlaced }: { onPlaced: (o: Order) => void }) {
   const summary = useCart();
+  const { status } = useAuth();
   const [address, setAddress] = useState("");
   const [note, setNote] = useState("");
   const [error, setError] = useState("");
@@ -103,6 +106,7 @@ function Checkout({ onPlaced }: { onPlaced: (o: Order) => void }) {
       noValidate
       onSubmit={(e) => {
         e.preventDefault();
+        if (status !== "signedIn") return;
         if (summary.mode === "delivery" && address.trim().length < 6) {
           setError("Please add a delivery address in Owerri.");
           return;
@@ -111,7 +115,7 @@ function Checkout({ onPlaced }: { onPlaced: (o: Order) => void }) {
         const order = cart.placeOrder({ address: summary.mode === "delivery" ? address.trim() : "", note: note.trim() });
         if (order) onPlaced(order);
       }}
-      className="grid gap-6 lg:grid-cols-[1.4fr_1fr] lg:items-start"
+      className="grid grid-cols-1 gap-6 lg:grid-cols-[1.4fr_1fr] lg:items-start [&>*]:min-w-0"
     >
       <div className="rounded-[1.25rem] border border-line/70 bg-paper p-4 shadow-card sm:p-6">
         <div className="flex items-center gap-3 border-b border-line pb-4">
@@ -160,9 +164,24 @@ function Checkout({ onPlaced }: { onPlaced: (o: Order) => void }) {
           />
         </label>
         <CartTotals summary={summary} />
-        <button type="submit" className={buttonClass("primary", "lg", "w-full")}>
-          Place order · {naira(summary.total)}
-        </button>
+        {status === "signedIn" ? (
+          <button type="submit" className={buttonClass("primary", "lg", "w-full")}>
+            Place order · {naira(summary.total)}
+          </button>
+        ) : (
+          <div className="space-y-3 rounded-2xl bg-sand/70 p-4" aria-busy={status === "loading"}>
+            <p className="text-sm font-semibold text-forest">Sign in to place your order</p>
+            <p className="text-xs text-stone">Your cart is saved on this device — you’ll come straight back here.</p>
+            <div className="grid grid-cols-1 gap-2 min-[400px]:grid-cols-2">
+              <Link href={withNext("/sign-in", "/orders")} className={buttonClass("primary", "md", "w-full px-3")}>
+                Sign in
+              </Link>
+              <Link href={withNext("/sign-up", "/orders")} className={buttonClass("outline", "md", "w-full px-3")}>
+                Create account
+              </Link>
+            </div>
+          </div>
+        )}
         <p className="text-center text-xs leading-relaxed text-stone">
           Preview checkout — online ordering isn’t live yet. Your order is saved in this browser only: it is not sent to {r.name}, no payment is taken and no
           delivery is arranged.

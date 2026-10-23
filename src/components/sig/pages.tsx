@@ -312,7 +312,7 @@ export function SigDishes() {
             <article key={d.slug} data-anchor={d.slug} className="scroll-mt-28 overflow-hidden rounded-[1.6rem] bg-paper shadow-card">
               <div className="relative aspect-square">
                 <Photo name={d.image} alt={d.name} sizes="(min-width: 1024px) 33vw, 50vw" />
-                <span className="absolute top-3 left-3 rounded-full bg-white px-3 py-1 text-xs font-semibold text-forest">{d.kind}</span>
+                <span className="absolute top-3 left-3 rounded-full bg-white px-3 py-1 text-xs font-semibold text-forest-deep">{d.kind}</span>
                 <span className="absolute top-3 right-3 flex gap-0.5 rounded-full bg-forest-deep/80 px-2 py-1">
                   {[1, 2, 3].map((n) => (
                     <Flame key={n} className={cn("size-3.5", n <= d.heat ? "fill-leaf text-leaf" : "text-white/30")} />

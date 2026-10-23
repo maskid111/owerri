@@ -30,9 +30,9 @@ Open http://localhost:3000
 ## Opening splash & homepage
 
 - **Splash:** white screen with the wordmark and tagline, a soft entrance and fade (`globals.css`, `components/splash.tsx`). Shown on every full load of the homepage, and on the first page of a browser session elsewhere — never on internal navigation (`src/lib/theme-script.ts`). It never intercepts clicks, shortens under reduced motion, and a timer removes it even if animations are paused.
-- **Hero video:** the portrait master supplied by the Native team (2160×4096, 25 fps, 14.8 s, a slow push-in on three women holding woven baskets of fruit) is encoded as a seamless 13.8 s crossfade loop in `public/videos/`: `native-hero-portrait.mp4` (1080×1920, tall phones) and `native-hero-1080.mp4` (1920×1080, all other screens — the crop moves down with the camera so faces stay in frame), plus matching posters. `components/hero-video.tsx` picks the rendition on the client; it autoplays muted and looped with `object-fit: cover`, has no visible player controls, stays on its poster under reduced motion, and keeps the poster if a file can't play. Re-encode with ffmpeg (H.264 High, CRF 20–21, `-movflags +faststart`) if the master changes.
-- **Product-first homepage:** the video now sits in a compact hero (location, one headline, Order food + Explore) instead of filling the screen. The site search (restaurants, dishes on menus, places, events) overlaps the hero, and the **service tiles** follow directly, so every service is visible on the first screen of a phone. The order below is food first: featured restaurants, popular dishes (add to cart from the card), markets & shops, culture & events, nearby experiences, then an "Explore Native" culture banner.
-- **Services** are defined once in `src/lib/services.ts` (Restaurants, Dishes, Local Markets, Culture & Events, Stays & Hospitality, Shops & Crafts, Nearby & Experiences, Places) and drawn with small flat illustrations from `src/components/service-art.tsx`. Version A shows soft-coloured square tiles; Version B shows round bubbles with label pills.
+- **Hero:** a compact, cinematic food photograph (three slides cross-fading every 6 s, with dots; paused under reduced motion) with the text to one side: a small label, "Real Flavours. True Stories.", one line and an orange **Explore Food** button. The supplied cultural video and its renditions remain in `public/videos/` and `components/hero-video.tsx` (`HeroVideo`) but are no longer shown on the homepage.
+- **Homepage (follows the dark reference mock-up):** header with logo, a browsing-area indicator ("Owerri" — honest about where listings are; choosing another area isn’t available yet), search, notifications, cart and account. Then the food hero, the search bar beneath it (the existing site search; the filter icon opens Explore), **six line-icon shortcuts** (Restaurants, Dishes, Places, Events, Market, Culture — `homeShortcuts` in `src/lib/services.ts`), **Featured Restaurants** as a spotlight for Annie’s Native Kitchen (label, name, place, description, View Restaurant) beside a "Places to explore" card, **Popular Dishes** (bordered cards with a category badge, price and Add / quantity controls using the shared cart), **Nearby** (closest places and restaurants with distance badges; they open the existing details) and a compact culture banner on the Native pattern. Version A’s mobile bottom bar has Home, Food, Places, Market, Saved and Menu. Version B uses the same structure in its own style (rounded hero card, round shortcut bubbles, softer radii). Components: `components/home/*`.
+- **Shortcut and menu illustrations** come from `src/components/service-art.tsx` (one consistent flat style).
 - **Site menu:** both versions' mobile menus use the same grouped list (`components/app-menu.tsx`, `menuGroups` in `services.ts`): *Explore* (illustrated rows with a one-line hint), *Your space* (Saved, Orders, Notifications) and *Support*, then a culture card.
 
 ## Food ordering
@@ -44,6 +44,27 @@ Food ordering is a primary service: **Restaurants** (`/restaurants`) is second i
 - **Journey:** Home (or Restaurants) → restaurant → add dishes → cart drawer → `/orders` review & checkout → confirmation. The restaurant page *is* the ordering page: photo hero, tabs (Menu / About / Reviews / Gallery in A; Menu / About / Reviews in B), category circles, popular-dish cards and menu rows with Add buttons and quantity steppers (`components/restaurant-page.tsx`, `components/sig/menu.tsx`). `/restaurants/[slug]/menu` still works and shows the same page. Popular dishes can also be added straight from the homepage (`useOrdering` in `components/food.tsx`). One cart store (`src/lib/cart-store.ts`) powers every step.
 - **Honest prototype:** checkout says that online ordering isn’t live yet. Orders are saved in the browser only: nothing is sent to the restaurant, no payment is taken, no delivery is arranged and no fake delivery status is shown. The delivery fee is labelled as a sample. To connect real ordering, replace `cart.placeOrder`.
 - **Annie’s Native Kitchen, Chicken Republic and Kilimanjaro** have unconfirmed profiles: only their names are real. Menus, prices, cuisine, address, hours, phone and delivery details are `SAMPLE` placeholders in `src/lib/data.ts`. The site shows "New on Native" with a one-line note instead of inventing ratings, reviews, distance, hours or a phone number. To publish real details, put naira prices in `prices`, fill in `open`, `close`, `phone`, `address` and `area`, then remove `sampleProfile`.
+
+## Accounts & sign-in (prototype)
+
+Routes: `/sign-in`, `/sign-up`, `/forgot-password`, `/reset-password`, `/verify-email`, `/account` (My Profile), plus draft `/terms` and `/privacy`. Every screen has a Version A layout (form beside a photograph on desktop) and a Version B layout (centred card); behaviour is shared.
+
+**This is not real authentication.** It is a frontend prototype with a clean seam for a real provider:
+
+| Layer | File | Notes |
+| --- | --- | --- |
+| Validation | `src/lib/auth/validation.ts` | Email, name, Nigerian phone (formats `0803 123 4567` / `+234 …`), password strength, matching, safe `?next=` return paths. Pure functions. |
+| Service | `src/lib/auth/service.ts` | `AuthService` interface + `mockAuthService`. Replace the `authService` export with a real implementation (secure HTTP-only sessions, server-side password hashing, real email). |
+| Session | `src/lib/auth/session.ts` | `useAuth()` — status, user, sign in/up/out. Stores only the signed-in **profile** (name, email, phone) — never a password or token. "Keep me signed in" → localStorage, otherwise sessionStorage. |
+| UI | `src/components/auth/*` | Shared fields (labels, inline errors, show/hide password, strength meter), notices and messages for every state, shells per version, header account button and menu, sign-out confirmation, profile page. |
+
+Prototype behaviour:
+- **Demo account:** `demo@native.test` / `NativeDemo1!` (also offered on the sign-in screen).
+- Accounts created on `/sign-up` are remembered on this device as a profile only; because passwords are never stored, they sign in with any password of 8+ characters.
+- `offline@native.test` simulates a network/service failure on any form.
+- No email is ever sent. Forgot-password shows an honest "no email was sent" notice and a demo link to `/reset-password?token=demo-reset`; any other token shows the expired-link state. Verify-email offers "Resend" (prototype feedback) and a labelled "Simulate verification".
+- Browsing, menus and the cart never require an account. Checkout asks visitors to sign in or create an account at the final "Place order" step and returns them to `/orders` with the cart intact. Saving works signed out; a one-time toast suggests signing in. Signing in or out never touches the cart, orders or saved items.
+- Signed in: initials avatar in the header with My Profile, My Orders, Saved Items, Notifications, Settings, Help & Support and Sign out (with confirmation). The site menu shows an account card at the top.
 
 ## Two design versions
 
@@ -60,19 +81,19 @@ The site ships two complete design systems over the same routes, data and busine
 **How it works**
 - `src/lib/design.ts` stores the version (`native:design` in localStorage). An inline script in `src/app/layout.tsx` sets `<html data-design="b">` before first paint.
 - Every page and the layout chrome render `<Design a={…} b={…} />` (`src/components/design.tsx`); CSS in `globals.css` displays exactly one. Both are prerendered, so switching never flashes and survives refresh.
-- Version B tokens (`:root[data-design="b"]`) and sans display font are defined in `globals.css`. Version A keeps its Native Light / Native Forest palettes.
+- Version B tokens (`:root[data-design="b"]`) and sans display font are defined in `globals.css`. Both versions follow the admin background theme (Option 1 — Native Original / Option 2 — Native Forest Dark).
 - Shared logic: `src/lib/feed.ts` (discovery filtering), `src/lib/restaurant-filter.ts`, cart/orders/saved/notification stores, `src/lib/data.ts`. Functional widgets (checkout, settings, contact form, cart drawer) are reused inside Version B layouts.
 - Version B anchors use `data-anchor` (ids belong to Version A); `SigHashScroll` handles `#hash` links.
 
-**Switching:** `/admin` → *Website Design Selector* (frontend-only prototype — affects this browser only, not other visitors). Version A's palette (Light / Forest) is chosen there too.
+**Switching:** `/admin` → *Website Design Selector* (frontend-only prototype — affects this browser only, not other visitors). The background theme is chosen there too, in its own *Website Background Theme* section.
 
 ## Design & themes
 
 References live in `design-references/` (`native/` holds the current Native set: drawer, pattern, light and forest mock-ups).
 
 - **Palette:** forest greens and warm neutrals only — no yellow. Tokens are in `src/app/globals.css` (`@theme`).
-- **Two themes:** *Native Light* (default) and *Native Forest*. Theme-dependent tokens (`canvas`, `paper`, `ink`, `forest`, `accent`…) are overridden on `:root[data-theme="forest"]`; constant tokens (`pine`, `forest-deep`, `cream`, `leaf`) are for always-dark surfaces such as photo overlays, pattern sections and the footer.
-- **Version A palettes:** set under `/admin` (saved as `native:theme`), applied before first paint.
+- **Website background themes (admin only):** *Option 1 — Native Original* (the existing light surfaces) and *Option 2 — Native Forest Dark* (a complete dark system: layered forest greens for page, cards and inputs, warm cream text, leaf-green accents, `#F1A10C` only for small highlights). Theme tokens are overridden on `:root[data-theme="forest"]` for Version A and `:root[data-design="b"][data-theme="forest"]` for Version B, so both design versions follow the selected theme; `dark:` utilities are tied to the same attribute. The logo automatically uses white letters on dark surfaces (the gold leaf is never recoloured).
+- **Switching:** only in `/admin` → *Website Background Theme* (separate from the *Website Design Selector*). There is no public toggle in the header, menus, profile or settings. The choice is saved in this browser (`native:theme`) and applied before first paint, so it never flashes — it is **not** yet a central setting shared with every visitor.
 - **Brand pattern:** the supplied image is kept as `public/brand/native-pattern.jpg`. `public/brand/native-pattern-tile.png` is the same image with a 9px white edge artefact trimmed and mirrored 2×2 so it repeats seamlessly. Use the `bg-native-pattern` / `bg-native-pattern-lg` utilities (hero edges, `PatternBanner`, footer, drawer, culture feature).
 - **Navigation:** defined once in `src/lib/navigation.ts` (Home, Restaurants, Local Market, Tours › Stays & Getaways / Nature & Places, Nearby, Events & Hangouts, Discover (`/blog`), Saved, Notifications, Settings, Help / Support) and used by the desktop header, mobile drawer and footer.
 

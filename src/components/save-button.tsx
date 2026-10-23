@@ -2,7 +2,9 @@
 
 import { Heart } from "lucide-react";
 import { motion } from "motion/react";
+import { useAuth } from "@/lib/auth/session";
 import { useSaved } from "@/lib/saved-store";
+import { toast } from "@/lib/toast";
 import { cn } from "@/lib/utils";
 
 /**
@@ -25,6 +27,7 @@ export function SaveButton({
   className?: string;
 }) {
   const { isSaved, toggle } = useSaved();
+  const { status } = useAuth();
   const active = isSaved(slug);
 
   return (
@@ -35,12 +38,13 @@ export function SaveButton({
         e.preventDefault();
         e.stopPropagation();
         toggle(slug);
+        if (!active && status === "signedOut") promptSignIn();
       }}
       aria-pressed={active}
       aria-label={active ? `Remove ${name} from saved` : `Save ${name}`}
       className={cn(
         "inline-flex shrink-0 items-center justify-center gap-2 rounded-full transition-colors",
-        variant === "circle" && "size-10 bg-paper text-forest shadow-card hover:bg-white",
+        variant === "circle" && "size-10 bg-paper text-forest shadow-card hover:bg-sand",
         variant === "photo" && "size-9 text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.45)]",
         variant === "plain" && (withLabel ? "h-11 border border-line bg-paper px-5 text-sm font-semibold text-forest hover:border-forest/40" : "size-9 text-forest hover:bg-forest/5"),
         className,
@@ -50,4 +54,21 @@ export function SaveButton({
       {withLabel && <span>{active ? "Saved" : "Save"}</span>}
     </motion.button>
   );
+}
+
+/** Visitors can save freely; once per visit, gently suggest an account so favourites follow them. */
+function promptSignIn() {
+  try {
+    if (window.sessionStorage.getItem("native:save-prompted")) return;
+    window.sessionStorage.setItem("native:save-prompted", "1");
+  } catch {
+    /* storage unavailable: show the prompt anyway */
+  }
+  const here = window.location.pathname + window.location.search;
+  toast({
+    tone: "info",
+    title: "Saved on this device",
+    body: "Sign in to keep your favourites with your account.",
+    action: { label: "Sign in", href: `/sign-in?next=${encodeURIComponent(here)}` },
+  });
 }

@@ -1611,6 +1611,9 @@ export const getRestaurant = (slug: string) => restaurants.find((r) => r.slug ==
 export const getStory = (slug: string) => stories.find((s) => s.slug === slug);
 export const getNeighbourhood = (slug: string) => neighbourhoods.find((n) => n.slug === slug);
 export const areaName = (slug: string) => getNeighbourhood(slug)?.name ?? (slug || "Owerri");
+/** The launch restaurant featured in the homepage spotlight (first of TOP_RESTAURANTS). */
+export const getFeaturedRestaurant = () => getRestaurant(TOP_RESTAURANTS[0])!;
+
 /** Annie’s Native Kitchen, Chicken Republic, Kilimanjaro, then featured kitchens — the homepage food row. */
 export const topRestaurants = () => [...TOP_RESTAURANTS.map((s) => getRestaurant(s)!), ...restaurants.filter((r) => r.featured)];
 
@@ -1713,6 +1716,14 @@ export const exploreItems: ExploreItem[] = [
 ];
 
 export const getExploreItem = (slug: string) => exploreItems.find((x) => x.slug === slug);
+
+/** Places and experiences closest to the city centre (restaurants, recreation, nature, culture, hangouts) — the homepage "Nearby" row. */
+export function nearbyItems(limit = 8) {
+  return exploreItems
+    .filter((x) => x.distanceKm !== undefined)
+    .sort((a, b) => (a.distanceKm ?? 0) - (b.distanceKm ?? 0))
+    .slice(0, limit);
+}
 
 export type Notice = { id: string; title: string; body: string; when: string; href: string; kind: "event" | "offer" | "market" | "tour" | "story" };
 

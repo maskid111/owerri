@@ -10,6 +10,8 @@ import { useUnreadCount } from "@/lib/notifications-store";
 import { cn } from "@/lib/utils";
 import { NavDrawer, openNavDrawer } from "./nav-drawer";
 import { openSearch } from "./search-dialog";
+import { AccountButton } from "./auth/account";
+import { LocationChip } from "./home/location";
 import { Logo } from "./ui";
 
 /** Discovery sections render as text links (short labels); the rest as labelled icon buttons (text from 2xl) — order is preserved. */
@@ -49,14 +51,24 @@ export function SiteHeader() {
           <button onClick={openNavDrawer} className={cn(iconBtn, "-ml-2 lg:hidden")} aria-label="Open menu">
             <Menu className="size-6" />
           </button>
-          <Link href="/" aria-label="Native home" className="shrink-0">
-            <span className="xl:hidden">
-              <Logo light={overHero} tagline={false} />
-            </span>
-            <span className="hidden xl:block">
-              <Logo light={overHero} />
-            </span>
-          </Link>
+          {pathname === "/" ? (
+            // Homepage: logo with the browsing-area indicator beneath it, as in the reference.
+            <div className="flex shrink-0 flex-col items-start gap-0.5">
+              <Link href="/" aria-label="Native home">
+                <Logo light={overHero} tagline={false} />
+              </Link>
+              <LocationChip light={overHero} />
+            </div>
+          ) : (
+            <Link href="/" aria-label="Native home" className="shrink-0">
+              <span className="xl:hidden">
+                <Logo light={overHero} tagline={false} />
+              </span>
+              <span className="hidden xl:block">
+                <Logo light={overHero} />
+              </span>
+            </Link>
+          )}
 
           <nav aria-label="Main" className="ml-auto hidden items-center lg:flex">
             <ul className="flex items-center gap-0.5">
@@ -120,6 +132,7 @@ export function SiteHeader() {
                 <span className="absolute -top-0.5 -right-0.5 grid h-[18px] min-w-[18px] place-items-center rounded-full bg-accent px-1 text-[10px] font-bold text-on-accent">{count}</span>
               )}
             </Link>
+            <AccountButton variant="a" light={overHero} />
           </div>
         </div>
       </header>

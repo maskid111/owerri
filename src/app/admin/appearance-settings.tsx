@@ -2,7 +2,7 @@
 
 import { Check, FileText, LayoutDashboard, Palette, ShieldAlert, Store, Users } from "lucide-react";
 import { designVersions, setDesignVersion, useDesignVersion, type DesignVersion } from "@/lib/design";
-import { setSiteTheme, themes, useSiteTheme } from "@/lib/theme";
+import { setSiteTheme, themeLabel, themes, useSiteTheme, type SiteTheme } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 import { LOGO } from "@/components/brand";
 
@@ -94,12 +94,13 @@ export function AppearanceSettings({ chrome = true }: { chrome?: boolean }) {
             ))}
           </div>
 
-          <div className={cn("mt-8 rounded-2xl border border-line p-4 sm:p-5", design !== "a" && "opacity-60")}>
-            <p className="font-semibold text-ink">Version A palette</p>
-            <p className="text-sm text-stone">
-              The Original UI keeps its two colour palettes.{design !== "a" && " Applies when Version A is selected."}
+          <div className="mt-10 border-t border-line pt-8">
+            <h2 className="text-2xl font-semibold text-forest">Website Background Theme</h2>
+            <p className="mt-1 max-w-2xl text-sm text-stone">
+              Changes the colour and surface system of the whole website — every page, menu, card, form and dialog — in whichever design version is selected above. Visitors
+              can’t change this; there is no public toggle.
             </p>
-            <div className="mt-3 flex flex-wrap gap-2" role="radiogroup" aria-label="Version A palette">
+            <div className="mt-5 grid gap-4 sm:grid-cols-2" role="radiogroup" aria-label="Website background theme">
               {themes.map((t) => (
                 <button
                   key={t.id}
@@ -107,21 +108,28 @@ export function AppearanceSettings({ chrome = true }: { chrome?: boolean }) {
                   role="radio"
                   aria-checked={theme === t.id}
                   onClick={() => setSiteTheme(t.id)}
-                  className={cn(
-                    "inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold transition-colors",
-                    theme === t.id ? "border-forest bg-forest text-on-forest" : "border-line text-ink hover:border-forest/40",
-                  )}
+                  className={cn("rounded-[1.25rem] border-2 p-3 text-left transition-all", theme === t.id ? "border-accent shadow-lift" : "border-line hover:border-forest/40")}
                 >
-                  <span className={cn("size-3.5 rounded-full border", t.id === "forest" ? "border-[#265343] bg-[#0b2a1f]" : "border-[#e6e2d6] bg-[#fbfaf6]")} />
-                  {t.name}
+                  <ThemePreview theme={t.id} />
+                  <div className="mt-3 flex items-start justify-between gap-3 px-1 pb-1">
+                    <div>
+                      <p className="text-[0.68rem] font-bold tracking-[0.18em] text-forest-light uppercase">{t.option}</p>
+                      <p className="mt-0.5 font-semibold text-ink">{t.name}</p>
+                      <p className="mt-1 text-sm text-stone">{t.description}</p>
+                    </div>
+                    <span className={cn("grid size-7 shrink-0 place-items-center rounded-full border-2", theme === t.id ? "border-accent bg-accent text-on-accent" : "border-line")}>
+                      {theme === t.id && <Check className="size-4" strokeWidth={3} />}
+                    </span>
+                  </div>
                 </button>
               ))}
             </div>
           </div>
 
           <p className="mt-5 text-sm text-stone" role="status">
-            Active: <span className="font-semibold text-ink">{designVersions.find((v) => v.id === design)?.tag} — {designVersions.find((v) => v.id === design)?.name}</span>
-            {design === "a" && <> · {themes.find((t) => t.id === theme)?.name}</>} · saved to this browser and kept after refresh.
+            Active: <span className="font-semibold text-ink">{designVersions.find((v) => v.id === design)?.tag} — {designVersions.find((v) => v.id === design)?.name}</span> ·{" "}
+            <span className="font-semibold text-ink">{themeLabel(theme)}</span>. Saved to this browser and kept after refresh — not yet a central setting shared with every
+            visitor.
           </p>
         </section>
       </div>
@@ -192,6 +200,41 @@ function Preview({ version }: { version: DesignVersion }) {
           </span>
         ))}
       </div>
+    </div>
+  );
+}
+
+/** Fixed-colour miniature of the homepage in each background theme (independent of the active one). */
+function ThemePreview({ theme }: { theme: SiteTheme }) {
+  const dark = theme === "forest";
+  const c = dark
+    ? { page: "#0b1d15", card: "#12291f", line: "#274638", text: "#f1ead9", muted: "#a9b8ac" }
+    : { page: "#fbfaf6", card: "#ffffff", line: "#e6e2d6", text: "#0f3d2a", muted: "#59645d" };
+  return (
+    <div className="overflow-hidden rounded-xl border" style={{ background: c.page, borderColor: c.line }} aria-hidden>
+      <div className="relative h-20 bg-cover bg-center" style={{ backgroundImage: "url(/images/egusi.jpg)" }}>
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0a2c1e] via-[#0a2c1e]/70 to-transparent" />
+        <span className="absolute top-3 left-3 block h-2 w-16 rounded bg-white/90" />
+        <span className="absolute top-7 left-3 block h-1.5 w-10 rounded bg-white/60" />
+        <span className="absolute bottom-3 left-3 block h-3 w-12 rounded-full bg-[#f1a10c]" />
+      </div>
+      <div className="mx-3 -mt-2 h-4 rounded-full border" style={{ background: c.card, borderColor: c.line }} />
+      <div className="grid grid-cols-6 gap-1 px-3 pt-2.5">
+        {[0, 1, 2, 3, 4, 5].map((i) => (
+          <span key={i} className="aspect-square rounded-md border" style={{ background: c.card, borderColor: c.line }} />
+        ))}
+      </div>
+      <div className="px-3 pt-2.5">
+        <span className="block h-1.5 w-16 rounded" style={{ background: c.text }} />
+      </div>
+      <div className="grid grid-cols-3 gap-1.5 p-3 pt-2">
+        {["lodge", "grilled-platter", "waterfall"].map((img) => (
+          <span key={img} className="h-9 rounded-md bg-cover bg-center" style={{ backgroundImage: `url(/images/${img}.jpg)` }} />
+        ))}
+      </div>
+      <p className="px-3 pb-2.5 text-[9px] font-semibold" style={{ color: c.muted }}>
+        {dark ? "Dark forest surfaces" : "White & warm cream"}
+      </p>
     </div>
   );
 }
