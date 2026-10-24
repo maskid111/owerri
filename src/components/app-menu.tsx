@@ -12,9 +12,9 @@ import { ServiceArt } from "./service-art";
 import { Photo } from "./ui";
 
 /**
- * The grouped site menu (Explore · Your space · Support) shared by the Version A drawer and the Version B
- * menu panel: illustrated service rows with a one-line hint (with the Native Kitchen banner under
- * Restaurants), then personal and support links, then the "Taste the regions" banner.
+ * The grouped site menu shared by the Version A drawer and the Version B menu panel, arranged like the
+ * reference: Discover & Order (then the Native Kitchen banner), Explore More, Quick Access, and the
+ * "Taste the regions" banner at the end.
  */
 export function AppMenuList({ pathname, onNavigate }: { pathname: string; onNavigate: () => void }) {
   const unread = useUnreadCount();
@@ -57,7 +57,7 @@ export function AppMenuList({ pathname, onNavigate }: { pathname: string; onNavi
                       <ChevronRight className="size-4 shrink-0 text-stone" />
                     </Link>
                   </li>
-                  {item.href === "/restaurants" && (
+                  {item.href === "/dishes" && (
                     <li className="py-1.5">
                       <NativeKitchenBanner onNavigate={onNavigate} />
                     </li>
@@ -74,7 +74,7 @@ export function AppMenuList({ pathname, onNavigate }: { pathname: string; onNavi
   );
 }
 
-/** Menu banner under Restaurants: Native Kitchen — food stories, people and culture (links to Discover). */
+/** Menu banner closing Discover & Order: Native Kitchen — food stories, people and culture (links to Discover). */
 function NativeKitchenBanner({ onNavigate }: { onNavigate: () => void }) {
   return (
     <Link href="/blog" onClick={onNavigate} className="group relative isolate flex min-h-[6.5rem] overflow-hidden rounded-2xl bg-forest-deep text-white">

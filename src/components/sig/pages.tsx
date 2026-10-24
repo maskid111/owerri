@@ -50,7 +50,7 @@ export function SigFeedPage({
 }
 
 /* ------------------------------------------------------------------ */
-/* Local Market                                                        */
+/* Farmers Market                                                      */
 /* ------------------------------------------------------------------ */
 
 const groups: { name: MarketGroup; id: string; blurb: string }[] = [
@@ -64,7 +64,7 @@ export function SigMarket() {
   return (
     <>
       <SigPageHeader
-        eyebrow="Local Market"
+        eyebrow="Farmers Market"
         title={
           <>
             From the farm, the pot

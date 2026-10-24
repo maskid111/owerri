@@ -8,7 +8,7 @@ import { Design } from "@/components/design";
 import { SigMarket } from "@/components/sig/pages";
 
 export const metadata: Metadata = {
-  title: "Local Market",
+  title: "Farmers Market",
   description: "Traditional food, fresh produce, spices and handmade crafts from local markets and makers.",
 };
 
@@ -24,7 +24,7 @@ function MarketPage() {
   return (
     <>
       <PhotoHero
-        eyebrow="Local Market"
+        eyebrow="Farmers Market"
         title="From the farm, the pot and the maker’s hands."
         description="Order traditional food from local kitchens, then find the produce, spices and crafts that taste and feel like home."
         image="market-women"

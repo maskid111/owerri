@@ -53,7 +53,7 @@ export function PatternBanner({
   );
 }
 
-/** Photographic page hero for top-level sections (Local Market, Tours, Nearby, Events, Blog…). */
+/** Photographic page hero for top-level sections (Farmers Market, Tours, Nearby, Events, Blog…). */
 export function PhotoHero({
   eyebrow,
   title,
@@ -151,7 +151,7 @@ export function TourTile({
   );
 }
 
-/** Compact square market tile with label strip (Local Market row in the references). */
+/** Compact square market tile with label strip (Farmers Market row). */
 export function MarketTile({ href, title, image, className }: { href: string; title: string; image: ImageName; className?: string }) {
   return (
     <Link href={href} className={cn("group relative isolate block aspect-square overflow-hidden rounded-[1.1rem]", className)}>

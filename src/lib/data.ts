@@ -122,7 +122,7 @@ export type Place = {
   slug: string;
   name: string;
   kind: "Stay" | "Getaway" | "Nature" | "Recreation" | "Hangout" | "Culture" | "Market";
-  /** For market stalls: which Local Market aisle they belong to. */
+  /** For market stalls: which Farmers Market aisle they belong to. */
   marketGroup?: MarketGroup;
   categories: ExploreCategory[];
   area: string;
@@ -175,7 +175,7 @@ export const exploreCategories: ExploreCategory[] = ["Food & Drink", "Market", "
 
 export type MarketGroup = "Fresh Produce" | "Spices & Ingredients" | "Crafts & Handmade";
 
-/** Local Market aisles (Traditional Food links to the restaurant listing and ordering flow). */
+/** Farmers Market aisles (Traditional Food links to the restaurant listing and ordering flow). */
 export const marketSections: { name: "Traditional Food" | MarketGroup; blurb: string; image: ImageName; href: string }[] = [
   { name: "Traditional Food", blurb: "Order soups, grills and street food from local kitchens.", image: "egusi", href: "/restaurants?category=Local" },
   { name: "Fresh Produce", blurb: "Yams, plantain, leafy greens and fruit from nearby farms.", image: "produce", href: "/market#fresh-produce" },
@@ -1716,6 +1716,9 @@ export const exploreItems: ExploreItem[] = [
 ];
 
 export const getExploreItem = (slug: string) => exploreItems.find((x) => x.slug === slug);
+
+/** Farmers Market stalls (produce, spices, crafts) — the homepage "Farmers Market" row. */
+export const marketStalls = (limit = 8) => exploreItems.filter((x) => x.kind === "place" && x.label === "Market").slice(0, limit);
 
 /** Places and experiences closest to the city centre (restaurants, recreation, nature, culture, hangouts) — the homepage "Nearby" row. */
 export function nearbyItems(limit = 8) {

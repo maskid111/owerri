@@ -1,4 +1,4 @@
-import { getFeaturedRestaurant, nearbyItems, popularDishes } from "@/lib/data";
+import { getFeaturedRestaurant, marketStalls, nearbyItems, popularDishes } from "@/lib/data";
 import { NearbyCard } from "../explore-card";
 import { PopularDishes } from "../food";
 import { CultureBanner, FeaturedSpotlight, homeScroller, HomeHeading, HomeShortcuts, PlacesToExploreCard } from "../home/sections";
@@ -37,6 +37,15 @@ export function SigHome() {
         <HomeHeading title="Nearby" subtitle="Great food, places and experiences close by." href="/nearby" variant="b" />
         <div className={`${homeScroller} mt-3 md:grid-cols-4`}>
           {nearbyItems().map((x, i) => (
+            <NearbyCard key={x.slug} item={x} variant="b" className={i >= 4 ? "md:hidden" : undefined} />
+          ))}
+        </div>
+      </section>
+
+      <section className="container-x pt-7 sm:pt-10">
+        <HomeHeading title="Farmers Market" subtitle="Fresh produce, spices and goods from local stalls." href="/market" variant="b" />
+        <div className={`${homeScroller} mt-3 md:grid-cols-4`}>
+          {marketStalls().map((x, i) => (
             <NearbyCard key={x.slug} item={x} variant="b" className={i >= 4 ? "md:hidden" : undefined} />
           ))}
         </div>

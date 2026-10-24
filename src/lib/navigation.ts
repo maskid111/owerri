@@ -7,7 +7,7 @@ export type NavItem = { label: string; short?: string; href: string; icon: Lucid
 export const navigation: NavItem[] = [
   { label: "Home", href: "/", icon: House },
   { label: "Restaurants", short: "Food", href: "/restaurants", icon: UtensilsCrossed, description: "Order meals from local restaurants" },
-  { label: "Local Market", short: "Market", href: "/market", icon: Store, description: "Traditional food, produce, spices and crafts" },
+  { label: "Farmers Market", short: "Market", href: "/market", icon: Store, description: "Traditional food, produce, spices and crafts" },
   {
     label: "Tours",
     href: "/tours",
