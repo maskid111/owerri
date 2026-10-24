@@ -1,9 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { BottomNav } from "@/components/bottom-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { Design } from "@/components/design";
 import { SearchDialog } from "@/components/search-dialog";
-import { SigDock, SigHashScroll } from "@/components/sig/dock";
+import { SigHashScroll } from "@/components/sig/dock";
 import { SigFooter } from "@/components/sig/footer";
 import { SigHeader } from "@/components/sig/header";
 import { SiteHeader } from "@/components/site-header";
@@ -38,7 +37,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <link rel="preload" href="/fonts/fraunces-latin-full-normal.woff2" as="font" type="font/woff2" crossOrigin="" />
         <link rel="preload" href="/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossOrigin="" />
       </head>
-      <body className="flex min-h-dvh flex-col max-lg:pb-[calc(64px+env(safe-area-inset-bottom))]">
+      <body className="flex min-h-dvh flex-col">
         <Splash />
         <a
           href="#main"
@@ -53,7 +52,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
         </main>
         <Design a={<SiteFooter />} b={<SigFooter />} />
-        <Design a={<BottomNav />} b={<SigDock />} />
         <SearchDialog />
         <Toaster />
         <SigHashScroll />

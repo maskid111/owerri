@@ -45,9 +45,6 @@ export function SigHeader() {
       >
         <div className="container-x grid h-16 grid-cols-[1fr_auto_1fr] items-center lg:h-20">
           <nav aria-label="Main" className="flex items-center">
-            <button onClick={openSigMenu} className={cn(icon, "-ml-2 lg:hidden")} aria-label="Open menu">
-              <Menu className="size-[22px]" strokeWidth={1.7} />
-            </button>
             <ul className="hidden items-center gap-5 lg:flex xl:gap-7">
               {primary.map((l) => {
                 const active = isActivePath(pathname, l.href);
@@ -86,7 +83,13 @@ export function SigHeader() {
               <ShoppingBag className="size-5" strokeWidth={1.8} />
               {count > 0 && <span className={dot} />}
             </Link>
-            <AccountButton variant="b" />
+            {/* Phones: the account lives inside the menu panel. */}
+            <div className="hidden lg:block">
+              <AccountButton variant="b" />
+            </div>
+            <button onClick={openSigMenu} className={cn(icon, "-mr-2 lg:hidden")} aria-label="Open menu">
+              <Menu className="size-[22px]" strokeWidth={1.7} />
+            </button>
             <button
               onClick={openSigMenu}
               className={cn(

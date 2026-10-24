@@ -164,7 +164,7 @@ function Preview({ version }: { version: DesignVersion }) {
         </div>
         <div className="px-3 pt-3">
           <span className="block h-1.5 w-10 rounded bg-[#0f3d2a]" />
-          <span className="mt-1 block h-[2px] w-4 rounded bg-[#f1a10c]" />
+          <span className="mt-1 block h-[2px] w-4 rounded bg-spark" />
         </div>
         <div className="grid grid-cols-3 gap-1.5 p-3 pt-2">
           {["lodge", "lake-sunset", "waterfall"].map((img) => (
@@ -216,7 +216,7 @@ function ThemePreview({ theme }: { theme: SiteTheme }) {
         <div className="absolute inset-0 bg-gradient-to-r from-[#0a2c1e] via-[#0a2c1e]/70 to-transparent" />
         <span className="absolute top-3 left-3 block h-2 w-16 rounded bg-white/90" />
         <span className="absolute top-7 left-3 block h-1.5 w-10 rounded bg-white/60" />
-        <span className="absolute bottom-3 left-3 block h-3 w-12 rounded-full bg-[#f1a10c]" />
+        <span className="absolute bottom-3 left-3 block h-3 w-12 rounded-full bg-spark" />
       </div>
       <div className="mx-3 -mt-2 h-4 rounded-full border" style={{ background: c.card, borderColor: c.line }} />
       <div className="grid grid-cols-6 gap-1 px-3 pt-2.5">

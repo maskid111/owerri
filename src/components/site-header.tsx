@@ -11,7 +11,6 @@ import { cn } from "@/lib/utils";
 import { NavDrawer, openNavDrawer } from "./nav-drawer";
 import { openSearch } from "./search-dialog";
 import { AccountButton } from "./auth/account";
-import { LocationChip } from "./home/location";
 import { Logo } from "./ui";
 
 /** Discovery sections render as text links (short labels); the rest as labelled icon buttons (text from 2xl) — order is preserved. */
@@ -48,27 +47,14 @@ export function SiteHeader() {
         )}
       >
         <div className="mx-auto flex h-16 max-w-[90rem] items-center gap-2 px-3 sm:gap-3 sm:px-4 sm:px-6 lg:h-[76px] lg:gap-3 lg:px-6 xl:gap-6 xl:px-8">
-          <button onClick={openNavDrawer} className={cn(iconBtn, "-ml-2 lg:hidden")} aria-label="Open menu">
-            <Menu className="size-6" />
-          </button>
-          {pathname === "/" ? (
-            // Homepage: logo with the browsing-area indicator beneath it, as in the reference.
-            <div className="flex shrink-0 flex-col items-start gap-0.5">
-              <Link href="/" aria-label="Native home">
-                <Logo light={overHero} tagline={false} />
-              </Link>
-              <LocationChip light={overHero} />
-            </div>
-          ) : (
-            <Link href="/" aria-label="Native home" className="shrink-0">
-              <span className="xl:hidden">
-                <Logo light={overHero} tagline={false} />
-              </span>
-              <span className="hidden xl:block">
-                <Logo light={overHero} />
-              </span>
-            </Link>
-          )}
+          <Link href="/" aria-label="Native home" className="shrink-0">
+            <span className="xl:hidden">
+              <Logo light={overHero} tagline={false} />
+            </span>
+            <span className="hidden xl:block">
+              <Logo light={overHero} />
+            </span>
+          </Link>
 
           <nav aria-label="Main" className="ml-auto hidden items-center lg:flex">
             <ul className="flex items-center gap-0.5">
@@ -122,28 +108,25 @@ export function SiteHeader() {
             <button onClick={openSearch} className={iconBtn} aria-label="Search">
               <Search className="size-5" />
             </button>
-            <Link href="/notifications" className={cn(iconBtn, "lg:hidden")} aria-label={`Notifications${unread ? ` (${unread} unread)` : ""}`}>
-              <BellIcon />
-              {unread > 0 && <Dot />}
-            </Link>
             <Link href="/orders" className={iconBtn} aria-label={`Cart and orders (${count} in cart)`}>
               <ShoppingBag className="size-5" />
               {count > 0 && (
                 <span className="absolute -top-0.5 -right-0.5 grid h-[18px] min-w-[18px] place-items-center rounded-full bg-accent px-1 text-[10px] font-bold text-on-accent">{count}</span>
               )}
             </Link>
-            <AccountButton variant="a" light={overHero} />
+            {/* Phones: notifications and the account live inside the menu drawer. */}
+            <div className="hidden lg:block">
+              <AccountButton variant="a" light={overHero} />
+            </div>
+            <button onClick={openNavDrawer} className={cn(iconBtn, "-mr-2 lg:hidden")} aria-label="Open menu">
+              <Menu className="size-6" />
+            </button>
           </div>
         </div>
       </header>
       <NavDrawer />
     </>
   );
-}
-
-function BellIcon() {
-  const Icon = navigation.find((n) => n.href === "/notifications")!.icon;
-  return <Icon className="size-5" />;
 }
 
 function Dot() {

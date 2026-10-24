@@ -58,7 +58,7 @@ export function AddToCart({
       aria-label={`Add ${name} to cart`}
       className={cn(
         "inline-flex h-8 shrink-0 items-center gap-1 rounded-full px-3.5 text-xs font-semibold transition-colors",
-        tone === "warm" ? "bg-spark text-forest-deep hover:bg-[#f5b33a]" : "border-2 border-forest text-forest hover:bg-forest hover:text-on-forest",
+        tone === "warm" ? "bg-spark text-forest-deep hover:bg-[#eec676]" : "border-2 border-forest text-forest hover:bg-forest hover:text-on-forest",
         className,
       )}
     >
@@ -125,7 +125,7 @@ export function FloatingCartBar() {
   const s = useCart();
   if (!s.count || !s.restaurant) return null;
   return (
-    <div className="fixed inset-x-0 bottom-[calc(4.75rem+env(safe-area-inset-bottom))] z-30 px-3 lg:bottom-6">
+    <div className="fixed inset-x-0 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-30 px-3 lg:bottom-6">
       <Link
         href="/orders"
         className="group mx-auto flex h-14 max-w-lg items-center gap-3 rounded-full bg-forest-deep pr-2 pl-5 text-white shadow-lift ring-1 ring-white/10"

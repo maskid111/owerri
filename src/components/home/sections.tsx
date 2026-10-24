@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { ArrowRight, CalendarDays, MapPin, ShoppingBag, Soup, Sparkles, Star, UtensilsCrossed, type LucideIcon } from "lucide-react";
+import { ArrowRight, MapPin, Star } from "lucide-react";
 import type { ReactNode } from "react";
 import { getExploreItem, locationLabel, type Restaurant } from "@/lib/data";
 import { homeShortcuts } from "@/lib/services";
 import { cn } from "@/lib/utils";
 import { SaveButton } from "../save-button";
+import { ServiceArt } from "../service-art";
 import { Photo } from "../ui";
 
 /** Compact section heading with an optional one-line subtitle and a small "See all" link, as in the reference. */
@@ -36,41 +37,39 @@ export function HomeHeading({
   );
 }
 
-/** Line icons for the six shortcuts (the reference uses simple outline icons on small tiles). */
-const shortcutIcons: Record<string, LucideIcon> = {
-  "/restaurants": UtensilsCrossed,
-  "/dishes": Soup,
-  "/tours/nature": MapPin,
-  "/events": CalendarDays,
-  "/market": ShoppingBag,
-  "/culture": Sparkles,
+/** Soft tile colours behind the illustrations (Option 1); Option 2 (dark) uses the raised dark surface. */
+const tileTones: Record<string, string> = {
+  "/restaurants": "bg-[#fbe4d8]",
+  "/dishes": "bg-[#fdecd2]",
+  "/tours/nature": "bg-[#dff0ec]",
+  "/events": "bg-[#e3edf4]",
+  "/market": "bg-[#e2f0e2]",
+  "/culture": "bg-[#f3e6dc]",
 };
 
 /**
- * Six service shortcuts in one compact row: a small rounded tile with an outline icon and the label beneath.
- * Version A uses rounded rectangles; Version B round bubbles.
+ * Six service shortcuts in one compact row: a small soft-coloured tile with the Native illustration and the
+ * label beneath. Version A uses rounded rectangles; Version B round bubbles. Sizes stay compact.
  */
 export function HomeShortcuts({ variant }: { variant: "a" | "b" }) {
   return (
     <ul className="grid grid-cols-6 gap-x-1.5 sm:gap-x-4">
-      {homeShortcuts.map((s) => {
-        const Icon = shortcutIcons[s.href];
-        return (
-          <li key={s.href} className="min-w-0">
-            <Link href={s.href} className="group flex flex-col items-center gap-1.5 text-center">
-              <span
-                className={cn(
-                  "grid w-full place-items-center border border-line bg-mint text-forest transition-colors group-hover:border-forest/40 dark:bg-paper dark:text-cream",
-                  variant === "a" ? "h-11 rounded-xl sm:h-14 sm:rounded-2xl" : "mx-auto aspect-square max-w-[3.75rem] rounded-full sm:max-w-[4.5rem]",
-                )}
-              >
-                <Icon className="size-5 sm:size-6" strokeWidth={1.6} aria-hidden />
-              </span>
-              <span className="text-[0.62rem] leading-tight font-semibold tracking-[-0.015em] whitespace-nowrap text-ink min-[400px]:text-[0.68rem] sm:text-sm">{s.label}</span>
-            </Link>
-          </li>
-        );
-      })}
+      {homeShortcuts.map((s) => (
+        <li key={s.href} className="min-w-0">
+          <Link href={s.href} className="group flex flex-col items-center gap-1.5 text-center">
+            <span
+              className={cn(
+                "grid w-full place-items-center transition-transform duration-300 group-hover:-translate-y-0.5 dark:bg-paper dark:ring-1 dark:ring-line",
+                variant === "a" ? "h-11 rounded-xl sm:h-14 sm:rounded-2xl" : "mx-auto aspect-square max-w-[3.75rem] rounded-full sm:max-w-[4.5rem]",
+                tileTones[s.href],
+              )}
+            >
+              <ServiceArt kind={s.art} className={variant === "a" ? "size-9 sm:size-11" : "size-[72%]"} />
+            </span>
+            <span className="text-[0.62rem] leading-tight font-semibold tracking-[-0.015em] whitespace-nowrap text-ink min-[400px]:text-[0.68rem] sm:text-sm">{s.label}</span>
+          </Link>
+        </li>
+      ))}
     </ul>
   );
 }
@@ -113,7 +112,7 @@ export function FeaturedSpotlight({ restaurant: r, variant }: { restaurant: Rest
           )}
         </p>
         <p className="mt-2 line-clamp-3 text-[0.72rem] leading-relaxed text-ink/80 sm:text-sm">{r.description}</p>
-        <span className="mt-3 inline-flex h-8 w-fit items-center gap-1.5 rounded-full bg-spark px-3.5 text-xs font-semibold text-[#1a1405] transition-colors group-hover:bg-[#f5b33a] sm:h-10 sm:px-5 sm:text-sm">
+        <span className="mt-3 inline-flex h-8 w-fit items-center gap-1.5 rounded-full bg-spark px-3.5 text-xs font-semibold text-[#1a1405] transition-colors group-hover:bg-[#eec676] sm:h-10 sm:px-5 sm:text-sm">
           View Restaurant <ArrowRight className="size-3.5" aria-hidden />
         </span>
       </div>

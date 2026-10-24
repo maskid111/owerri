@@ -8,11 +8,11 @@ import { cn } from "@/lib/utils";
 
 const icons = { success: CircleCheck, info: Info, error: CircleAlert };
 
-/** Renders toasts above the mobile bottom bar (one instance in the root layout). */
+/** Renders toasts at the bottom of the screen (one instance in the root layout). */
 export function Toaster() {
   const toasts = useToasts();
   return (
-    <div aria-live="polite" className="pointer-events-none fixed inset-x-0 bottom-[calc(5rem+env(safe-area-inset-bottom))] z-[90] flex flex-col items-center gap-2 px-3 lg:bottom-6">
+    <div aria-live="polite" className="pointer-events-none fixed inset-x-0 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-[90] flex flex-col items-center gap-2 px-3 lg:bottom-6">
       <AnimatePresence initial={false}>
         {toasts.map((t) => {
           const Icon = icons[t.tone];

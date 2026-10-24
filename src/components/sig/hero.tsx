@@ -4,7 +4,6 @@ import Link from "next/link";
 import { ArrowRight, Search } from "lucide-react";
 import { HeroSearchField } from "../hero-video";
 import { HeroDots, HeroPhotos, useHeroSlide } from "../home/hero-slides";
-import { LocationChip } from "../home/location";
 
 /**
  * Version B homepage top: a rounded, compact food-photo hero card with centred text (label, headline,
@@ -14,13 +13,10 @@ export function SigHero() {
   const [index, setIndex] = useHeroSlide();
   return (
     <section aria-label="Welcome to Native" className="container-x pt-3 lg:pt-6">
-      <div className="relative isolate overflow-hidden rounded-[1.75rem] bg-forest-deep px-5 pt-5 pb-12 text-center text-white sm:pt-8 sm:pb-16 lg:rounded-[2.5rem] lg:pt-10 lg:pb-20">
+      <div className="relative isolate overflow-hidden rounded-[1.75rem] bg-forest-deep px-5 pt-9 pb-12 text-center text-white sm:pt-14 sm:pb-16 lg:rounded-[2.5rem] lg:pt-16 lg:pb-20">
         <HeroPhotos index={index} sizes="(min-width: 1280px) 1200px, 100vw" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-t from-forest-deep/90 via-forest-deep/55 to-forest-deep/50" aria-hidden />
-        <div className="flex justify-center">
-          <LocationChip light />
-        </div>
-        <p className="mt-6 text-[0.62rem] font-bold tracking-[0.18em] text-spark uppercase sm:mt-10 sm:text-xs">Food · Places · Culture</p>
+        <p className="text-[0.62rem] font-bold tracking-[0.18em] text-spark uppercase sm:text-xs">Food · Places · Culture</p>
         <h1 className="mx-auto mt-2 max-w-2xl text-[2rem] leading-[1.02] text-white sm:text-5xl lg:text-6xl">
           Real flavours.
           <br />
@@ -29,7 +25,7 @@ export function SigHero() {
         <p className="mx-auto mt-2.5 max-w-sm text-[0.8rem] text-white/80 sm:text-base">Discover local restaurants, dishes, places and culture — and order your favourites.</p>
         <Link
           href="/restaurants"
-          className="group mt-4 inline-flex h-10 items-center gap-1.5 rounded-full bg-spark px-5 text-sm font-semibold text-[#1a1405] transition-colors hover:bg-[#f5b33a] sm:mt-6 sm:h-12 sm:px-6"
+          className="group mt-4 inline-flex h-10 items-center gap-1.5 rounded-full bg-spark px-5 text-sm font-semibold text-[#1a1405] transition-colors hover:bg-[#eec676] sm:mt-6 sm:h-12 sm:px-6"
         >
           Explore Food <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
         </Link>

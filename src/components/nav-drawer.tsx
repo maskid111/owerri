@@ -42,11 +42,11 @@ export function NavDrawer() {
           <button aria-label="Close menu" className="absolute inset-0 bg-forest-deep/60" onClick={close} />
           <motion.nav
             aria-label="Site"
-            initial={{ x: "-100%" }}
+            initial={{ x: "100%" }}
             animate={{ x: 0 }}
-            exit={{ x: "-100%" }}
+            exit={{ x: "100%" }}
             transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-            className="pb-safe absolute inset-y-0 left-0 flex w-[88%] max-w-sm flex-col overflow-y-auto rounded-r-[1.75rem] bg-canvas px-4 pt-5"
+            className="pb-safe absolute inset-y-0 right-0 flex w-[88%] max-w-sm flex-col overflow-y-auto rounded-l-[1.75rem] bg-canvas px-4 pt-5"
           >
             <div className="flex items-center justify-between px-1">
               <Logo />

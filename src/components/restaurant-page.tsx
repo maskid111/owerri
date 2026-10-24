@@ -301,7 +301,7 @@ export function RestaurantPage({ restaurant: r, menu, related }: { restaurant: R
               <p className="text-[11px] text-white/70">Subtotal</p>
               <p className="font-bold">{naira(summary.subtotal)}</p>
             </div>
-            <button onClick={() => setDrawerOpen(true)} className="inline-flex h-12 items-center gap-1.5 rounded-xl bg-spark px-4 text-sm font-bold text-forest-deep hover:bg-[#f5b33a] sm:px-6">
+            <button onClick={() => setDrawerOpen(true)} className="inline-flex h-12 items-center gap-1.5 rounded-xl bg-spark px-4 text-sm font-bold text-forest-deep hover:bg-[#eec676] sm:px-6">
               View cart <ArrowRight className="size-4" />
             </button>
           </div>

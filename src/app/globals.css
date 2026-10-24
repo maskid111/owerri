@@ -107,8 +107,8 @@
   --color-forest-deep: #0a2c1e;
   --color-cream: #f7f5ee;
   --color-leaf: #9ad6ad;
-  /* Orange accent sampled from the supplied swatch (#F1A10C). Decorative details only — never a fill colour. */
-  --color-spark: #f1a10c;
+  /* Gold accent (#E7B655) — a lighter, softer gold than the original #F1A10C. Small highlights and key buttons only. */
+  --color-spark: #e7b655;
 
   --radius-4xl: 2rem;
 
@@ -120,7 +120,7 @@
  * Background themes (chosen only in /admin; stored as `native:theme`, applied before first paint):
  *   Option 1 — Native Original: the tokens above (and Version B's below).
  *   Option 2 — Native Forest Dark: the overrides here. Layered dark greens — page < card < input/chip —
- *   warm cream text, muted green lines, leaf-green accent; #F1A10C stays a small highlight (ratings, labels).
+ *   warm cream text, muted green lines, leaf-green accent; the gold accent stays a small highlight (ratings, labels).
  */
 :root[data-theme="forest"] {
   color-scheme: dark;
@@ -138,7 +138,7 @@
   --color-accent: #9fd6b0;
   --color-accent-hover: #b6e2c4;
   --color-on-accent: #0b1d15;
-  --color-star: #f1a10c;
+  --color-star: #e7b655;
   --color-forest-deep: #07150e;
   --color-cream: #f1ead9;
   --color-leaf: #9fd6b0;
@@ -301,7 +301,7 @@
   --color-accent: #8fdba8;
   --color-accent-hover: #a6e5bb;
   --color-on-accent: #0a1b13;
-  --color-star: #f1a10c;
+  --color-star: #e7b655;
   --color-pine: #0b3b2a;
   --color-forest-deep: #06130c;
   --color-leaf: #8fdba8;

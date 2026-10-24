@@ -37,7 +37,7 @@ export function Hero() {
             </p>
             <Link
               href="/restaurants"
-              className="group mt-4 inline-flex h-10 items-center gap-1.5 rounded-full bg-spark px-5 text-sm font-semibold text-[#1a1405] transition-colors hover:bg-[#f5b33a] sm:mt-6 sm:h-12 sm:px-6"
+              className="group mt-4 inline-flex h-10 items-center gap-1.5 rounded-full bg-spark px-5 text-sm font-semibold text-[#1a1405] transition-colors hover:bg-[#eec676] sm:mt-6 sm:h-12 sm:px-6"
             >
               Explore Food <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
             </Link>
