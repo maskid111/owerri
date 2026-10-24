@@ -40,11 +40,11 @@ export function HomeHeading({
 /** Soft tile colours behind the illustrations (Option 1); Option 2 (dark) uses the raised dark surface. */
 const tileTones: Record<string, string> = {
   "/restaurants": "bg-[#fbe4d8]",
-  "/dishes": "bg-[#fdecd2]",
+  "/events?cat=Hangouts": "bg-[#fdecd2]",
   "/tours/nature": "bg-[#dff0ec]",
   "/events": "bg-[#e3edf4]",
   "/market": "bg-[#e2f0e2]",
-  "/culture": "bg-[#f3e6dc]",
+  "/tours/stays": "bg-[#f3e6dc]",
 };
 
 /**

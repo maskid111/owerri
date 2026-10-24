@@ -4,11 +4,11 @@ import type { ArtKind } from "@/components/service-art";
 /** The six homepage shortcuts (both versions), in the order of the reference design. */
 export const homeShortcuts: { art: ArtKind; label: string; href: string }[] = [
   { art: "restaurants", label: "Restaurants", href: "/restaurants" },
-  { art: "dishes", label: "Dishes", href: "/dishes" },
+  { art: "hangout", label: "Hangout", href: "/events?cat=Hangouts" },
   { art: "places", label: "Places", href: "/tours/nature" },
   { art: "culture", label: "Events", href: "/events" },
   { art: "markets", label: "Market", href: "/market" },
-  { art: "mask", label: "Culture", href: "/culture" },
+  { art: "stays", label: "Stays", href: "/tours/stays" },
 ];
 
 /** Grouped site menu used by the mobile drawer (Version A) and the menu panel (Version B). */

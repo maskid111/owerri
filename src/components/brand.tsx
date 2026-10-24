@@ -5,25 +5,39 @@ export const BRAND = { name: "Native", tagline: "Native, beyond the plate" } as 
 
 type Size = "sm" | "md" | "lg" | "xl";
 
-/** Official logo artwork: green letters (white variant for dark backgrounds); the gold leaf is never recoloured. */
-export const LOGO = { green: "/brand/native-logo.svg", white: "/brand/native-logo-white.svg", ratio: 164 / 63 } as const;
+/**
+ * Official logo artwork (dark green on transparent, white variants for dark backgrounds):
+ * the full lockup with “BEYOND THE PLATE”, and the wordmark alone for tight spaces.
+ */
+export const LOGO = {
+  green: "/brand/native-logo-green.png",
+  white: "/brand/native-logo-white.png",
+  wordGreen: "/brand/native-wordmark-green.png",
+  wordWhite: "/brand/native-wordmark-white.png",
+} as const;
 
-const logoHeight: Record<Size, string> = {
-  sm: "h-8",
-  md: "h-9 sm:h-10",
-  lg: "h-16 sm:h-20",
-  xl: "h-24 sm:h-32",
+const art = {
+  full: { green: LOGO.green, white: LOGO.white, width: 950, height: 376 },
+  word: { green: LOGO.wordGreen, white: LOGO.wordWhite, width: 840, height: 266 },
 };
-const taglineSize: Record<Size, string> = {
-  sm: "text-[0.6rem]",
-  md: "text-[0.62rem] sm:text-[0.66rem]",
-  lg: "text-xs sm:text-sm",
-  xl: "text-sm sm:text-base",
+
+const fullHeight: Record<Size, string> = {
+  sm: "h-10",
+  md: "h-11 sm:h-12",
+  lg: "h-20 sm:h-24",
+  xl: "h-28 sm:h-36",
+};
+const wordHeight: Record<Size, string> = {
+  sm: "h-7",
+  md: "h-8 sm:h-9",
+  lg: "h-14 sm:h-16",
+  xl: "h-20 sm:h-28",
 };
 
 /**
  * The Native logo — the ONLY place it is drawn, so every header, footer, drawer, splash screen and
- * admin preview uses the same artwork. `tone="light"` swaps the green letters for white on dark backgrounds.
+ * auth page uses the same artwork. `tagline` picks the full lockup (with “BEYOND THE PLATE”) or the
+ * wordmark alone; `tone="light"` uses the white artwork on dark backgrounds.
  */
 export function Wordmark({
   tone = "dark",
@@ -38,28 +52,22 @@ export function Wordmark({
   tagline?: boolean;
   className?: string;
 }) {
+  const a = tagline ? art.full : art.word;
+  const height = (tagline ? fullHeight : wordHeight)[size];
   return (
-    <span
-      className={cn(
-        "inline-flex flex-col leading-none",
-        align === "center" ? "items-center text-center" : "items-start",
-        tone === "light" ? "text-white" : "text-forest",
-        className,
-      )}
-    >
+    <span className={cn("inline-flex flex-col leading-none", align === "center" ? "items-center" : "items-start", className)}>
       {tone === "light" ? (
-        // eslint-disable-next-line @next/next/no-img-element -- static SVG artwork, no optimisation needed
-        <img src={LOGO.white} alt={BRAND.name} width={164} height={63} className={cn("w-auto", logoHeight[size])} draggable={false} />
+        // eslint-disable-next-line @next/next/no-img-element -- static logo artwork, no optimisation needed
+        <img src={a.white} alt={BRAND.name} width={a.width} height={a.height} className={cn("w-auto", height)} draggable={false} />
       ) : (
         <>
-          {/* Green letters on light surfaces; white letters when the admin dark theme (Option 2) is active. */}
+          {/* Green artwork on light surfaces; white artwork when the admin dark theme (Option 2) is active. */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={LOGO.green} alt={BRAND.name} width={164} height={63} className={cn("w-auto dark:hidden", logoHeight[size])} draggable={false} />
+          <img src={a.green} alt={BRAND.name} width={a.width} height={a.height} className={cn("w-auto dark:hidden", height)} draggable={false} />
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={LOGO.white} alt="" aria-hidden width={164} height={63} className={cn("hidden w-auto dark:block", logoHeight[size])} draggable={false} />
+          <img src={a.white} alt="" aria-hidden width={a.width} height={a.height} className={cn("hidden w-auto dark:block", height)} draggable={false} />
         </>
       )}
-      {tagline && <span className={cn("mt-1 font-sans font-medium tracking-[0.12em] opacity-75", taglineSize[size])}>{BRAND.tagline}</span>}
     </span>
   );
 }

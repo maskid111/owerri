@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-export type ArtKind = "home" | "restaurants" | "dishes" | "markets" | "culture" | "stays" | "shops" | "nearby" | "places" | "discover" | "mask";
+export type ArtKind = "home" | "restaurants" | "dishes" | "markets" | "culture" | "stays" | "shops" | "nearby" | "places" | "discover" | "mask" | "hangout";
 
 /* Shared palette — warm, earthy and green, matching Native (no flat yellow). */
 const C = {
@@ -216,6 +216,37 @@ const art: Record<ArtKind, React.ReactNode> = {
       <path d="M9 49c8-1 16 0 23 4 7-4 15-5 23-4v3c-8-1-16 0-23 4-7-4-15-5-23-4Z" fill={C.deepGreen} />
       <path d="M45 41c2-7 8-10 12-9-1 5-6 9-12 9Z" fill={C.leaf} />
       <path d="M45 41c3-3 6-5 9-6" stroke={C.deepGreen} strokeWidth="1" strokeLinecap="round" />
+    </>
+  ),
+  /* Two drinks raised in a toast under string lights — hangouts and nights out */
+  hangout: (
+    <>
+      <Shadow />
+      <path d="M6 10c9 6 17 8 26 8s17-2 26-8" fill="none" stroke={C.darkBrown} strokeWidth="1.2" strokeLinecap="round" />
+      {[
+        [12, 13.4, C.orange],
+        [22, 16.6, C.red],
+        [32, 18, C.leaf],
+        [42, 16.6, C.orange],
+        [52, 13.4, C.red],
+      ].map(([x, y, f]) => (
+        <circle key={String(x)} cx={x as number} cy={(y as number) + 2} r="1.8" fill={f as string} />
+      ))}
+      <g transform="rotate(-10 22 40)">
+        <path d="M14 26h15l-2 26c-.2 2-1.6 3-3.4 3h-4.2c-1.8 0-3.2-1-3.4-3Z" fill={C.cream} />
+        <path d="M14.8 33h13.4l-1.5 19c-.2 1.6-1.3 2.5-2.8 2.5h-4.6c-1.5 0-2.6-.9-2.8-2.5Z" fill={C.rice} />
+        <circle cx="19" cy="42" r="1" fill={C.cream} opacity=".8" />
+        <circle cx="23" cy="47" r=".9" fill={C.cream} opacity=".8" />
+        <path d="M14 26h15" stroke={C.tanDark} strokeWidth="1.4" strokeLinecap="round" />
+      </g>
+      <g transform="rotate(10 42 40)">
+        <path d="M35 26h15l-2 26c-.2 2-1.6 3-3.4 3h-4.2c-1.8 0-3.2-1-3.4-3Z" fill={C.cream} />
+        <path d="M35.8 31h13.4l-1.6 21c-.2 1.6-1.3 2.5-2.8 2.5h-4.6c-1.5 0-2.6-.9-2.8-2.5Z" fill={C.green} />
+        <path d="M44 31c1-5 5-7 8-6-1 4-4 6-8 6Z" fill={C.leaf} />
+        <circle cx="40" cy="44" r="1" fill={C.cream} opacity=".8" />
+        <path d="M35 26h15" stroke={C.tanDark} strokeWidth="1.4" strokeLinecap="round" />
+      </g>
+      <path d="M32 21v-4M27.5 22.5l-2-3M36.5 22.5l2-3" stroke={C.tanDark} strokeWidth="1.6" strokeLinecap="round" />
     </>
   ),
 };

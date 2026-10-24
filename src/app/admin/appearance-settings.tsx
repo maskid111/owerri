@@ -148,8 +148,7 @@ function Preview({ version }: { version: DesignVersion }) {
           <div className="absolute top-2.5 right-3 left-3 flex items-center justify-between">
             <span className="flex flex-col leading-none text-white">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={LOGO.white} alt="" className="h-4 w-auto" />
-              <span className="mt-0.5 text-[5px] tracking-[0.12em] opacity-80">Native, beyond the plate</span>
+              <img src={LOGO.white} alt="" className="h-6 w-auto" />
             </span>
             <span className="flex gap-1">
               {[0, 1, 2].map((i) => (
@@ -180,8 +179,7 @@ function Preview({ version }: { version: DesignVersion }) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/40" />
         <span className="absolute inset-x-0 top-2.5 flex flex-col items-center leading-none text-white">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={LOGO.white} alt="" className="h-4 w-auto" />
-          <span className="mt-0.5 text-[5px] tracking-[0.12em] opacity-80">Native, beyond the plate</span>
+          <img src={LOGO.white} alt="" className="h-6 w-auto" />
         </span>
         <div className="absolute inset-x-6 bottom-3 flex h-6 items-center justify-end gap-1 rounded-full bg-white p-1">
           <span className="h-4 w-12 rounded-full bg-[#0b3b2a]" />
