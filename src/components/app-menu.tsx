@@ -74,7 +74,7 @@ export function AppMenuList({ pathname, onNavigate }: { pathname: string; onNavi
   );
 }
 
-/** Menu banner closing Discover & Order: Native Kitchen — food stories, people and culture (links to Discover). */
+/** Menu banner closing Discover & Order: Native Kitchen — food stories, people and culture (links to the stories page). */
 function NativeKitchenBanner({ onNavigate }: { onNavigate: () => void }) {
   return (
     <Link href="/blog" onClick={onNavigate} className="group relative isolate flex min-h-[6.5rem] overflow-hidden rounded-2xl bg-forest-deep text-white">

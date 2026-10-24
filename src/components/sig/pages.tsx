@@ -188,7 +188,7 @@ export function SigBlog() {
   const [lead, ...rest] = stories;
   return (
     <>
-      <SigPageHeader eyebrow="Discover" title="Stories beyond the plate" description="Food, heritage and the people who keep local traditions alive." image="masquerade" />
+      <SigPageHeader eyebrow="Explore" title="Stories beyond the plate" description="Food, heritage and the people who keep local traditions alive." image="masquerade" />
       <SigSection eyebrow="Featured" title="Read this first" className="pt-14">
         <div className="grid-cols-1 grid gap-6 lg:grid-cols-[1.2fr_1fr]">
           <SigStoryFeature story={lead} />

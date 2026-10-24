@@ -20,7 +20,7 @@ export const navigation: NavItem[] = [
   },
   { label: "Nearby", href: "/nearby", icon: MapPin, description: "Places and experiences close to you" },
   { label: "Events & Hangouts", short: "Events", href: "/events", icon: CalendarDays, description: "Festivals, live music and nights out" },
-  { label: "Discover", href: "/blog", icon: Newspaper, description: "Stories about food, heritage and city life" },
+  { label: "Explore", href: "/blog", icon: Newspaper, description: "Stories about food, heritage and city life" },
   { label: "Saved", href: "/saved", icon: Bookmark },
   { label: "Notifications", href: "/notifications", icon: Bell },
   { label: "Settings", href: "/settings", icon: Settings },

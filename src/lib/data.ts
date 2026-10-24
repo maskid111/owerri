@@ -1717,8 +1717,11 @@ export const exploreItems: ExploreItem[] = [
 
 export const getExploreItem = (slug: string) => exploreItems.find((x) => x.slug === slug);
 
-/** Farmers Market stalls (produce, spices, crafts) — the homepage "Farmers Market" row. */
-export const marketStalls = (limit = 8) => exploreItems.filter((x) => x.kind === "place" && x.label === "Market").slice(0, limit);
+/** Market stalls in the given Farmers Market aisles, as feed items (homepage "Farmers Market" and "Shops & Crafts" rows). */
+export function marketStalls(groups: MarketGroup[], limit = 8) {
+  const slugs = new Set(places.filter((p) => p.marketGroup && groups.includes(p.marketGroup)).map((p) => p.slug));
+  return exploreItems.filter((x) => slugs.has(x.slug)).slice(0, limit);
+}
 
 /** Places and experiences closest to the city centre (restaurants, recreation, nature, culture, hangouts) — the homepage "Nearby" row. */
 export function nearbyItems(limit = 8) {

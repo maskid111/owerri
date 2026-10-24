@@ -45,7 +45,16 @@ export function SigHome() {
       <section className="container-x pt-7 sm:pt-10">
         <HomeHeading title="Farmers Market" subtitle="Fresh produce, spices and goods from local stalls." href="/market" variant="b" />
         <div className={`${homeScroller} mt-3 md:grid-cols-4`}>
-          {marketStalls().map((x, i) => (
+          {marketStalls(["Fresh Produce", "Spices & Ingredients"]).map((x, i) => (
+            <NearbyCard key={x.slug} item={x} variant="b" className={i >= 4 ? "md:hidden" : undefined} />
+          ))}
+        </div>
+      </section>
+
+      <section className="container-x pt-7 sm:pt-10">
+        <HomeHeading title="Shops & Crafts" subtitle="Handmade crafts from Nigerian makers." href="/market#crafts-handmade" variant="b" />
+        <div className={`${homeScroller} mt-3 md:grid-cols-3`}>
+          {marketStalls(["Crafts & Handmade"]).map((x, i) => (
             <NearbyCard key={x.slug} item={x} variant="b" className={i >= 4 ? "md:hidden" : undefined} />
           ))}
         </div>

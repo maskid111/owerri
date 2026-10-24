@@ -20,19 +20,18 @@ export const menuGroups: { title: string; items: MenuEntry[] }[] = [
     items: [
       { label: "Home", hint: "Your Native hub", href: "/", art: "home" },
       { label: "Restaurants", hint: "Menus & ordering", href: "/restaurants", art: "restaurants" },
-      { label: "Dishes", hint: "Local delicacies & food guides", href: "/dishes", art: "dishes" },
+      { label: "Explore Nigerian Food", hint: "Local delicacies & food guides", href: "/dishes", art: "dishes" },
     ],
   },
   {
     title: "Explore More",
     items: [
       { label: "Farmers Market", hint: "Fresh produce & market goods", href: "/market", art: "markets" },
-      { label: "Tours & Places", hint: "Lakes, rivers & day trips", href: "/tours", art: "places" },
-      { label: "Culture & Events", hint: "Heritage, festivals & nights out", href: "/events", art: "culture" },
+      { label: "Tours & Experiences", hint: "Stays, getaways, nature & day trips", href: "/tours", art: "places" },
+      { label: "Events & Hangouts", hint: "Festivals, live music & nights out", href: "/events", art: "culture" },
       { label: "Nearby", hint: "Places & experiences near you", href: "/nearby", art: "nearby" },
-      { label: "Stays & Hospitality", hint: "Hotels, lodges & getaways", href: "/tours/stays", art: "stays" },
       { label: "Shops & Crafts", hint: "Handmade crafts from Nigerian makers", href: "/market#crafts-handmade", art: "shops" },
-      { label: "Discover", hint: "Stories & guides", href: "/blog", art: "discover" },
+      { label: "Explore", hint: "Stories & guides", href: "/blog", art: "discover" },
     ],
   },
   {

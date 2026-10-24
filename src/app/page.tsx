@@ -48,7 +48,16 @@ function HomePage() {
       <section className="container-x pt-6 sm:pt-9">
         <HomeHeading title="Farmers Market" subtitle="Fresh produce, spices and goods from local stalls." href="/market" />
         <div className={cn(homeScroller, "mt-3 md:grid-cols-4")}>
-          {marketStalls().map((x, i) => (
+          {marketStalls(["Fresh Produce", "Spices & Ingredients"]).map((x, i) => (
+            <NearbyCard key={x.slug} item={x} className={cn(i >= 4 && "md:hidden")} />
+          ))}
+        </div>
+      </section>
+
+      <section className="container-x pt-6 sm:pt-9">
+        <HomeHeading title="Shops & Crafts" subtitle="Handmade crafts from Nigerian makers." href="/market#crafts-handmade" />
+        <div className={cn(homeScroller, "mt-3 md:grid-cols-3")}>
+          {marketStalls(["Crafts & Handmade"]).map((x, i) => (
             <NearbyCard key={x.slug} item={x} className={cn(i >= 4 && "md:hidden")} />
           ))}
         </div>

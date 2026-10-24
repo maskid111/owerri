@@ -24,7 +24,7 @@ const primary = [
   { href: "/tours", label: "Tours" },
   { href: "/nearby", label: "Nearby" },
   { href: "/events", label: "Events" },
-  { href: "/blog", label: "Discover" },
+  { href: "/blog", label: "Explore" },
 ];
 
 /** Version B header: one slim, quiet light row — a few text links, the centred logo, and a handful of icons. */

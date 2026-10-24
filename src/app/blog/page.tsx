@@ -8,7 +8,7 @@ import { Design } from "@/components/design";
 import { SigBlog } from "@/components/sig/pages";
 
 export const metadata: Metadata = {
-  title: "Discover",
+  title: "Explore",
   description: "Stories about food, heritage, places and city life.",
 };
 
@@ -17,7 +17,7 @@ function BlogPage() {
   return (
     <>
       <PhotoHero
-        eyebrow="Discover"
+        eyebrow="Explore"
         title="Stories beyond the plate."
         description="Food, heritage and the people who keep local traditions alive."
         image="masquerade"
